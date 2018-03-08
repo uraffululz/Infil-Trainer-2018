@@ -29,7 +29,6 @@ public class RoomBuilder : MonoBehaviour {
 
 
 	void LayFloor () {
-		Vector3 floorScale = new Vector3 (0.1f, 0.1f, 0.1f);
 		GameObject floorParent = new GameObject ();
 		floorParent.name = "FloorParent";
 		floorParent.transform.parent = gameObject.transform;
@@ -39,7 +38,6 @@ public class RoomBuilder : MonoBehaviour {
 				Vector3 floorPos = new Vector3 (rW, 0.0f, rD);
 
 				floorPlane = Instantiate (floorPlane, floorPos, Quaternion.identity, floorParent.transform);
-				floorPlane.transform.localScale = floorScale;
 			}
 		}
 	}

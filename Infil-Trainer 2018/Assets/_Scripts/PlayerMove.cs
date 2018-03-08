@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour {
 
 	Transform camObject;
+	Rigidbody rb;
 
 	enum Stances {standing, crawling};
 	Stances myStance;
@@ -18,6 +19,7 @@ public class PlayerMove : MonoBehaviour {
 	void Start () {
 		print (transform.childCount);
 		camObject = transform.GetChild (0);
+		rb = gameObject.GetComponent<Rigidbody> ();
 
 		myStance = Stances.standing;
 	}
@@ -39,10 +41,10 @@ public class PlayerMove : MonoBehaviour {
 	void Move (float moveSpeed) {
 
 		if (Input.GetAxis("Horizontal") != 0.0) {
-			transform.position = transform.position + Vector3.right * moveSpeed * Input.GetAxis("Horizontal");
+			rb.MovePosition(transform.position + (transform.right * moveSpeed * Input.GetAxis("Horizontal")));
 		}
 		if (Input.GetAxis("Vertical") != 0.0f) {
-			transform.position = transform.position + Vector3.forward * moveSpeed * Input.GetAxis("Vertical");
+			rb.MovePosition(transform.position + (transform.forward * moveSpeed * Input.GetAxis("Vertical")));
 		}
 	}
 
