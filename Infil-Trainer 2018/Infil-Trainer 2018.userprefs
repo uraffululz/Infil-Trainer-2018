@@ -1,9 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\RoomBuilder.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\PlayerMove.cs">
     <Files>
-      <File FileName="Assets\_Scripts\RoomBuilder.cs" Line="45" Column="31" />
-      <File FileName="Assets\_Scripts\PlayerMove.cs" Line="53" Column="1" />
+      <File FileName="Assets\_Scripts\RoomBuilder.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\PlayerMove.cs" Line="56" Column="26" />
       <File FileName="..\..\..\Infil-Trainer\Assets\Scripts\PlayerMove.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
