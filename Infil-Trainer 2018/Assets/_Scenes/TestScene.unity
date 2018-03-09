@@ -216,6 +216,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1234899338424334, guid: 3e5bce21cc12c22498df511cbb5c510e, type: 2}
   floorPlane: {fileID: 1697423143935952, guid: 5049ba53f4546d9418d6649bcc6d2d79, type: 2}
+  wallPanel: {fileID: 1936334578070050, guid: 535da69d053be824ab4b209e7b77c2b2, type: 2}
+  ceilingTile: {fileID: 1532716673515040, guid: 0e2f0494b48a37e4c957182a76e1bcbf,
+    type: 2}
   roomWidth: 0
   roomDepth: 0
 --- !u!4 &1916199926

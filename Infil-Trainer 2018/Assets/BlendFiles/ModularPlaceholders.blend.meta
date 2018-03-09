@@ -8,17 +8,23 @@ ModelImporter:
     100000: _Floor
     100002: _Wall
     100004: //RootNode
+    100006: _Ceiling
     400000: _Floor
     400002: _Wall
     400004: //RootNode
+    400006: _Ceiling
     2300000: _Floor
     2300002: _Wall
+    2300004: _Ceiling
     3300000: _Floor
     3300002: _Wall
+    3300004: _Ceiling
     4300000: _Floor
     4300002: _Wall
+    4300004: _Ceiling
     6400000: _Floor
     6400002: _Wall
+    6400004: _Ceiling
     7400000: Default Take
     9500000: //RootNode
   materials:

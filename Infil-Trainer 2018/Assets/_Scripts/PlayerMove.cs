@@ -50,6 +50,7 @@ public class PlayerMove : MonoBehaviour {
 
 
 	void Rotate () {
+//TODO Clamp mouse pointer to screen bounds, maybe using Input.mouseposition
 		if (Input.mousePosition.x <= camObject.GetComponent<Camera>().pixelWidth * 0.4f) {
 			float rotSpeed = camObject.GetComponent<Camera>().pixelWidth/Input.mousePosition.x;
 			transform.Rotate (-Vector3.up * rotSpeed * Time.deltaTime);
