@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4405352063390284}
   - component: {fileID: 33042673789508310}
   - component: {fileID: 23187029082937000}
-  - component: {fileID: 64377615213412030}
+  - component: {fileID: 135978287507051066}
   - component: {fileID: 114077500411795646}
   m_Layer: 0
   m_Name: _Coin
@@ -82,20 +82,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1843121861173164}
   m_Mesh: {fileID: 4300000, guid: 1dba596a3dd7df641aed4bdaa83d9c03, type: 3}
---- !u!64 &64377615213412030
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1843121861173164}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 1dba596a3dd7df641aed4bdaa83d9c03, type: 3}
 --- !u!114 &114077500411795646
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,3 +93,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf24b464545f764898f4615c9f40483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &135978287507051066
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1843121861173164}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.12500003
+  m_Center: {x: 0, y: 0, z: 0}

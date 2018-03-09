@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4263826502904654}
   - component: {fileID: 33927718996354530}
   - component: {fileID: 23273503796531006}
-  - component: {fileID: 64574740092869898}
+  - component: {fileID: 135394892166108394}
   - component: {fileID: 114330825617053524}
   m_Layer: 0
   m_Name: _Gem
@@ -82,20 +82,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1634484507172452}
   m_Mesh: {fileID: 4300002, guid: 1dba596a3dd7df641aed4bdaa83d9c03, type: 3}
---- !u!64 &64574740092869898
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1634484507172452}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300002, guid: 1dba596a3dd7df641aed4bdaa83d9c03, type: 3}
 --- !u!114 &114330825617053524
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,3 +93,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf24b464545f764898f4615c9f40483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &135394892166108394
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1634484507172452}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.12500003
+  m_Center: {x: 0, y: 0, z: 0}
