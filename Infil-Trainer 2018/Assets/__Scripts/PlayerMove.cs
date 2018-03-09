@@ -18,7 +18,6 @@ public class PlayerMove : MonoBehaviour {
 
 
 	void Start () {
-		print (transform.childCount);
 		camObject = transform.GetChild (0);
 		rb = gameObject.GetComponent<Rigidbody> ();
 

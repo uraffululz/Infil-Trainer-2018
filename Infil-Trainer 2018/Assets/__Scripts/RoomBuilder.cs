@@ -8,8 +8,8 @@ public class RoomBuilder : MonoBehaviour {
 	[SerializeField] GameObject wallPanel;
 	[SerializeField] GameObject ceilingTile;
 
-	[SerializeField] int roomWidth;
-	[SerializeField] int roomDepth;
+	public int roomWidth;
+	public int roomDepth;
 
 
 	void Awake () {
@@ -19,6 +19,10 @@ public class RoomBuilder : MonoBehaviour {
 		LayFloor ();
 		PutUpWalls ();
 		HangCeiling ();
+
+		CreateCoinParent ();
+
+		CreateLaserParent ();
 	}
 
 
@@ -93,6 +97,22 @@ public class RoomBuilder : MonoBehaviour {
 				ceilingTile.name = "Ceiling";
 			}
 		}
+	}
+
+
+	void CreateCoinParent () {
+		GameObject coinParent = new GameObject ();
+		coinParent.name = "CoinParent";
+		coinParent.transform.parent = gameObject.transform;
+		coinParent.AddComponent<CoinParent> ();
+	}
+
+
+	void CreateLaserParent () {
+		GameObject laserParent = new GameObject ();
+		laserParent.name = "LaserParent";
+		laserParent.transform.parent = gameObject.transform;
+		laserParent.AddComponent<LaserParent> ();
 	}
 
 
