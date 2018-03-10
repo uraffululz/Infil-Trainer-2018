@@ -7,9 +7,12 @@ public class RoomBuilder : MonoBehaviour {
 	[SerializeField] GameObject floorPlane;
 	[SerializeField] GameObject wallPanel;
 	[SerializeField] GameObject ceilingTile;
+	[SerializeField] GameObject doorWay;
 
 	public int roomWidth;
 	public int roomDepth;
+	public float roomHeight = 2.0f;
+	int doorNum = 0;
 
 	public GameObject[] floors;
 	public GameObject[] walls;
@@ -19,6 +22,7 @@ public class RoomBuilder : MonoBehaviour {
 	void Awake () {
 		roomWidth = Random.Range (5, 10);
 		roomDepth = Random.Range (5, 10);
+
 
 		LayFloor ();
 		PutUpWalls ();
@@ -85,7 +89,14 @@ public class RoomBuilder : MonoBehaviour {
 				if (rD == roomDepth) {
 					Vector3 wallPlace = new Vector3 (rW, 0.0f, rD);
 					Vector3 wallOffset = new Vector3 (0.0f, 0.0f, -0.5f);
-					wallPanel = Instantiate (wallPanel, wallPlace + wallOffset, Quaternion.Euler (0.0f, 180.0f, 0.0f), wallParent.transform);
+
+					if (rW > 1 && rW <= roomWidth - 1 && doorNum < 1) {
+						doorWay = Instantiate (doorWay, wallPlace + wallOffset, Quaternion.Euler (0.0f, 180.0f, 0.0f), wallParent.transform);
+						doorWay.name = "Door";
+						doorNum++;
+					} else {
+						wallPanel = Instantiate (wallPanel, wallPlace + wallOffset, Quaternion.Euler (0.0f, 180.0f, 0.0f), wallParent.transform);
+					}
 				}
 				wallPanel.name = "Wall";
 			}
@@ -100,7 +111,7 @@ public class RoomBuilder : MonoBehaviour {
 
 		for (int rD = 0; rD < roomDepth; rD++) {
 			for (int rW = 0; rW < roomWidth; rW++) {
-				Vector3 ceilingPos = new Vector3 (rW, 3.0f, rD);
+				Vector3 ceilingPos = new Vector3 (rW, roomHeight, rD);
 
 				ceilingTile = Instantiate (ceilingTile, ceilingPos, Quaternion.identity, ceilingParent.transform);
 				ceilingTile.name = "Ceiling";

@@ -220,8 +220,10 @@ MonoBehaviour:
   wallPanel: {fileID: 1936334578070050, guid: 535da69d053be824ab4b209e7b77c2b2, type: 2}
   ceilingTile: {fileID: 1532716673515040, guid: 0e2f0494b48a37e4c957182a76e1bcbf,
     type: 2}
+  doorWay: {fileID: 1320319131887664, guid: dcf4f083d7c23c44c80611a6875b4193, type: 2}
   roomWidth: 0
   roomDepth: 0
+  roomHeight: 2
   floors: []
   walls: []
   ceilings: []

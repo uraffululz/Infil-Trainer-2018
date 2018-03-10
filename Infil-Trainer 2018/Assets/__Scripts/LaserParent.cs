@@ -5,6 +5,7 @@ using UnityEngine;
 public class LaserParent : MonoBehaviour {
 
 	RoomBuilder roomBuild;
+	float rH;
 
 	GameObject nodeParent;
 	GameObject receiverParent;
@@ -56,6 +57,7 @@ public class LaserParent : MonoBehaviour {
 
 	void SetRoomBounds () {
 		roomBuild = GameObject.Find ("LevelManager").GetComponent<RoomBuilder> ();
+		rH = roomBuild.roomHeight;
 		spawnCount = (roomBuild.roomWidth * roomBuild.roomDepth) / 2;
 
 		nodePoints = new List<int> ();
@@ -67,11 +69,11 @@ public class LaserParent : MonoBehaviour {
 		for (int i = 0; i < spawnCount; i++) {
 			spawnPoints = new Vector3[] {
 				/*floor*/new Vector3 (Random.Range (0.0f, (float)roomBuild.roomWidth - 0.5f), 0.0f, Random.Range (0.0f, (float)roomBuild.roomDepth - 0.5f)),
-				/*-xWall*/new Vector3 (-0.5f, Random.Range (0.0f, 3.0f), Random.Range (0.0f, roomBuild.roomDepth - 0.5f)),
-				/*xWall*/new Vector3 (roomBuild.roomWidth - 0.5f, Random.Range (0.0f, 3.0f), Random.Range (0.0f, roomBuild.roomDepth - 0.5f)),
-				/*-zWall*/new Vector3 (Random.Range (0.0f, roomBuild.roomWidth - 0.5f), Random.Range (0.0f, 3.0f), -0.5f),
-				/*zWall*/new Vector3 (Random.Range (0.0f, roomBuild.roomWidth - 0.5f), Random.Range (0.0f, 3.0f), roomBuild.roomDepth - 0.5f),
-				/*ceiling*/new Vector3 (Random.Range (-0.5f, (float)roomBuild.roomWidth - 0.5f), 3.0f, Random.Range (0.0f, (float)roomBuild.roomDepth - 0.5f))
+				/*-xWall*/new Vector3 (-0.5f, Random.Range (0.0f, rH), Random.Range (0.0f, roomBuild.roomDepth - 0.5f)),
+				/*xWall*/new Vector3 (roomBuild.roomWidth - 0.5f, Random.Range (0.0f, rH), Random.Range (0.0f, roomBuild.roomDepth - 0.5f)),
+				/*-zWall*/new Vector3 (Random.Range (0.0f, roomBuild.roomWidth - 0.5f), Random.Range (0.0f, rH), -0.5f),
+				/*zWall*/new Vector3 (Random.Range (0.0f, roomBuild.roomWidth - 0.5f), Random.Range (0.0f, rH), roomBuild.roomDepth - 0.5f),
+				/*ceiling*/new Vector3 (Random.Range (-0.5f, (float)roomBuild.roomWidth - 0.5f), rH, Random.Range (0.0f, (float)roomBuild.roomDepth - 0.5f))
 			};
 
 			int chosenNodePoint = Random.Range (0, spawnPoints.Length);
