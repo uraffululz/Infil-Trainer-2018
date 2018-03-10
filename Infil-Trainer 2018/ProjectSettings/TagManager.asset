@@ -7,6 +7,7 @@ TagManager:
   - Floor
   - Wall
   - Ceiling
+  - Pickup
   layers:
   - Default
   - TransparentFX

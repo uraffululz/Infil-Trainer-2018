@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Pickups : MonoBehaviour {
 
+	ScoreTracker scoreScript;
+
 	Vector3 startPos;
 	float moveSpeed;
 
 
 	void Awake () {
+		scoreScript = GameObject.Find ("LevelManager").GetComponent<ScoreTracker> ();
 		startPos = transform.position;
 	}
 
@@ -26,6 +29,7 @@ public class Pickups : MonoBehaviour {
 	void OnTriggerEnter (Collider other) {
 		if (other.gameObject.tag == "Player") {
 			Destroy (gameObject);
+			scoreScript.score += 100;
 		}
 	}
 

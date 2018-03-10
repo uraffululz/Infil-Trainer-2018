@@ -11,6 +11,10 @@ public class RoomBuilder : MonoBehaviour {
 	public int roomWidth;
 	public int roomDepth;
 
+	public GameObject[] floors;
+	public GameObject[] walls;
+	public GameObject[] ceilings;
+
 
 	void Awake () {
 		roomWidth = Random.Range (5, 10);
@@ -20,7 +24,12 @@ public class RoomBuilder : MonoBehaviour {
 		PutUpWalls ();
 		HangCeiling ();
 
-		CreateCoinParent ();
+		floors = GameObject.FindGameObjectsWithTag ("Floor");
+		walls = GameObject.FindGameObjectsWithTag ("Wall");
+		ceilings = GameObject.FindGameObjectsWithTag ("Ceiling");
+
+
+		CreatePickupParent ();
 
 		CreateLaserParent ();
 	}
@@ -100,11 +109,11 @@ public class RoomBuilder : MonoBehaviour {
 	}
 
 
-	void CreateCoinParent () {
-		GameObject coinParent = new GameObject ();
-		coinParent.name = "CoinParent";
-		coinParent.transform.parent = gameObject.transform;
-		coinParent.AddComponent<CoinParent> ();
+	void CreatePickupParent () {
+		GameObject PickupParent = new GameObject ();
+		PickupParent.name = "PickupParent";
+		PickupParent.transform.parent = gameObject.transform;
+		PickupParent.AddComponent<PickupParent> ();
 	}
 
 
