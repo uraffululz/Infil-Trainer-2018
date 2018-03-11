@@ -5,6 +5,8 @@ using UnityEngine;
 public class LaserParent : MonoBehaviour {
 
 	RoomBuilder roomBuild;
+	int rW;
+	int rD;
 	float rH;
 
 	GameObject nodeParent;
@@ -18,9 +20,9 @@ public class LaserParent : MonoBehaviour {
 	public int spawnCount;
 	Vector3[] spawnPoints;
 	public List<Vector3> nodeOnBounds;
-	List<int> nodePoints;
+	List<int> nodeInts;
 	public List<Vector3> recOnBounds;
-	List<int> recPoints;
+	List<int> recInts;
 
 	List<GameObject> Nodes;
 	List<GameObject> Receivers;
@@ -34,6 +36,9 @@ public class LaserParent : MonoBehaviour {
 
 
 	void Awake () {
+		//Just initializing and populating this here so it can be used BEFORE it's populated in SpawnPos(), since it's a fixed size (6) anyway
+		spawnPoints = new Vector3[]{Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero};
+
 		Nodes = new List<GameObject> ();
 		Receivers = new List<GameObject> ();
 		Beams = new List<GameObject> ();
@@ -57,32 +62,38 @@ public class LaserParent : MonoBehaviour {
 
 	void SetRoomBounds () {
 		roomBuild = GameObject.Find ("LevelManager").GetComponent<RoomBuilder> ();
-		rH = roomBuild.roomHeight;
-		spawnCount = (roomBuild.roomWidth * roomBuild.roomDepth) / 2;
 
-		nodePoints = new List<int> ();
-		recPoints = new List<int> ();
+		rW = roomBuild.roomWidth;
+		rD = roomBuild.roomDepth;
+		rH = roomBuild.roomHeight;
+		spawnCount = (rW * rD) / 2;
+
+		nodeInts = new List<int> ();
+		recInts = new List<int> ();
 
 		nodeOnBounds = new List<Vector3> ();
 		recOnBounds = new List<Vector3> ();
 
 		for (int i = 0; i < spawnCount; i++) {
-			spawnPoints = new Vector3[] {
-				/*floor*/new Vector3 (Random.Range (0.0f, (float)roomBuild.roomWidth - 0.5f), 0.0f, Random.Range (0.0f, (float)roomBuild.roomDepth - 0.5f)),
-				/*-xWall*/new Vector3 (-0.5f, Random.Range (0.0f, rH), Random.Range (0.0f, roomBuild.roomDepth - 0.5f)),
-				/*xWall*/new Vector3 (roomBuild.roomWidth - 0.5f, Random.Range (0.0f, rH), Random.Range (0.0f, roomBuild.roomDepth - 0.5f)),
-				/*-zWall*/new Vector3 (Random.Range (0.0f, roomBuild.roomWidth - 0.5f), Random.Range (0.0f, rH), -0.5f),
-				/*zWall*/new Vector3 (Random.Range (0.0f, roomBuild.roomWidth - 0.5f), Random.Range (0.0f, rH), roomBuild.roomDepth - 0.5f),
-				/*ceiling*/new Vector3 (Random.Range (-0.5f, (float)roomBuild.roomWidth - 0.5f), rH, Random.Range (0.0f, (float)roomBuild.roomDepth - 0.5f))
-			};
+			/*int chosenNodeInt = Random.Range (0, spawnPoints.Length);
+			nodeInts.Add (chosenNodeInt);
+			Vector3 chosenNodePos = SpawnPos (chosenNodeInt);
+			nodeOnBounds.Add (chosenNodePos);
 
-			int chosenNodePoint = Random.Range (0, spawnPoints.Length);
-			nodePoints.Add (chosenNodePoint);
-			nodeOnBounds.Add (spawnPoints[chosenNodePoint]);
+			int chosenRecInt = Random.Range (0, spawnPoints.Length);
+			Vector3 chosenRecPos = SpawnPos (chosenRecInt);
+			recInts.Add (chosenRecInt);
+			recOnBounds.Add (chosenRecPos);
+			*/
 
-			int chosenRecPoint = Random.Range (0, spawnPoints.Length);
-			recPoints.Add (chosenRecPoint);
-			recOnBounds.Add (spawnPoints [chosenRecPoint]);
+/*These lines \/ are a condensed version of ^This Shit. I'm just keeping those lines above in case I just fucked something up
+* If no errors are called on this section of code, then it worked, and I can eventually delete ^This Shit
+*/
+			nodeInts.Add (Random.Range (0, spawnPoints.Length));
+			nodeOnBounds.Add (SpawnPos (nodeInts[i]));
+
+			recInts.Add (Random.Range (0, spawnPoints.Length));
+			recOnBounds.Add (SpawnPos (recInts[i]));
 		}
 	}
 
@@ -116,19 +127,19 @@ public class LaserParent : MonoBehaviour {
 		for (int i = 0; i < spawnCount; i++) {
 			int newRecPoint;
 
-			if (recPoints[i] == nodePoints[i]) {
-				print ("Node and receiver on same surface. Re-rolling..." + recPoints[i]);
-				if (recPoints[i] <= 0) {
+			if (recInts[i] == nodeInts[i]) {
+				print ("Node and receiver on same surface. Re-rolling..." + recInts[i]);
+				if (recInts[i] <= 0) {
 					newRecPoint = Random.Range (1, spawnPoints.Length);
-				} else if (recPoints[i] >= spawnPoints.Length - 1) {
+				} else if (recInts[i] >= spawnPoints.Length - 1) {
 					newRecPoint = Random.Range (0, spawnPoints.Length - 1);
 				} else {
-					newRecPoint = recPoints[i]+1;
+					newRecPoint = recInts[i]+1;
 				}
-				recOnBounds [i] = spawnPoints [newRecPoint];
+				recOnBounds [i] = SpawnPos(newRecPoint);
 			}
-
-/*TODO This \/ will still make the new receiver overlap a previously spawned node (as the newRecPoint doesn't equal a new random spawnPoint),
+/*This \/ may be DONE*/
+/*TODO This \/ will still make the new receiver overlap a previously spawned receiver (as the newRecPoint doesn't equal a totally new random spawnPoint),
 * but for now it's better than nothing
 */
 			receiver = Instantiate (receiver, recOnBounds[i], Quaternion.identity, receiverParent.transform);
@@ -145,7 +156,7 @@ public class LaserParent : MonoBehaviour {
 			Vector3 laserPos = (Nodes [l].transform.position + Receivers [l].transform.position) / 2;
 
 			beam = Instantiate (beam, laserPos, Quaternion.identity, beamParent.transform);
-
+			Beams.Add (beam);
 			beam.gameObject.transform.localScale = new Vector3 (0.01f, 0.01f, laserScaleTotal);
 			beam.gameObject.transform.rotation = Quaternion.LookRotation (beam.transform.position - Receivers [l].transform.position);
 		}
@@ -159,5 +170,20 @@ public class LaserParent : MonoBehaviour {
 				print ("Time ran out. Game over");
 			}
 		}
+	}
+
+
+	public Vector3 SpawnPos (int spawnPointInt) {
+		float posOffset = 0.5f;
+		spawnPoints = new Vector3[] {
+			/*floor*/new Vector3 (Random.Range (0.0f, (float)rW - posOffset), 0.0f, Random.Range (0.0f, (float)rD - posOffset)),
+			/*-xWall*/new Vector3 (-posOffset, Random.Range (0.0f, rH), Random.Range (0.0f, rD - posOffset)),
+			/*xWall*/new Vector3 (rW - posOffset, Random.Range (0.0f, rH), Random.Range (0.0f, rD - posOffset)),
+			/*-zWall*/new Vector3 (Random.Range (0.0f, rW - posOffset), Random.Range (0.0f, rH), -posOffset),
+			/*zWall*/new Vector3 (Random.Range (0.0f, rW - posOffset), Random.Range (0.0f, rH), rD - posOffset),
+			/*ceiling*/new Vector3 (Random.Range (-posOffset, (float)rW - posOffset), rH, Random.Range (0.0f, (float)rD - posOffset))
+		};
+		Vector3 spawnPosition = spawnPoints[spawnPointInt];
+		return spawnPosition;
 	}
 }

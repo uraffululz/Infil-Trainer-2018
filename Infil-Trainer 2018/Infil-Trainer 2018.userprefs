@@ -2,18 +2,23 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\__Scripts\LaserParent.cs">
     <Files>
-      <File FileName="Assets\__Scripts\RoomBuilder.cs" Line="14" Column="9" />
+      <File FileName="Assets\__Scripts\RoomBuilder.cs" Line="24" Column="36" />
       <File FileName="Assets\__Scripts\PlayerMove.cs" Line="1" Column="1" />
-      <File FileName="Assets\__Scripts\LaserParent.cs" Line="8" Column="7" />
+      <File FileName="Assets\__Scripts\LaserParent.cs" Line="185" Column="5" />
       <File FileName="Assets\__Scripts\LaserBeam.cs" Line="1" Column="1" />
       <File FileName="..\..\..\Infil-Trainer\Assets\Scripts\PlayerUI.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="131" column="1" />
-      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="132" column="1" />
-      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="133" column="1" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="143" column="1" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\RoomBuilder.cs" line="23" column="17" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="142" column="1" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="141" column="24" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="144" column="1" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="89" column="52" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="90" column="1" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="91" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

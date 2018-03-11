@@ -20,6 +20,7 @@ public class RoomBuilder : MonoBehaviour {
 
 
 	void Awake () {
+//Maybe too big?
 		roomWidth = Random.Range (5, 10);
 		roomDepth = Random.Range (5, 10);
 
