@@ -3,52 +3,53 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LaserParent : MonoBehaviour {
-
+	
+	//GameObject Component References
 	RoomBuilder roomBuild;
 	int rW;
 	int rD;
 	float rH;
 
+	//MakeParent() Objects
 	GameObject nodeParent;
 	GameObject receiverParent;
 	GameObject beamParent;
 
+	//Prefab References
 	[SerializeField] GameObject node;
 	[SerializeField] GameObject receiver;
 	[SerializeField] GameObject beam;
 
+	//Laser Spawn-Point Variables and Lists
 	public int spawnCount;
-	Vector3[] spawnPoints;
-	public List<Vector3> nodeOnBounds;
-	List<int> nodeInts;
-	public List<Vector3> recOnBounds;
-	List<int> recInts;
+	Vector3[] spawnPoints = new Vector3[] {Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero};
+	List<int> nodeInts = new List<int>();
+	public List<Vector3> nodeSpawns = new List<Vector3>();
+	List<int> recInts = new List<int>();
+	public List<Vector3> recSpawns = new List<Vector3>();
 
-	List<GameObject> Nodes;
-	List<GameObject> Receivers;
-	List<GameObject> Beams;
+	//Laser GameObject Lists
+//TODO Can be made private later, as I don't think they're referenced anywhere outside this script. Just Serialize them, then.
+	public List<GameObject> Nodes = new List<GameObject>();
+	public List<GameObject> Receivers = new List<GameObject>();
+	public List<GameObject> Beams = new List<GameObject>();
 
-	//Laser Timer Countdown Variables
+	//Laser Countdown Timer Variables
 	public float laserTimer = 30.0f;
 	public enum TimerOn {timerDeactivated, timerActivated};
 	public TimerOn timerState;
 
 
-
 	void Awake () {
-		//Just initializing and populating this here so it can be used BEFORE it's populated in SpawnPos(), since it's a fixed size (6) anyway
-		spawnPoints = new Vector3[]{Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero};
-
-		Nodes = new List<GameObject> ();
-		Receivers = new List<GameObject> ();
-		Beams = new List<GameObject> ();
-		SetRoomBounds ();
+		MakeParents ();
+		GetSpawnDimensions ();
+		SetSpawnPoints ();
 
 		timerState = TimerOn.timerDeactivated;
 	}
 
+
 	void Start () {
-		SpawnParents ();
 		SpawnNodes ();
 		SpawnReceivers ();
 		SpawnBeams ();
@@ -60,45 +61,7 @@ public class LaserParent : MonoBehaviour {
 	}
 
 
-	void SetRoomBounds () {
-		roomBuild = GameObject.Find ("LevelManager").GetComponent<RoomBuilder> ();
-
-		rW = roomBuild.roomWidth;
-		rD = roomBuild.roomDepth;
-		rH = roomBuild.roomHeight;
-		spawnCount = (rW * rD) / 2;
-
-		nodeInts = new List<int> ();
-		recInts = new List<int> ();
-
-		nodeOnBounds = new List<Vector3> ();
-		recOnBounds = new List<Vector3> ();
-
-		for (int i = 0; i < spawnCount; i++) {
-			/*int chosenNodeInt = Random.Range (0, spawnPoints.Length);
-			nodeInts.Add (chosenNodeInt);
-			Vector3 chosenNodePos = SpawnPos (chosenNodeInt);
-			nodeOnBounds.Add (chosenNodePos);
-
-			int chosenRecInt = Random.Range (0, spawnPoints.Length);
-			Vector3 chosenRecPos = SpawnPos (chosenRecInt);
-			recInts.Add (chosenRecInt);
-			recOnBounds.Add (chosenRecPos);
-			*/
-
-/*These lines \/ are a condensed version of ^This Shit. I'm just keeping those lines above in case I just fucked something up
-* If no errors are called on this section of code, then it worked, and I can eventually delete ^This Shit
-*/
-			nodeInts.Add (Random.Range (0, spawnPoints.Length));
-			nodeOnBounds.Add (SpawnPos (nodeInts[i]));
-
-			recInts.Add (Random.Range (0, spawnPoints.Length));
-			recOnBounds.Add (SpawnPos (recInts[i]));
-		}
-	}
-
-
-	void SpawnParents () {
+	void MakeParents () {
 		nodeParent = new GameObject ();
 		nodeParent.name = "NodeParent";
 		nodeParent.transform.parent = gameObject.transform;
@@ -114,9 +77,48 @@ public class LaserParent : MonoBehaviour {
 	}
 
 
+	void GetSpawnDimensions() {
+		roomBuild = GameObject.Find ("LevelManager").GetComponent<RoomBuilder> ();
+
+		rW = roomBuild.roomWidth;
+		rD = roomBuild.roomDepth;
+		rH = roomBuild.roomHeight;
+
+		spawnCount = (rW * rD) / 2;
+	}
+		
+
+	void SetSpawnPoints () {
+		
+		print (spawnCount);
+
+		for (int i = 0; i < spawnCount; i++) {
+/*			int chosenNodeInt = Random.Range (0, spawnPoints.Length);
+			nodeInts.Add (chosenNodeInt);
+			Vector3 chosenNodePos = SpawnPos (chosenNodeInt);
+			nodeSpawns.Add (chosenNodePos);
+
+			int chosenRecInt = Random.Range (0, spawnPoints.Length);
+			Vector3 chosenRecPos = SpawnPos (chosenRecInt);
+			recInts.Add (chosenRecInt);
+			recSpawns.Add (chosenRecPos);
+*/
+
+/*These lines \/ are a condensed version of ^This Shit. I'm just keeping those lines above in case I just fucked something up
+* If no errors are called on this section of code, then it worked, and I can eventually delete ^This Shit
+*/
+			nodeInts.Add (Random.Range (0, spawnPoints.Length));
+			nodeSpawns.Add (SpawnPos (nodeInts [i]));
+
+			recInts.Add (Random.Range (0, spawnPoints.Length));
+			recSpawns.Add (SpawnPos (recInts [i]));
+		}
+	}
+
+
 	void SpawnNodes () {
 		for (int i = 0; i < spawnCount; i++) {
-			node = Instantiate (node, nodeOnBounds[i], Quaternion.identity, nodeParent.transform);
+			node = Instantiate (node, nodeSpawns[i], Quaternion.identity, nodeParent.transform);
 			Nodes.Add (node);
 		}
 	}
@@ -129,42 +131,106 @@ public class LaserParent : MonoBehaviour {
 
 			if (recInts[i] == nodeInts[i]) {
 				print ("Node and receiver on same surface. Re-rolling..." + recInts[i]);
-				if (recInts[i] <= 0) {
+				if (recInts[i] == 0) {
 					newRecPoint = Random.Range (1, spawnPoints.Length);
-				} else if (recInts[i] >= spawnPoints.Length - 1) {
+				} else if (recInts[i] == spawnPoints.Length - 1) {
 					newRecPoint = Random.Range (0, spawnPoints.Length - 1);
 				} else {
-					newRecPoint = recInts[i]+1;
+/*TODO This \/ newRecPoint isn't really randomized. It is derivative and incremental.
+ * I'm too lazy right now to make it more random, but it certainly could be:
+ * Make it choose again, either another int between 0-6 (at which point, if it chooses the same int, it should still iterate as it does,
+ * OR Try to make it choose between 0-6 EXCLUDING the current int value
+ */					
+					newRecPoint = recInts[i] + 1;
 				}
-				recOnBounds [i] = SpawnPos(newRecPoint);
+				recSpawns [i] = SpawnPos(newRecPoint);
 			}
-/*This \/ may be DONE*/
-/*TODO This \/ will still make the new receiver overlap a previously spawned receiver (as the newRecPoint doesn't equal a totally new random spawnPoint),
-* but for now it's better than nothing
-*/
-			receiver = Instantiate (receiver, recOnBounds[i], Quaternion.identity, receiverParent.transform);
+			receiver = Instantiate (receiver, recSpawns[i], Quaternion.identity, receiverParent.transform);
 			Receivers.Add (receiver);
 			receiver.GetComponent<MeshRenderer> ().material.color = Color.black;
+
+			//Rotate paired Node and Receiver to "look" at each other
+			Nodes [i].transform.LookAt (Receivers [i].transform.position);
+			Receivers [i].transform.LookAt (Nodes [i].transform.position);
 		}
-		nodeOnBounds.Clear ();
+		nodeInts.Clear ();
+		recInts.Clear ();
+		nodeSpawns.Clear ();
+		recSpawns.Clear ();
 	}
 
 
 	void SpawnBeams () {
+		int respawnCount = 0;
+
 		for (int l = 0; l < spawnCount; l++) {
-			float laserScaleTotal = (Receivers [l].transform.position - Nodes [l].transform.position).magnitude;
-			Vector3 laserPos = (Nodes [l].transform.position + Receivers [l].transform.position) / 2;
+			float laserScaleTotal = (Receivers [0].transform.position - Nodes [0].transform.position).magnitude;
+			Vector3 laserPos = (Nodes [0].transform.position + Receivers [0].transform.position) / 2;
 
 			beam = Instantiate (beam, laserPos, Quaternion.identity, beamParent.transform);
 			Beams.Add (beam);
 			beam.gameObject.transform.localScale = new Vector3 (0.01f, 0.01f, laserScaleTotal);
-			beam.gameObject.transform.rotation = Quaternion.LookRotation (beam.transform.position - Receivers [l].transform.position);
+			beam.gameObject.transform.rotation = Quaternion.LookRotation (beam.transform.position - Receivers [0].transform.position);
+//-----
+			if (beam.GetComponent<BoxCollider> ().bounds.Intersects (roomBuild.player.GetComponent<Collider> ().bounds)
+				//|| beam.GetComponent<BoxCollider> ().bounds.Intersects (roomBuild.)
+			){
+				Destroy (Nodes [0]);
+				Destroy (Receivers [0]);
+				Destroy (Beams[0]);
+
+//TODO I may not need these\/ lines. They may just be leftovers. If any errors come up which may be related to their exclusion, I'll reconsider
+				//Nodes.Add (node);
+				//Receivers.Add (receiver);
+				//Beams.Add (beam);
+
+				respawnCount++;
+			}
+
+			Nodes.RemoveAt (0);
+			Receivers.RemoveAt (0);
+			Beams.RemoveAt (0);
+		}
+		spawnCount = respawnCount;
+		respawnCount = 0;
+
+		if (spawnCount > 0) {
+			Nodes.Clear ();
+			Receivers.Clear ();
+			Beams.Clear();
+
+			SpawnRetry ();
+		} else {
+/*TODO Make a State enum determining whether the "level is still loading",
+ * so that the player doesn't start the laser countdown timer while the level and lasers are still being generated
+ * Then, after the level and all lasers/objects/empties/whatever are loaded, change to a "level done loading" state?
+*/
 		}
 	}
 
 
+	void SpawnRetry () {
+/* TODO Could I, both here and above, have each method call the next progressively?
+ * SetSpawnPoints() calls SpawnNodes(), which, during its "for loop", passes in the int "i" to SpawnReceivers(), etc.?
+ * Would that actually save me any effort, time, or space?
+ * If it doesn't hit any "out of array index" or "reference exception" errors, it could work.
+ * I tried, and it did have errors, as it was trying to start one (or more) step(s) without finishing the previous step(s)
+ * MAYBE, though, it would work as a Coroutine, which I might try later.
+ * FOR NOW, THIS DEFINITELY WORKS
+ */
+		SetSpawnPoints ();
+		print ("Respawning Nodes, Receivers, and Beams");
+		SpawnNodes ();
+		print ("Nodes respawned");
+		SpawnReceivers ();
+		print ("Receivers respawned");
+		SpawnBeams ();
+		print ("Beams respawned");
+	}
+
+
 	void TimerCountdown () {
-		if (timerState == LaserParent.TimerOn.timerActivated) {
+		if (timerState == TimerOn.timerActivated) {
 			laserTimer -= Time.deltaTime;
 			if (laserTimer <= 0.0f) {
 				print ("Time ran out. Game over");

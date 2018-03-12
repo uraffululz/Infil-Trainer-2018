@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomBuilder : MonoBehaviour {
-	[SerializeField] GameObject player;
+	public GameObject player;
 	[SerializeField] GameObject floorPlane;
 	[SerializeField] GameObject wallPanel;
 	[SerializeField] GameObject ceilingTile;
