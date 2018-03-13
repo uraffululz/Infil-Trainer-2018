@@ -9,6 +9,7 @@ public class PlayerMove : MonoBehaviour {
 
 	enum Stances {standing, crawling};
 	Stances myStance;
+
 	string currentSurface;
 
 

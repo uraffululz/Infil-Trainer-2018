@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class LaserBeam : MonoBehaviour {
 
+	RoomBuilder roomBuild;
 	LaserParent laserParent;
 
 
 	void Awake () {
+		roomBuild = GameObject.Find ("LevelManager").GetComponent<RoomBuilder> ();
 		laserParent = gameObject.GetComponentInParent<LaserParent> ();
 	}
 
@@ -25,7 +27,10 @@ public class LaserBeam : MonoBehaviour {
 	void OnTriggerEnter (Collider other) {
 		if (other.gameObject.tag == "Player") {
 			print ("You touched a laser");
-			laserParent.timerState = LaserParent.TimerOn.timerActivated;
+			if (roomBuild.buildProgress == RoomBuilder.BuildingStates.done) {
+				laserParent.timerState = LaserParent.TimerOn.timerActivated;
+				print ("Timer Activated");
+			}
 		}
 	}
 }

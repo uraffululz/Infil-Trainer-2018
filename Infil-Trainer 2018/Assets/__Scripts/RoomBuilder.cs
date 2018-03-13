@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomBuilder : MonoBehaviour {
-	public GameObject player;
+	RoomFiller roomFill;
+
 	[SerializeField] GameObject floorPlane;
 	[SerializeField] GameObject wallPanel;
 	[SerializeField] GameObject ceilingTile;
@@ -18,13 +19,24 @@ public class RoomBuilder : MonoBehaviour {
 	public GameObject[] walls;
 	public GameObject[] ceilings;
 
+	public enum BuildingStates {building, done};
+	public BuildingStates buildProgress;
+
 
 	void Awake () {
-//Maybe too big?
-		roomWidth = Random.Range (5, 10);
-		roomDepth = Random.Range (5, 10);
+		roomFill = gameObject.GetComponent<RoomFiller> ();
+
+		buildProgress = BuildingStates.building;
+//Room too big?
+		roomWidth = Random.Range (5, 8);
+		roomDepth = Random.Range (5, 8);
+
+		CreatePickupParent ();
+		CreateLaserParent ();
+	}
 
 
+	void Start () {
 		LayFloor ();
 		PutUpWalls ();
 		HangCeiling ();
@@ -33,15 +45,6 @@ public class RoomBuilder : MonoBehaviour {
 		walls = GameObject.FindGameObjectsWithTag ("Wall");
 		ceilings = GameObject.FindGameObjectsWithTag ("Ceiling");
 
-
-		CreatePickupParent ();
-
-		CreateLaserParent ();
-	}
-
-
-	void Start () {
-		SpawnPlayer ();
 	}
 	
 
@@ -94,6 +97,11 @@ public class RoomBuilder : MonoBehaviour {
 					if (rW > 1 && rW <= roomWidth - 1 && doorNum < 1) {
 						doorWay = Instantiate (doorWay, wallPlace + wallOffset, Quaternion.Euler (0.0f, 180.0f, 0.0f), wallParent.transform);
 						doorWay.name = "Door";
+/*TODO To add the door way to "beamBlockers" \/,
+*I may need to pass it (and the other relevant objects created by this script) into a temporary list first,
+*because this script runs before "RoomFiller" in the Script Execution Order, so "beamBlockers" doesn't exist yet (or something).
+*/
+						roomFill.beamBlockers.Add (doorWay.GetComponent<BoxCollider>());
 						doorNum++;
 					} else {
 						wallPanel = Instantiate (wallPanel, wallPlace + wallOffset, Quaternion.Euler (0.0f, 180.0f, 0.0f), wallParent.transform);
@@ -125,7 +133,6 @@ public class RoomBuilder : MonoBehaviour {
 		GameObject PickupParent = new GameObject ();
 		PickupParent.name = "PickupParent";
 		PickupParent.transform.parent = gameObject.transform;
-		PickupParent.AddComponent<PickupParent> ();
 	}
 
 
@@ -134,19 +141,5 @@ public class RoomBuilder : MonoBehaviour {
 		laserParent.name = "LaserParent";
 		laserParent.transform.parent = gameObject.transform;
 		laserParent.AddComponent<LaserParent> ();
-	}
-
-
-	void SpawnPlayer () {
-		Vector3 playerPos = new Vector3 (roomWidth / 2, 0.5f, 1.0f);
-		player = Instantiate (player, playerPos, Quaternion.identity);
-		player.name = "Player";
-
-		//Setup Main Camera
-		GameObject camEmpty = new GameObject ();
-		camEmpty.name = "CamEmpty";
-		camEmpty.transform.position = player.transform.position;
-		camEmpty.transform.parent = player.transform;
-		camEmpty.AddComponent<Camera> ();
 	}
 }

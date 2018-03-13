@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33518339479960410}
   - component: {fileID: 23203483015741870}
   - component: {fileID: 64450098624319542}
+  - component: {fileID: 65822665027076056}
   m_Layer: 0
   m_Name: _Doorway
   m_TagString: Door
@@ -95,3 +96,15 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300006, guid: 24a6cd8decbf485448ec54aef6f6892a, type: 3}
+--- !u!65 &65822665027076056
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1320319131887664}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 2.0000005, z: 2}
+  m_Center: {x: 0, y: 1.0000002, z: 0}

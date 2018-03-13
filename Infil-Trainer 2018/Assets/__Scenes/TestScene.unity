@@ -196,6 +196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1916199926}
   - component: {fileID: 1916199925}
+  - component: {fileID: 1916199928}
   - component: {fileID: 1916199927}
   m_Layer: 0
   m_Name: LevelManager
@@ -215,7 +216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d075a2f958a4e14693d8950dc03ec48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1234899338424334, guid: 3e5bce21cc12c22498df511cbb5c510e, type: 2}
   floorPlane: {fileID: 1697423143935952, guid: 5049ba53f4546d9418d6649bcc6d2d79, type: 2}
   wallPanel: {fileID: 1936334578070050, guid: 535da69d053be824ab4b209e7b77c2b2, type: 2}
   ceilingTile: {fileID: 1532716673515040, guid: 0e2f0494b48a37e4c957182a76e1bcbf,
@@ -227,6 +227,7 @@ MonoBehaviour:
   floors: []
   walls: []
   ceilings: []
+  buildProgress: 0
 --- !u!4 &1916199926
 Transform:
   m_ObjectHideFlags: 0
@@ -252,3 +253,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 0
+--- !u!114 &1916199928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1916199924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2ab171d24056d7408af524f9eaab7b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1234899338424334, guid: 3e5bce21cc12c22498df511cbb5c510e, type: 2}
+  coin: {fileID: 1843121861173164, guid: 5dd61b6d40d545049bbf2d1eddef85b0, type: 2}
+  gem: {fileID: 1634484507172452, guid: 1ddafeeeb73f0314ebd402a3b7ceaf2a, type: 2}
+  beamBlockers: []

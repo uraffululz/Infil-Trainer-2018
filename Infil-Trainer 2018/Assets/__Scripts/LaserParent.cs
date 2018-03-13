@@ -9,6 +9,7 @@ public class LaserParent : MonoBehaviour {
 	int rW;
 	int rD;
 	float rH;
+	RoomFiller roomFill;
 
 	//MakeParent() Objects
 	GameObject nodeParent;
@@ -50,14 +51,22 @@ public class LaserParent : MonoBehaviour {
 
 
 	void Start () {
-		SpawnNodes ();
-		SpawnReceivers ();
-		SpawnBeams ();
+		/*if (roomBuild.buildProgress == RoomBuilder.BuildingStates.building) {
+			SpawnNodes ();
+			SpawnReceivers ();
+			SpawnBeams ();
+		}*/
 	}
 	
 
 	void Update () {
-		TimerCountdown ();
+		if (roomBuild.buildProgress == RoomBuilder.BuildingStates.building) {
+			SpawnNodes ();
+			SpawnReceivers ();
+			SpawnBeams ();
+		} else {
+			TimerCountdown ();
+		}
 	}
 
 
@@ -85,28 +94,15 @@ public class LaserParent : MonoBehaviour {
 		rH = roomBuild.roomHeight;
 
 		spawnCount = (rW * rD) / 2;
+
+		roomFill = GameObject.Find ("LevelManager").GetComponent<RoomFiller>();
 	}
 		
 
 	void SetSpawnPoints () {
-		
-		print (spawnCount);
+		print ("Spawn count: " + spawnCount);
 
 		for (int i = 0; i < spawnCount; i++) {
-/*			int chosenNodeInt = Random.Range (0, spawnPoints.Length);
-			nodeInts.Add (chosenNodeInt);
-			Vector3 chosenNodePos = SpawnPos (chosenNodeInt);
-			nodeSpawns.Add (chosenNodePos);
-
-			int chosenRecInt = Random.Range (0, spawnPoints.Length);
-			Vector3 chosenRecPos = SpawnPos (chosenRecInt);
-			recInts.Add (chosenRecInt);
-			recSpawns.Add (chosenRecPos);
-*/
-
-/*These lines \/ are a condensed version of ^This Shit. I'm just keeping those lines above in case I just fucked something up
-* If no errors are called on this section of code, then it worked, and I can eventually delete ^This Shit
-*/
 			nodeInts.Add (Random.Range (0, spawnPoints.Length));
 			nodeSpawns.Add (SpawnPos (nodeInts [i]));
 
@@ -118,6 +114,7 @@ public class LaserParent : MonoBehaviour {
 
 	void SpawnNodes () {
 		for (int i = 0; i < spawnCount; i++) {
+			print (i + " / " + nodeSpawns.Count);
 			node = Instantiate (node, nodeSpawns[i], Quaternion.identity, nodeParent.transform);
 			Nodes.Add (node);
 		}
@@ -130,7 +127,7 @@ public class LaserParent : MonoBehaviour {
 			int newRecPoint;
 
 			if (recInts[i] == nodeInts[i]) {
-				print ("Node and receiver on same surface. Re-rolling..." + recInts[i]);
+				//print ("Node and receiver on same surface. Re-rolling..." + recInts[i]);
 				if (recInts[i] == 0) {
 					newRecPoint = Random.Range (1, spawnPoints.Length);
 				} else if (recInts[i] == spawnPoints.Length - 1) {
@@ -171,33 +168,34 @@ public class LaserParent : MonoBehaviour {
 			Beams.Add (beam);
 			beam.gameObject.transform.localScale = new Vector3 (0.01f, 0.01f, laserScaleTotal);
 			beam.gameObject.transform.rotation = Quaternion.LookRotation (beam.transform.position - Receivers [0].transform.position);
-//-----
-			if (beam.GetComponent<BoxCollider> ().bounds.Intersects (roomBuild.player.GetComponent<Collider> ().bounds)
-				//|| beam.GetComponent<BoxCollider> ().bounds.Intersects (roomBuild.)
-			){
-				Destroy (Nodes [0]);
-				Destroy (Receivers [0]);
-				Destroy (Beams[0]);
+
+			foreach (var blocker in roomFill.beamBlockers) {
+				if (blocker.GetComponent<Collider> ().bounds.Intersects (beam.GetComponent<BoxCollider> ().bounds)) {
+					print ("Laser beam hit " + blocker.name + ". Respawning...");
+					Destroy (Nodes [0]);
+					Destroy (Receivers [0]);
+					Destroy (Beams [0]);
 
 //TODO I may not need these\/ lines. They may just be leftovers. If any errors come up which may be related to their exclusion, I'll reconsider
-				//Nodes.Add (node);
-				//Receivers.Add (receiver);
-				//Beams.Add (beam);
+					//Nodes.Add (node);
+					//Receivers.Add (receiver);
+					//Beams.Add (beam);
 
-				respawnCount++;
+					respawnCount++;
+				}
 			}
-
-			Nodes.RemoveAt (0);
-			Receivers.RemoveAt (0);
-			Beams.RemoveAt (0);
-		}
-		spawnCount = respawnCount;
-		respawnCount = 0;
+				Nodes.RemoveAt (0);
+				Receivers.RemoveAt (0);
+				Beams.RemoveAt (0);
+			}
+	
+			spawnCount = respawnCount;
+			respawnCount = 0;
 
 		if (spawnCount > 0) {
 			Nodes.Clear ();
 			Receivers.Clear ();
-			Beams.Clear();
+			Beams.Clear ();
 
 			SpawnRetry ();
 		} else {
@@ -205,6 +203,8 @@ public class LaserParent : MonoBehaviour {
  * so that the player doesn't start the laser countdown timer while the level and lasers are still being generated
  * Then, after the level and all lasers/objects/empties/whatever are loaded, change to a "level done loading" state?
 */
+			roomBuild.buildProgress = RoomBuilder.BuildingStates.done;
+			print ("Room is done building");
 		}
 	}
 
@@ -215,17 +215,16 @@ public class LaserParent : MonoBehaviour {
  * Would that actually save me any effort, time, or space?
  * If it doesn't hit any "out of array index" or "reference exception" errors, it could work.
  * I tried, and it did have errors, as it was trying to start one (or more) step(s) without finishing the previous step(s)
+ * AT THE MOMENT it is still doing that, but it's not causing any errors.
+ * It is still printing the "Beams respawned" line during and after
  * MAYBE, though, it would work as a Coroutine, which I might try later.
  * FOR NOW, THIS DEFINITELY WORKS
  */
 		SetSpawnPoints ();
-		print ("Respawning Nodes, Receivers, and Beams");
+		//print ("Respawning Nodes, Receivers, and Beams");
 		SpawnNodes ();
-		print ("Nodes respawned");
 		SpawnReceivers ();
-		print ("Receivers respawned");
 		SpawnBeams ();
-		print ("Beams respawned");
 	}
 
 
