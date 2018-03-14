@@ -9,6 +9,7 @@ public class RoomBuilder : MonoBehaviour {
 	[SerializeField] GameObject wallPanel;
 	[SerializeField] GameObject ceilingTile;
 	[SerializeField] GameObject doorWay;
+	[SerializeField] GameObject door;
 
 	public int roomWidth;
 	public int roomDepth;
@@ -96,12 +97,13 @@ public class RoomBuilder : MonoBehaviour {
 
 					if (rW > 1 && rW <= roomWidth - 1 && doorNum < 1) {
 						doorWay = Instantiate (doorWay, wallPlace + wallOffset, Quaternion.Euler (0.0f, 180.0f, 0.0f), wallParent.transform);
-						doorWay.name = "Door";
-/*TODO To add the door way to "beamBlockers" \/,
-*I may need to pass it (and the other relevant objects created by this script) into a temporary list first,
-*because this script runs before "RoomFiller" in the Script Execution Order, so "beamBlockers" doesn't exist yet (or something).
-*/
+						doorWay.name = "Doorway";
 						roomFill.beamBlockers.Add (doorWay.GetComponent<BoxCollider>());
+
+						Vector3 doorOffset = new Vector3 (0.3211f, 0.0f, 0.0f);
+						door = Instantiate (door, doorWay.transform.position + doorOffset, Quaternion.identity, doorWay.transform);
+						door.name = "Door";
+
 						doorNum++;
 					} else {
 						wallPanel = Instantiate (wallPanel, wallPlace + wallOffset, Quaternion.Euler (0.0f, 180.0f, 0.0f), wallParent.transform);
@@ -110,6 +112,10 @@ public class RoomBuilder : MonoBehaviour {
 				wallPanel.name = "Wall";
 			}
 		}
+//TEMPORARY
+		GameObject levelEnd = GameObject.CreatePrimitive(PrimitiveType.Quad);
+		levelEnd.name = "LevelEnd";
+		levelEnd.transform.position = GameObject.Find ("Door").transform.position + Vector3.forward * 0.2f;
 	}
 
 

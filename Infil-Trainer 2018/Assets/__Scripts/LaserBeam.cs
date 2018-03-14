@@ -26,10 +26,9 @@ public class LaserBeam : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
 		if (other.gameObject.tag == "Player") {
-			print ("You touched a laser");
 			if (roomBuild.buildProgress == RoomBuilder.BuildingStates.done) {
 				laserParent.timerState = LaserParent.TimerOn.timerActivated;
-				print ("Timer Activated");
+				print ("Laser Countdown timer Activated");
 			}
 		}
 	}

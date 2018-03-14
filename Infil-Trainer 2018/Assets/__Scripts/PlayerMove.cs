@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour {
 
@@ -37,6 +38,12 @@ public class PlayerMove : MonoBehaviour {
 			Rotate ();
 			ChangeStance ();
 			ChangeIncline ();
+		}
+	}
+
+	void OnCollisionEnter (Collision dat) {
+		if (dat.collider.gameObject.name == "LevelEnd") {
+			SceneManager.LoadScene ("GameOver");
 		}
 	}
 
@@ -101,9 +108,10 @@ public class PlayerMove : MonoBehaviour {
 	void ChangeIncline () {
 		Ray reachForward = new Ray (transform.position, transform.forward);
 		RaycastHit reachedForward;
+		float reachDist = 0.5f;
 		Debug.DrawRay (transform.position, transform.forward, Color.red);
 
-		if (Physics.Raycast(reachForward, out reachedForward, 1.0f)) {
+		if (Physics.Raycast(reachForward, out reachedForward, reachDist)) {
 			if (reachedForward.collider.CompareTag ("Floor") ||
 				reachedForward.collider.CompareTag ("Wall") ||
 				reachedForward.collider.CompareTag ("Ceiling")) {
@@ -114,6 +122,14 @@ public class PlayerMove : MonoBehaviour {
 					myStance = Stances.crawling;
 					currentSurface = reachedForward.collider.tag;
 					print ("Current Surface: " + currentSurface);
+				}
+			} else if (reachedForward.collider.CompareTag ("Door")) {
+				print ("Press E key to Open Door");
+
+				if (Input.GetKeyDown(KeyCode.E)) {
+					reachedForward.collider.gameObject.transform.rotation = 
+						Quaternion.FromToRotation (transform.forward, transform.right * 90.0f);
+					print ("The door is opened");
 				}
 			}
 		}

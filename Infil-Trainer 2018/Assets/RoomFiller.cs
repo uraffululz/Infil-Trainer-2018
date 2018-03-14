@@ -43,7 +43,8 @@ public class RoomFiller : MonoBehaviour {
 		//Setup Main Camera
 		GameObject camEmpty = new GameObject ();
 		camEmpty.name = "CamEmpty";
-		camEmpty.transform.position = player.transform.position;
+		Vector3 camOffset = new Vector3 (0.0f, 0.3f, 0.0f);
+		camEmpty.transform.position = player.transform.position + camOffset;
 		camEmpty.transform.parent = player.transform;
 		Camera playCam = camEmpty.AddComponent<Camera> ();
 		playCam.nearClipPlane = 0.001f;

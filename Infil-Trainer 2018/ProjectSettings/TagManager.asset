@@ -7,8 +7,10 @@ TagManager:
   - Floor
   - Wall
   - Ceiling
+  - Doorway
   - Door
   - Pickup
+  - Light
   layers:
   - Default
   - TransparentFX

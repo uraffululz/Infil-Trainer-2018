@@ -169,8 +169,13 @@ public class LaserParent : MonoBehaviour {
 			beam.gameObject.transform.localScale = new Vector3 (0.01f, 0.01f, laserScaleTotal);
 			beam.gameObject.transform.rotation = Quaternion.LookRotation (beam.transform.position - Receivers [0].transform.position);
 
+			bool beamBlocked = false;
+
 			foreach (var blocker in roomFill.beamBlockers) {
-				if (blocker.GetComponent<Collider> ().bounds.Intersects (beam.GetComponent<BoxCollider> ().bounds)) {
+				if (beamBlocked == false &&
+					blocker.GetComponent<Collider> ().bounds.Intersects (beam.GetComponent<BoxCollider> ().bounds)) {
+
+					beamBlocked = true;
 					print ("Laser beam hit " + blocker.name + ". Respawning...");
 					Destroy (Nodes [0]);
 					Destroy (Receivers [0]);
@@ -229,8 +234,23 @@ public class LaserParent : MonoBehaviour {
 
 
 	void TimerCountdown () {
+		GameObject[] lights = GameObject.FindGameObjectsWithTag ("Light");
+		bool colorLerpToRed = false;
+
 		if (timerState == TimerOn.timerActivated) {
 			laserTimer -= Time.deltaTime;
+
+			foreach (var light in lights) {
+//TODO Get the lights to lerp back-and-forth between Red and White
+				light.GetComponent<Light> ().color = Color.Lerp (light.GetComponent<Light> ().color, Color.red, 1.0f * Time.deltaTime);
+
+					
+				print ("RGB: " + light.GetComponent<Light> ().color.r + "/" +
+					light.GetComponent<Light> ().color.g + "/" +
+					light.GetComponent<Light> ().color.b);
+
+			}
+
 			if (laserTimer <= 0.0f) {
 				print ("Time ran out. Game over");
 			}
