@@ -5,6 +5,12 @@ using UnityEngine;
 public class RoomBuilder : MonoBehaviour {
 	RoomFiller roomFill;
 
+	GameObject floorParent;
+	GameObject wallParent;
+	GameObject ceilingParent;
+	GameObject pickupParent;
+	GameObject laserParent;
+
 	[SerializeField] GameObject floorPlane;
 	[SerializeField] GameObject wallPanel;
 	[SerializeField] GameObject ceilingTile;
@@ -32,8 +38,7 @@ public class RoomBuilder : MonoBehaviour {
 		roomWidth = Random.Range (5, 8);
 		roomDepth = Random.Range (5, 8);
 
-		CreatePickupParent ();
-		CreateLaserParent ();
+		CreateParents ();
 	}
 
 
@@ -45,7 +50,6 @@ public class RoomBuilder : MonoBehaviour {
 		floors = GameObject.FindGameObjectsWithTag ("Floor");
 		walls = GameObject.FindGameObjectsWithTag ("Wall");
 		ceilings = GameObject.FindGameObjectsWithTag ("Ceiling");
-
 	}
 	
 
@@ -55,10 +59,6 @@ public class RoomBuilder : MonoBehaviour {
 
 
 	void LayFloor () {
-		GameObject floorParent = new GameObject ();
-		floorParent.name = "FloorParent";
-		floorParent.transform.parent = gameObject.transform;
-
 		for (int rD = 0; rD < roomDepth; rD++) {
 			for (int rW = 0; rW < roomWidth; rW++) {
 				Vector3 floorPos = new Vector3 (rW, 0.0f, rD);
@@ -71,9 +71,6 @@ public class RoomBuilder : MonoBehaviour {
 
 
 	void PutUpWalls () {
-		GameObject wallParent = new GameObject ();
-		wallParent.name = "WallParent";
-		wallParent.transform.parent = gameObject.transform;
 		for (int rD = 0; rD <= roomDepth+1; rD++) {
 			for (int rW = 0; rW < roomWidth; rW++) {
 				if (rD == 0) {
@@ -112,7 +109,7 @@ public class RoomBuilder : MonoBehaviour {
 				wallPanel.name = "Wall";
 			}
 		}
-//TEMPORARY
+//TEMPORARY link to Game Over / Win Screen
 		GameObject levelEnd = GameObject.CreatePrimitive(PrimitiveType.Quad);
 		levelEnd.name = "LevelEnd";
 		levelEnd.transform.position = GameObject.Find ("Door").transform.position + Vector3.forward * 0.2f;
@@ -120,10 +117,6 @@ public class RoomBuilder : MonoBehaviour {
 
 
 	void HangCeiling () {
-		GameObject ceilingParent = new GameObject ();
-		ceilingParent.name = "CeilingParent";
-		ceilingParent.transform.parent = gameObject.transform;
-
 		for (int rD = 0; rD < roomDepth; rD++) {
 			for (int rW = 0; rW < roomWidth; rW++) {
 				Vector3 ceilingPos = new Vector3 (rW, roomHeight, rD);
@@ -135,10 +128,27 @@ public class RoomBuilder : MonoBehaviour {
 	}
 
 
-	void CreatePickupParent () {
-		GameObject PickupParent = new GameObject ();
-		PickupParent.name = "PickupParent";
-		PickupParent.transform.parent = gameObject.transform;
+	void CreateParents () {
+		floorParent = new GameObject ();
+		floorParent.name = "FloorParent";
+		floorParent.transform.parent = gameObject.transform;
+
+		wallParent = new GameObject ();
+		wallParent.name = "WallParent";
+		wallParent.transform.parent = gameObject.transform;
+
+		ceilingParent = new GameObject ();
+		ceilingParent.name = "CeilingParent";
+		ceilingParent.transform.parent = gameObject.transform;
+
+		pickupParent = new GameObject ();
+		pickupParent.name = "PickupParent";
+		pickupParent.transform.parent = gameObject.transform;
+
+		laserParent = new GameObject ();
+		laserParent.name = "LaserParent";
+		laserParent.transform.parent = gameObject.transform;
+		laserParent.AddComponent<LaserParent> ();
 	}
 
 

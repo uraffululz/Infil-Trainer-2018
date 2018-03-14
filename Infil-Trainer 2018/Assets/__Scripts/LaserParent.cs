@@ -39,6 +39,7 @@ public class LaserParent : MonoBehaviour {
 	public float laserTimer = 30.0f;
 	public enum TimerOn {timerDeactivated, timerActivated};
 	public TimerOn timerState;
+	bool colorLerpToRed = false;
 
 
 	void Awake () {
@@ -134,10 +135,9 @@ public class LaserParent : MonoBehaviour {
 					newRecPoint = Random.Range (0, spawnPoints.Length - 1);
 				} else {
 /*TODO This \/ newRecPoint isn't really randomized. It is derivative and incremental.
- * I'm too lazy right now to make it more random, but it certainly could be:
- * Make it choose again, either another int between 0-6 (at which point, if it chooses the same int, it should still iterate as it does,
- * OR Try to make it choose between 0-6 EXCLUDING the current int value
- */					
+ * Make it choose again, by making a List<int> of values between 0-5. Then, remove the value that matches recInts[i]
+ * Then choose a random int from the remaining list values.
+ */	
 					newRecPoint = recInts[i] + 1;
 				}
 				recSpawns [i] = SpawnPos(newRecPoint);
@@ -173,7 +173,7 @@ public class LaserParent : MonoBehaviour {
 
 			foreach (var blocker in roomFill.beamBlockers) {
 				if (beamBlocked == false &&
-					blocker.GetComponent<Collider> ().bounds.Intersects (beam.GetComponent<BoxCollider> ().bounds)) {
+				    blocker.GetComponent<Collider> ().bounds.Intersects (beam.GetComponent<BoxCollider> ().bounds)) {
 
 					beamBlocked = true;
 					print ("Laser beam hit " + blocker.name + ". Respawning...");
@@ -189,13 +189,12 @@ public class LaserParent : MonoBehaviour {
 					respawnCount++;
 				}
 			}
-				Nodes.RemoveAt (0);
-				Receivers.RemoveAt (0);
-				Beams.RemoveAt (0);
-			}
-	
-			spawnCount = respawnCount;
-			respawnCount = 0;
+			Nodes.RemoveAt (0);
+			Receivers.RemoveAt (0);
+			Beams.RemoveAt (0);
+		}
+		spawnCount = respawnCount;
+		respawnCount = 0;
 
 		if (spawnCount > 0) {
 			Nodes.Clear ();
@@ -204,10 +203,6 @@ public class LaserParent : MonoBehaviour {
 
 			SpawnRetry ();
 		} else {
-/*TODO Make a State enum determining whether the "level is still loading",
- * so that the player doesn't start the laser countdown timer while the level and lasers are still being generated
- * Then, after the level and all lasers/objects/empties/whatever are loaded, change to a "level done loading" state?
-*/
 			roomBuild.buildProgress = RoomBuilder.BuildingStates.done;
 			print ("Room is done building");
 		}
@@ -221,7 +216,8 @@ public class LaserParent : MonoBehaviour {
  * If it doesn't hit any "out of array index" or "reference exception" errors, it could work.
  * I tried, and it did have errors, as it was trying to start one (or more) step(s) without finishing the previous step(s)
  * AT THE MOMENT it is still doing that, but it's not causing any errors.
- * It is still printing the "Beams respawned" line during and after
+ * It is still printing the "Beams respawned" line during and after 
+ * (UPDATE: I think this was fixed by adjusting the Script Execution Order)
  * MAYBE, though, it would work as a Coroutine, which I might try later.
  * FOR NOW, THIS DEFINITELY WORKS
  */
@@ -235,22 +231,28 @@ public class LaserParent : MonoBehaviour {
 
 	void TimerCountdown () {
 		GameObject[] lights = GameObject.FindGameObjectsWithTag ("Light");
-		bool colorLerpToRed = false;
 
 		if (timerState == TimerOn.timerActivated) {
 			laserTimer -= Time.deltaTime;
 
+//TOmaybeDO Lerp lights between Red and Black, instead of Red and White.
 			foreach (var light in lights) {
-//TODO Get the lights to lerp back-and-forth between Red and White
-				light.GetComponent<Light> ().color = Color.Lerp (light.GetComponent<Light> ().color, Color.red, 1.0f * Time.deltaTime);
+				if (light.GetComponent<Light>().color.g > 0.9f) {
+					colorLerpToRed = true;
+				} else if (light.GetComponent<Light>().color.g < 0.1f) {
+					colorLerpToRed = false;
+				}
 
-					
-				print ("RGB: " + light.GetComponent<Light> ().color.r + "/" +
+				if (colorLerpToRed) {
+					light.GetComponent<Light> ().color = Color.Lerp (light.GetComponent<Light> ().color, Color.red, 1.0f * Time.deltaTime);
+				} else {
+					light.GetComponent<Light> ().color = Color.Lerp (light.GetComponent<Light> ().color, Color.white, 1.0f * Time.deltaTime);
+				}	
+/*				print ("RGB: " + light.GetComponent<Light> ().color.r + "/" +
 					light.GetComponent<Light> ().color.g + "/" +
 					light.GetComponent<Light> ().color.b);
-
+*/
 			}
-
 			if (laserTimer <= 0.0f) {
 				print ("Time ran out. Game over");
 			}

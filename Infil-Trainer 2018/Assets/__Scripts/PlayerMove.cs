@@ -138,6 +138,8 @@ public class PlayerMove : MonoBehaviour {
 
 	void StickToSurface (Vector3 gravDir, RaycastHit reachedSurface) {
 		Physics.gravity = gravDir;
+
+//TODO Incorporate "The lerp" into this rotation to make the player's rotation less jarring
 		transform.rotation = Quaternion.FromToRotation (transform.up, reachedSurface.normal) * rb.rotation;
 	}
 
