@@ -12,7 +12,7 @@ public class Pickups : MonoBehaviour {
 
 	void Awake () {
 		scoreScript = GameObject.Find ("LevelManager").GetComponent<ScoreTracker> ();
-		startPos = transform.position;
+		startPos = transform.position + Vector3.up * 0.3f;
 	}
 
 

@@ -56,8 +56,8 @@
      <Compile Include="Assets\__Scripts\Pickups.cs" />
      <Compile Include="Assets\__Scripts\PlayerMove.cs" />
      <Compile Include="Assets\__Scripts\RoomBuilder.cs" />
+     <Compile Include="Assets\__Scripts\RoomFiller.cs" />
      <Compile Include="Assets\__Scripts\ScoreTracker.cs" />
-     <Compile Include="Assets\RoomFiller.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

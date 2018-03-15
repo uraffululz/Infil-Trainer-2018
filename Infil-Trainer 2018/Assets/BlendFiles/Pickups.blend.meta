@@ -8,19 +8,25 @@ ModelImporter:
     100000: //RootNode
     100002: _Coin
     100004: _Gem
+    100006: _DisplayCase
     400000: //RootNode
     400002: _Coin
     400004: _Gem
+    400006: _DisplayCase
     2300000: //RootNode
     2300002: _Coin
     2300004: _Gem
+    2300006: _DisplayCase
     3300000: //RootNode
     3300002: _Coin
     3300004: _Gem
+    3300006: _DisplayCase
     4300000: _Coin
     4300002: _Gem
+    4300004: _DisplayCase
     6400000: _Coin
     6400002: _Gem
+    6400004: _DisplayCase
     7400000: Default Take
     9500000: //RootNode
   materials:

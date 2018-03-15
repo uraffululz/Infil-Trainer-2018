@@ -112,6 +112,7 @@ public class PlayerMove : MonoBehaviour {
 		Debug.DrawRay (transform.position, transform.forward, Color.red);
 
 		if (Physics.Raycast(reachForward, out reachedForward, reachDist)) {
+			//CHANGE INCLINE
 			if (reachedForward.collider.CompareTag ("Floor") ||
 				reachedForward.collider.CompareTag ("Wall") ||
 				reachedForward.collider.CompareTag ("Ceiling")) {
@@ -123,13 +124,23 @@ public class PlayerMove : MonoBehaviour {
 					currentSurface = reachedForward.collider.tag;
 					print ("Current Surface: " + currentSurface);
 				}
-			} else if (reachedForward.collider.CompareTag ("Door")) {
-				print ("Press E key to Open Door");
+			}
+			//OPEN DOORS
+			else if (reachedForward.collider.CompareTag ("Door")) {
+				print ("Press E key to open door");
 
 				if (Input.GetKeyDown(KeyCode.E)) {
 					reachedForward.collider.gameObject.transform.rotation = 
 						Quaternion.FromToRotation (transform.forward, transform.right * 90.0f);
 					print ("The door is opened");
+				}
+			}
+			//OPEN DISPLAY CASES
+			else if (reachedForward.collider.CompareTag ("DisplayCase")) {
+				print ("Press E key to open display case");
+
+				if (Input.GetKeyDown (KeyCode.E)) {
+					print ("The display case is open");
 				}
 			}
 		}

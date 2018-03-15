@@ -11,6 +11,7 @@ TagManager:
   - Door
   - Pickup
   - Light
+  - DisplayCase
   layers:
   - Default
   - TransparentFX

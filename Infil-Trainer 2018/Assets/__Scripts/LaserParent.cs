@@ -41,8 +41,12 @@ public class LaserParent : MonoBehaviour {
 	public TimerOn timerState;
 	bool colorLerpToRed = false;
 
+	GameObject[] lights;
+
 
 	void Awake () {
+		lights = GameObject.FindGameObjectsWithTag ("Light");
+
 		MakeParents ();
 		GetSpawnDimensions ();
 		SetSpawnPoints ();
@@ -230,8 +234,6 @@ public class LaserParent : MonoBehaviour {
 
 
 	void TimerCountdown () {
-		GameObject[] lights = GameObject.FindGameObjectsWithTag ("Light");
-
 		if (timerState == TimerOn.timerActivated) {
 			laserTimer -= Time.deltaTime;
 

@@ -268,4 +268,6 @@ MonoBehaviour:
   player: {fileID: 1234899338424334, guid: 3e5bce21cc12c22498df511cbb5c510e, type: 2}
   coin: {fileID: 1843121861173164, guid: 5dd61b6d40d545049bbf2d1eddef85b0, type: 2}
   gem: {fileID: 1634484507172452, guid: 1ddafeeeb73f0314ebd402a3b7ceaf2a, type: 2}
+  displayCase: {fileID: 1019503140502428, guid: 489ffc9d725e89e43911eceb11e1cf39,
+    type: 2}
   beamBlockers: []
