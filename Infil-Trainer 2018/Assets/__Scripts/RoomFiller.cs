@@ -49,6 +49,7 @@ public class RoomFiller : MonoBehaviour {
 		camEmpty.transform.position = player.transform.position + camOffset;
 		camEmpty.transform.parent = player.transform;
 		Camera playCam = camEmpty.AddComponent<Camera> ();
+		playCam.tag = "MainCamera";
 		playCam.nearClipPlane = 0.001f;
 
 	}

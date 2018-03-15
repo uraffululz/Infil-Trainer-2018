@@ -8,6 +8,8 @@ public class PlayerMove : MonoBehaviour {
 	Transform camObject;
 	Rigidbody rb;
 
+	public bool allowMove = true;
+
 	enum Stances {standing, crawling};
 	Stances myStance;
 
@@ -28,16 +30,20 @@ public class PlayerMove : MonoBehaviour {
 	
 
 	void Update () {
-		if (myStance == Stances.standing) {
-			Move (1.0f * Time.deltaTime);
-			Rotate ();
-			ChangeStance ();
-			ChangeIncline ();
-		} else if (myStance == Stances.crawling) {
-			Move (0.5f * Time.deltaTime);
-			Rotate ();
-			ChangeStance ();
-			ChangeIncline ();
+		Ray reachForward = new Ray (transform.position, transform.forward);
+
+		if (allowMove) {
+			if (myStance == Stances.standing) {
+				Move (1.0f * Time.deltaTime);
+				Rotate ();
+				ChangeStance ();
+				ChangeIncline (reachForward);
+			} else if (myStance == Stances.crawling) {
+				Move (0.5f * Time.deltaTime);
+				Rotate ();
+				ChangeStance ();
+				ChangeIncline (reachForward);
+			}
 		}
 	}
 
@@ -105,42 +111,45 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 
-	void ChangeIncline () {
-		Ray reachForward = new Ray (transform.position, transform.forward);
-		RaycastHit reachedForward;
+	void ChangeIncline (Ray reachFor) {
+		RaycastHit reachedFor;
+
 		float reachDist = 0.5f;
 		Debug.DrawRay (transform.position, transform.forward, Color.red);
 
-		if (Physics.Raycast(reachForward, out reachedForward, reachDist)) {
+		if (Physics.Raycast(reachFor, out reachedFor, reachDist)) {
 			//CHANGE INCLINE
-			if (reachedForward.collider.CompareTag ("Floor") ||
-				reachedForward.collider.CompareTag ("Wall") ||
-				reachedForward.collider.CompareTag ("Ceiling")) {
+			if (reachedFor.collider.CompareTag ("Floor") ||
+				reachedFor.collider.CompareTag ("Wall") ||
+				reachedFor.collider.CompareTag ("Ceiling")) {
 				print ("Press E key to change incline");
 
 				if (Input.GetKeyDown(KeyCode.E)) {
-					StickToSurface (-reachedForward.normal * 9.8f, reachedForward);
+					StickToSurface (-reachedFor.normal * 9.8f, reachedFor);
 					myStance = Stances.crawling;
-					currentSurface = reachedForward.collider.tag;
+					currentSurface = reachedFor.collider.tag;
 					print ("Current Surface: " + currentSurface);
 				}
 			}
 			//OPEN DOORS
-			else if (reachedForward.collider.CompareTag ("Door")) {
+			else if (reachedFor.collider.CompareTag ("Door")) {
 				print ("Press E key to open door");
 
 				if (Input.GetKeyDown(KeyCode.E)) {
-					reachedForward.collider.gameObject.transform.rotation = 
+					reachedFor.collider.gameObject.transform.rotation = 
 						Quaternion.FromToRotation (transform.forward, transform.right * 90.0f);
 					print ("The door is opened");
 				}
 			}
 			//OPEN DISPLAY CASES
-			else if (reachedForward.collider.CompareTag ("DisplayCase")) {
+			else if (reachedFor.collider.CompareTag ("DisplayCase")) {
 				print ("Press E key to open display case");
 
-				if (Input.GetKeyDown (KeyCode.E)) {
-					print ("The display case is open");
+				if (Input.GetKeyDown(KeyCode.E)) {
+					if (reachedFor.collider.gameObject.GetComponent<PuzzleManager> () != null) {
+						reachedFor.collider.gameObject.GetComponent<PuzzleManager> ().enabled = true;
+						print ("The display case is open");
+					}
 				}
 			}
 		}

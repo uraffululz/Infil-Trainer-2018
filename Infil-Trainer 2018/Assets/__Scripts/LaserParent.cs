@@ -119,7 +119,7 @@ public class LaserParent : MonoBehaviour {
 
 	void SpawnNodes () {
 		for (int i = 0; i < spawnCount; i++) {
-			print (i + " / " + nodeSpawns.Count);
+			//print (i + " / " + nodeSpawns.Count);
 			node = Instantiate (node, nodeSpawns[i], Quaternion.identity, nodeParent.transform);
 			Nodes.Add (node);
 		}
@@ -180,7 +180,7 @@ public class LaserParent : MonoBehaviour {
 				    blocker.GetComponent<Collider> ().bounds.Intersects (beam.GetComponent<BoxCollider> ().bounds)) {
 
 					beamBlocked = true;
-					print ("Laser beam hit " + blocker.name + ". Respawning...");
+					//print ("Laser beam hit " + blocker.name + ". Respawning...");
 					Destroy (Nodes [0]);
 					Destroy (Receivers [0]);
 					Destroy (Beams [0]);
@@ -208,7 +208,7 @@ public class LaserParent : MonoBehaviour {
 			SpawnRetry ();
 		} else {
 			roomBuild.buildProgress = RoomBuilder.BuildingStates.done;
-			print ("Room is done building");
+			//print ("Room is done building");
 		}
 	}
 
