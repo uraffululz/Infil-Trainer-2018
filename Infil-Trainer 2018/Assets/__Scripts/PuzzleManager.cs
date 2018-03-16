@@ -37,7 +37,8 @@ public class PuzzleManager : MonoBehaviour {
 	void Start () {
 		//print ("Starting puzzle sequence"); //Just wanted to make sure that Start() is IN FACT only called ONCE EVER
 
-/*TODO 	Spawn a prefab of the chosen puzzle (Glass-cutter/Pressure-plate)
+/*TODO 	Spawn a prefab of the chosen puzzle (Glass-cutter/Pressure-plate)L
+ * Make a (GameObject[] whichPuzzle {glassCutter, pressurePlate}) and set up the parents/prefabs.
  * Move it out of view of the level entirely (Vector3.down * 100, or something like that).
  * Spawn a camera down near the puzzle.
 */

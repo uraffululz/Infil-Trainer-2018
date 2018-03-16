@@ -2,12 +2,12 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\__Scripts\PuzzleManager.cs">
     <Files>
-      <File FileName="Assets\__Scripts\RoomBuilder.cs" Line="132" Column="3" />
-      <File FileName="Assets\__Scripts\RoomFiller.cs" Line="51" Column="53" />
-      <File FileName="Assets\__Scripts\LaserParent.cs" Line="211" Column="6" />
+      <File FileName="Assets\__Scripts\RoomBuilder.cs" Line="1" Column="1" />
+      <File FileName="Assets\__Scripts\RoomFiller.cs" Line="1" Column="1" />
+      <File FileName="Assets\__Scripts\LaserParent.cs" Line="1" Column="1" />
       <File FileName="Assets\__Scripts\LaserBeam.cs" Line="1" Column="1" />
-      <File FileName="Assets\__Scripts\PlayerMove.cs" Line="151" Column="42" />
-      <File FileName="Assets\__Scripts\PuzzleManager.cs" Line="91" Column="121" />
+      <File FileName="Assets\__Scripts\PlayerMove.cs" Line="1" Column="1" />
+      <File FileName="Assets\__Scripts\PuzzleManager.cs" Line="81" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -35,10 +35,10 @@
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="142" column="1" />
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="143" column="62" />
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\LaserParent.cs" line="240" column="73" />
-      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\PuzzleManager.cs" line="78" column="1" />
-      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\PuzzleManager.cs" line="94" column="104" />
-      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\PuzzleManager.cs" line="97" column="101" />
-      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\PuzzleManager.cs" line="91" column="1" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\PuzzleManager.cs" line="79" column="1" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\PuzzleManager.cs" line="95" column="104" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\PuzzleManager.cs" line="98" column="101" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\PuzzleManager.cs" line="92" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
