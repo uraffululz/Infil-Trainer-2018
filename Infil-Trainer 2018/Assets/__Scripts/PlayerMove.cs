@@ -22,6 +22,7 @@ public class PlayerMove : MonoBehaviour {
 
 
 	void Start () {
+//TODO Alternatively, I could just make this camera a component of the player GameObject, if I can keep its vertical offset
 		camObject = transform.GetChild (0);
 		rb = gameObject.GetComponent<Rigidbody> ();
 
@@ -136,6 +137,10 @@ public class PlayerMove : MonoBehaviour {
 				print ("Press E key to open door");
 
 				if (Input.GetKeyDown(KeyCode.E)) {
+					if (reachedFor.collider.gameObject.GetComponent<LockManager> () != null) {
+						reachedFor.collider.gameObject.GetComponent<LockManager> ().enabled = true;
+					}
+//TODO Move this line to the door's LockManager script (rotate door open when Lock is picked)
 					reachedFor.collider.gameObject.transform.rotation = 
 						Quaternion.FromToRotation (transform.forward, transform.right * 90.0f);
 					print ("The door is opened");

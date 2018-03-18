@@ -14,11 +14,22 @@ public class PuzzleManager : MonoBehaviour {
 	public enum puzzleState {dormant, inProgress, unsolved, solved, failed};
 	public puzzleState solveState;
 
+	int puzzleInt;
+	public enum whichPuzzle {glassCutter, pressurePlate};
+	public whichPuzzle puzzleChoice;
+
 
 	void Awake () {
 		sTrack = GameObject.Find ("LevelManager").GetComponent<ScoreTracker> ();
 		pMove = GameObject.Find ("Player").GetComponent<PlayerMove> ();
 
+		//Choose which puzzle is attached to the Display Case
+		puzzleInt = Random.Range (0, 2);
+		if (puzzleInt == 0) {
+			puzzleChoice = whichPuzzle.glassCutter;
+		} else if (puzzleInt == 1) {
+			puzzleChoice = whichPuzzle.pressurePlate;
+		}
 	}
 
 
@@ -35,38 +46,20 @@ public class PuzzleManager : MonoBehaviour {
 
 
 	void Start () {
-		//print ("Starting puzzle sequence"); //Just wanted to make sure that Start() is IN FACT only called ONCE EVER
+		//print ("Starting puzzle sequence"); //Just wanted to make sure that Start() is IN FACT only called ONCE EVER. It is
+		if (puzzleChoice == whichPuzzle.glassCutter) {
+			gameObject.GetComponent<Puzzle_GlassCutter> ().enabled = true;
 
-/*TODO 	Spawn a prefab of the chosen puzzle (Glass-cutter/Pressure-plate)L
- * Make a (GameObject[] whichPuzzle {glassCutter, pressurePlate}) and set up the parents/prefabs.
- * Move it out of view of the level entirely (Vector3.down * 100, or something like that).
- * Spawn a camera down near the puzzle.
-*/
+		} else if (puzzleChoice == whichPuzzle.pressurePlate) {
 
-
-
-
-/*Began method used by www.github.com/radichc/Lockpick_Unity (searched Google for "Unity fallout lockpick", top result on Reddit),
- * but I really don't know what a lot of this means. Going to try something else for now
- * 
-		RenderTexture background = new RenderTexture (Screen.width, Screen.height, 16);
-		Camera currentCam = Camera.main;
-
-		int mask = currentCam.cullingMask;
-		int UILayerBitMask = 1 << LayerMask.NameToLayer ("UI");
-		currentCam.cullingMask = ~0 & mask ^ UILayerBitMask;
-		currentCam.targetTexture = background;
-		currentCam.Render ();
-		currentCam.cullingMask = mask;
-		currentCam.targetTexture = null;
-*/
+		}
 	}
 	
 
 	void Update () {
 		//While the player is trying to solve the puzzle...
 		if (solveState == puzzleState.inProgress) {
-			//Stop the player moving (because I may be using the same inputs)
+			//Stop the player moving (because I may be using the same inputs and/or moving the mouse)
 			pMove.allowMove = false;
 		} else {
 			if (solveState == puzzleState.unsolved) {
@@ -76,7 +69,7 @@ public class PuzzleManager : MonoBehaviour {
 				sTrack.score += 1000;
 				Destroy (this);
 			} else if (solveState == puzzleState.failed) {
-//TODO If the player fails the puzzle, does the Laser Countdown Timer activate (regardless of its previous state)?
+				//lasPar.timerState = LaserParent.TimerOn.timerActivated;
 				Destroy (this);
 			}
 			pMove.allowMove = true;

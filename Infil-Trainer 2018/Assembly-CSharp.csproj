@@ -53,8 +53,10 @@
   <ItemGroup>
      <Compile Include="Assets\__Scripts\LaserBeam.cs" />
      <Compile Include="Assets\__Scripts\LaserParent.cs" />
+     <Compile Include="Assets\__Scripts\LockManager.cs" />
      <Compile Include="Assets\__Scripts\Pickups.cs" />
      <Compile Include="Assets\__Scripts\PlayerMove.cs" />
+     <Compile Include="Assets\__Scripts\Puzzle_GlassCutter.cs" />
      <Compile Include="Assets\__Scripts\PuzzleManager.cs" />
      <Compile Include="Assets\__Scripts\RoomBuilder.cs" />
      <Compile Include="Assets\__Scripts\RoomFiller.cs" />

@@ -50,6 +50,8 @@ public class RoomFiller : MonoBehaviour {
 		camEmpty.transform.parent = player.transform;
 		Camera playCam = camEmpty.AddComponent<Camera> ();
 		playCam.tag = "MainCamera";
+		playCam.clearFlags = CameraClearFlags.SolidColor;
+		playCam.backgroundColor = Color.black;
 		playCam.nearClipPlane = 0.001f;
 
 	}
