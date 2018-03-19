@@ -12,6 +12,7 @@ TagManager:
   - Pickup
   - Light
   - DisplayCase
+  - GlassLine
   layers:
   - Default
   - TransparentFX

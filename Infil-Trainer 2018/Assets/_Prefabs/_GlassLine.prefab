@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23121459472213082}
   m_Layer: 0
   m_Name: _GlassLine
-  m_TagString: Untagged
+  m_TagString: GlassLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -24,12 +24,12 @@ public class PuzzleManager : MonoBehaviour {
 		pMove = GameObject.Find ("Player").GetComponent<PlayerMove> ();
 
 		//Choose which puzzle is attached to the Display Case
-		puzzleInt = Random.Range (0, 2);
+		puzzleInt = Random.Range (0, 1);
 		if (puzzleInt == 0) {
 			puzzleChoice = whichPuzzle.glassCutter;
-		} else if (puzzleInt == 1) {
+		}/* else if (puzzleInt == 1) {
 			puzzleChoice = whichPuzzle.pressurePlate;
-		}
+		}*/
 	}
 
 
@@ -72,6 +72,7 @@ public class PuzzleManager : MonoBehaviour {
 				//lasPar.timerState = LaserParent.TimerOn.timerActivated;
 				Destroy (this);
 			}
+
 			pMove.allowMove = true;
 
 			if (isTimerActive == "timerActivated") {
