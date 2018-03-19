@@ -5,6 +5,7 @@ using UnityEngine;
 public class Puzzle_GlassCutter : MonoBehaviour {
 
 	PuzzleManager puzzMan;
+	Camera mainCam;
 
 	[SerializeField] GameObject glass;
 	[SerializeField] GameObject line;
@@ -15,21 +16,31 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 	List<GameObject> cutSegments = new List<GameObject> () {};
 	List<GameObject> crackedSegments = new List<GameObject> () {};
 
+
 	GameObject glassCam;
 	Camera camCom;
 
 	public float cutTimer = 0.5f;
-	public float crackTimer = 1.0f;
+	public float crackTimer = -0.5f;
 
 
 	void Awake () {
 		puzzMan = gameObject.GetComponentInParent<PuzzleManager> ();
+		mainCam = GameObject.FindWithTag ("MainCamera").GetComponent<Camera> ();
+
+		GlassSetup ();
+		GlassCamera ();
+	}
+
+
+	void OnEnable () {
+		mainCam.enabled = false;
+		camCom.enabled = true;
 	}
 
 
 	void Start () {
-		GlassSetup ();
-		GlassCamera ();
+		
 	}
 	
 
@@ -38,7 +49,13 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 	}
 
 	void GlassSetup () {
-		glass = Instantiate (glass, new Vector3 (0.0f, -100.0f, 0.0f), Quaternion.identity, transform);
+		Vector3 puzzleOffset = new Vector3 (0.0f, -100.0f, 0.0f);
+		if (GameObject.Find ("GlassPane") != null) {
+			puzzleOffset.x += 5.0f;
+		}
+
+		glass = Instantiate (glass, puzzleOffset, Quaternion.identity, transform);
+		glass.name = "GlassPane";
 
 		for (int i = 0; i < lineNum; i++) {
 			line = Instantiate (line, glass.transform.position + (Vector3.up * 0.045f), Quaternion.identity, glass.transform);
@@ -55,14 +72,14 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 		glassCam = new GameObject ();
 		glassCam.name = "GlassCam";
 		camCom = glassCam.AddComponent<Camera>();
-		camCom.CopyFrom (Camera.main);
-		camCom.transform.rotation = Quaternion.FromToRotation (Camera.main.transform.rotation.eulerAngles, Vector3.zero);
+		camCom.CopyFrom (mainCam);
+		camCom.transform.rotation = Quaternion.FromToRotation (mainCam.transform.rotation.eulerAngles, Vector3.zero);
 
 		glassCam.transform.position = glass.transform.position + Vector3.back * 0.1f;
 		glassCam.transform.parent = glass.transform;
 
-		//Camera.main.enabled = false;
-		camCom.enabled = true;
+		//mainCam.enabled = false;
+		camCom.enabled = false;
 
 		//camCom = glassCam.GetComponent<Camera> ();
 		return camCom;
@@ -72,11 +89,9 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 	void Cutting () {
 		if (glassCam.GetComponent<Camera> () != null && Input.mousePosition != null) {
 			Ray cutter = glassCam.GetComponent<Camera> ().ScreenPointToRay (Input.mousePosition);
-			//print (Input.mousePosition);
 			RaycastHit cutHit;
 
 			if (Physics.Raycast (cutter, out cutHit, 10)) {
-				//print ("Raycast hit something");
 				if (cutHit.collider.gameObject.name == "GlassLine") {
 					cutTimer -= 1.0f * Time.deltaTime;
 
@@ -89,7 +104,7 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 					}
 				} else if (cutHit.collider.gameObject.name == "CutLine") {
 					cutTimer -= 1.0f * Time.deltaTime;
-					if (cutTimer < -crackTimer) {
+					if (cutTimer < crackTimer) {
 						cutSegments.Remove (cutHit.collider.gameObject);
 						crackedSegments.Add (cutHit.collider.gameObject);
 					} 
@@ -108,8 +123,13 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 				}
 			} else {
 				cutTimer = 0.5f;
-				crackTimer = 1.0f;
+				crackTimer = -0.5f;
 			}
+		}
+
+		//Leave the puzzle "unsolved" for now, and allow the player to return later (DO NOT DESTROY EVERYTHING)
+		if (Input.GetKeyDown(KeyCode.Q)) {
+			GlassUnsolved ();
 		}
 	}
 
@@ -130,16 +150,23 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 
 
 	void GlassWin () {
-		Camera.main.enabled = true;
+		mainCam.enabled = true;
 		puzzMan.solveState = PuzzleManager.puzzleState.solved;
 		Destroy (this);
 	}
 
 
 	void GlassFail () {
-		//camCom.enabled = false;
-		Camera.main.enabled = true;
+		mainCam.enabled = true;
 		puzzMan.solveState = PuzzleManager.puzzleState.failed;
 		Destroy (this);
+	}
+
+
+	void GlassUnsolved () {
+		camCom.enabled = false;
+		mainCam.enabled = true;
+		puzzMan.solveState = PuzzleManager.puzzleState.unsolved;
+		this.enabled = false;
 	}
 }

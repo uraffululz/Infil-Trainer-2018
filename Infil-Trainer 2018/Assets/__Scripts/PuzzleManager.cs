@@ -42,17 +42,18 @@ public class PuzzleManager : MonoBehaviour {
 		isTimerActive = lasPar.timerState.ToString();
 		lasPar.timerState = LaserParent.TimerOn.timerDeactivated;
 		//print (isTimerActive);//This is just the last part, either "timerActivated" or "timerDeactivated"
-	}
 
-
-	void Start () {
-		//print ("Starting puzzle sequence"); //Just wanted to make sure that Start() is IN FACT only called ONCE EVER. It is
 		if (puzzleChoice == whichPuzzle.glassCutter) {
 			gameObject.GetComponent<Puzzle_GlassCutter> ().enabled = true;
 
 		} else if (puzzleChoice == whichPuzzle.pressurePlate) {
 
 		}
+	}
+
+
+	void Start () {
+		
 	}
 	
 
@@ -69,7 +70,7 @@ public class PuzzleManager : MonoBehaviour {
 				sTrack.score += 1000;
 				Destroy (this);
 			} else if (solveState == puzzleState.failed) {
-				//lasPar.timerState = LaserParent.TimerOn.timerActivated;
+				lasPar.timerState = LaserParent.TimerOn.timerActivated;
 				Destroy (this);
 			}
 
@@ -80,17 +81,18 @@ public class PuzzleManager : MonoBehaviour {
 			}
 		}
 			
-
+/*
 		//print ("Press Q to EXIT the puzzle");
 		if (Input.GetKeyDown(KeyCode.Q)) {
-/*This leaves the puzzle "unsolved" (and no longer "inProgress" for now). Later on, there will be alternate states for: */
+This leaves the puzzle "unsolved" (and no longer "inProgress" for now). Later on, there will be alternate states for: 
 			solveState = puzzleState.unsolved;
 		} else if (Input.GetKeyDown(KeyCode.R)) {
-/* "solved", meaning the player succeeded in solving the puzzle within the allotted number of attempts */
+ "solved", meaning the player succeeded in solving the puzzle within the allotted number of attempts 
 			solveState = puzzleState.solved;
 		} else if (Input.GetKeyDown(KeyCode.F)) {
-/* "failed", meaning the player failed to solve the puzzle within the allotted number of attempts */
+ "failed", meaning the player failed to solve the puzzle within the allotted number of attempts 
 			solveState = puzzleState.failed;
 		}
+*/
 	}
 }
