@@ -93,11 +93,11 @@ public class RoomBuilder : MonoBehaviour {
 					Vector3 wallOffset = new Vector3 (0.0f, 0.0f, -0.5f);
 
 					if (rW > 1 && rW <= roomWidth - 1 && doorNum < 1) {
-						doorWay = Instantiate (doorWay, wallPlace + wallOffset, Quaternion.Euler (0.0f, 180.0f, 0.0f), wallParent.transform);
+						doorWay = Instantiate (doorWay, wallPlace + wallOffset, Quaternion.identity, wallParent.transform);
 						doorWay.name = "Doorway";
 						roomFill.beamBlockers.Add (doorWay.GetComponent<BoxCollider>());
 
-						Vector3 doorOffset = new Vector3 (0.3211f, 0.0f, 0.0f);
+						Vector3 doorOffset = new Vector3 (0.3215f, 0.0f, 0.0f);
 						door = Instantiate (door, doorWay.transform.position + doorOffset, Quaternion.identity, doorWay.transform);
 						door.name = "Door";
 

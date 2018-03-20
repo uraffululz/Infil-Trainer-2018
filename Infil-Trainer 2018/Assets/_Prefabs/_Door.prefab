@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23018834808606082}
   - component: {fileID: 64900590469282020}
   - component: {fileID: 114685168999328618}
+  - component: {fileID: 114773207026300936}
   m_Layer: 0
   m_Name: _Door
   m_TagString: Door
@@ -102,8 +103,23 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1123684969018778}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b294afe7be9fbb2489e98fe42e790b49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  solveState: 0
+  lockChoice: 0
+--- !u!114 &114773207026300936
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1123684969018778}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1768ce74e10032d4fa42debec7b8a6a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plate: {fileID: 1303462484979304, guid: 363305932e5b3ad4eb80cf54e19acc1b, type: 2}
+  dial: {fileID: 1546192890042040, guid: 543271040d800f74dab65ded5a680a85, type: 2}

@@ -140,10 +140,6 @@ public class PlayerMove : MonoBehaviour {
 					if (reachedFor.collider.gameObject.GetComponent<LockManager> () != null) {
 						reachedFor.collider.gameObject.GetComponent<LockManager> ().enabled = true;
 					}
-//TODO Move this line to the door's LockManager script (rotate door open when Lock is picked)
-					reachedFor.collider.gameObject.transform.rotation = 
-						Quaternion.FromToRotation (transform.forward, transform.right * 90.0f);
-					print ("The door is opened");
 				}
 			}
 			//OPEN DISPLAY CASES
