@@ -10,12 +10,11 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 	[SerializeField] GameObject glass;
 	[SerializeField] GameObject line;
 	int lineNum = 12;
-	float segAngle = 30.0f;
+	float segAngle = 0.0f;
 
-	List<GameObject> lineSegments = new List<GameObject>() {};
-	List<GameObject> cutSegments = new List<GameObject> () {};
-	List<GameObject> crackedSegments = new List<GameObject> () {};
-
+	public List<GameObject> lineSegments = new List<GameObject>() {};
+	public List<GameObject> cutSegments = new List<GameObject> () {};
+	public List<GameObject> crackedSegments = new List<GameObject> () {};
 
 	GameObject glassCam;
 	Camera camCom;
@@ -23,12 +22,15 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 	public float cutTimer = 0.5f;
 	public float crackTimer = -0.5f;
 
+	int timesFailed = 0;
+
 
 	void Awake () {
 		puzzMan = gameObject.GetComponentInParent<PuzzleManager> ();
 		mainCam = GameObject.FindWithTag ("MainCamera").GetComponent<Camera> ();
 
 		GlassSetup ();
+		LineSetup ();
 		GlassCamera ();
 	}
 
@@ -52,13 +54,18 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 		Vector3 puzzleOffset = new Vector3 (0.0f, -100.0f, 0.0f);
 		if (GameObject.Find ("GlassPane") != null) {
 			puzzleOffset.x += 5.0f;
+			puzzleOffset.y -= 10.0f * timesFailed;
 		}
 
 		glass = Instantiate (glass, puzzleOffset, Quaternion.identity, transform);
 		glass.name = "GlassPane";
+	}
 
+
+	void LineSetup () {
 		for (int i = 0; i < lineNum; i++) {
 			line = Instantiate (line, glass.transform.position + (Vector3.up * 0.045f), Quaternion.identity, glass.transform);
+			line.GetComponent<MeshRenderer> ().material.color = Color.gray;
 			line.name = "GlassLine";
 			lineSegments.Add (line);
 			line.transform.RotateAround (glass.transform.position, Vector3.forward, segAngle);
@@ -81,7 +88,6 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 		//mainCam.enabled = false;
 		camCom.enabled = false;
 
-		//camCom = glassCam.GetComponent<Camera> ();
 		return camCom;
 	}
 
@@ -109,21 +115,18 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 						crackedSegments.Add (cutHit.collider.gameObject);
 					} 
 				}
-
-				print (cutSegments.Count);
-
+					
 				if (crackedSegments.Count > 0) {
 					print ("You fail");
-					DestroyEverything ();
+					DestroyLines ();
 					GlassFail ();
 				} else if (cutSegments.Count == lineNum && crackedSegments.Count == 0) {
 					print ("You win");
-					DestroyEverything ();
+					DestroyLines ();
 					GlassWin ();
 				}
 			} else {
 				cutTimer = 0.5f;
-				crackTimer = -0.5f;
 			}
 		}
 
@@ -134,7 +137,7 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 	}
 
 
-	void DestroyEverything() {
+	void DestroyLines() {
 		foreach (var line in lineSegments) {
 			Destroy (line);
 		}
@@ -144,12 +147,15 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 		foreach (var crackedLine in crackedSegments) {
 			Destroy (crackedLine);
 		}
-		Destroy (glass);
-		Destroy (camCom);
+			
+		lineSegments.Clear ();
+		cutSegments.Clear();
+		crackedSegments.Clear();
 	}
 
 
 	void GlassWin () {
+		Destroy (glass);
 		mainCam.enabled = true;
 		puzzMan.solveState = PuzzleManager.puzzleState.solved;
 		Destroy (this);
@@ -157,9 +163,15 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 
 
 	void GlassFail () {
-		mainCam.enabled = true;
-		puzzMan.solveState = PuzzleManager.puzzleState.failed;
-		Destroy (this);
+		timesFailed++;
+		if (timesFailed < 3) {
+			ResetLines ();
+		} else if (timesFailed >= 3) {
+			Destroy (glass);
+			mainCam.enabled = true;
+			puzzMan.solveState = PuzzleManager.puzzleState.failed;
+			Destroy (this);
+		}
 	}
 
 
@@ -168,5 +180,18 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 		mainCam.enabled = true;
 		puzzMan.solveState = PuzzleManager.puzzleState.unsolved;
 		this.enabled = false;
+	}
+
+
+	void ResetLines () {
+		LineSetup();
+		foreach (var line in lineSegments) {
+			line.GetComponent<MeshRenderer> ().material.color = Color.gray;
+		}
+
+		mainCam.enabled = false;
+		camCom.enabled = true;
+
+		cutTimer = 0.5f;
 	}
 }

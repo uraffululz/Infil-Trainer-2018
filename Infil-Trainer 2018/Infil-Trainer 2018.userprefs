@@ -1,6 +1,6 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\__Scripts\Lock_RotaryDial.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\__Scripts\Puzzle_GlassCutter.cs">
     <Files>
       <File FileName="Assets\__Scripts\RoomBuilder.cs" Line="1" Column="1" />
       <File FileName="Assets\__Scripts\RoomFiller.cs" Line="1" Column="1" />
@@ -8,8 +8,9 @@
       <File FileName="Assets\__Scripts\PlayerMove.cs" Line="1" Column="1" />
       <File FileName="Assets\__Scripts\PuzzleManager.cs" Line="1" Column="1" />
       <File FileName="Assets\__Scripts\LockManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\__Scripts\Puzzle_GlassCutter.cs" Line="1" Column="1" />
+      <File FileName="Assets\__Scripts\Puzzle_GlassCutter.cs" Line="192" Column="1" />
       <File FileName="Assets\__Scripts\Lock_RotaryDial.cs" Line="90" Column="18" />
+      <File FileName="..\..\..\Infil-Trainer\Assets\Scripts\DoorScript_Rotary.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -52,6 +53,8 @@
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Lock_RotaryDial.cs" line="64" column="1" />
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Lock_RotaryDial.cs" line="65" column="1" />
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Lock_RotaryDial.cs" line="66" column="3" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Puzzle_GlassCutter.cs" line="192" column="1" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Puzzle_GlassCutter.cs" line="193" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
