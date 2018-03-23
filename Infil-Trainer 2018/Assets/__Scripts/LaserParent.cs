@@ -105,7 +105,7 @@ public class LaserParent : MonoBehaviour {
 		
 
 	void SetSpawnPoints () {
-		print ("Spawn count: " + spawnCount);
+		//print ("Spawn count: " + spawnCount);
 
 		for (int i = 0; i < spawnCount; i++) {
 			nodeInts.Add (Random.Range (0, spawnPoints.Length));

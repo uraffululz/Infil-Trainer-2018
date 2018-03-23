@@ -79,15 +79,5 @@ public class LockManager : MonoBehaviour {
 				lasPar.timerState = LaserParent.TimerOn.timerActivated;
 			}
 		}
-			if (Input.GetKeyDown(KeyCode.Q)) {
-//This leaves the puzzle "unsolved" (and no longer "inProgress" for now). Later on, there will be alternate states for: 
-					solveState = lockState.unsolved;
-			} else if (Input.GetKeyDown(KeyCode.R)) {
-//"solved", meaning the player succeeded in solving the puzzle within the allotted number of attempts 
-				solveState = lockState.solved;
-			} else if (Input.GetKeyDown(KeyCode.F)) {
-//"failed", meaning the player failed to solve the puzzle within the allotted number of attempts 
-				solveState = lockState.failed;
-			}
 	}
 }
