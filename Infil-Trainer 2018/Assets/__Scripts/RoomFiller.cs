@@ -8,9 +8,12 @@ public class RoomFiller : MonoBehaviour {
 
 	public GameObject player;
 	GameObject pickupParent;
+
 	[SerializeField] GameObject coin;
 	[SerializeField] GameObject gem;
 	[SerializeField] GameObject displayCase;
+
+	[SerializeField] GameObject alarmBox;
 
 	List<Vector3> fillerPositions = new List<Vector3> ();
 	public List<Collider> beamBlockers = new List<Collider>();
@@ -26,7 +29,8 @@ public class RoomFiller : MonoBehaviour {
 
 
 	void Start () {
-		
+		SpawnAlarmBox ();
+
 	}
 
 	
@@ -41,6 +45,8 @@ public class RoomFiller : MonoBehaviour {
 		player.name = "Player";
 		fillerPositions.Add (playerPos);
 		beamBlockers.Add (player.GetComponent<CapsuleCollider> ());
+
+		player.GetComponent<MeshRenderer> ().material.color = Color.blue;
 
 		//Setup Main Camera
 		GameObject camEmpty = new GameObject ();
@@ -83,5 +89,13 @@ public class RoomFiller : MonoBehaviour {
 		}
 	}
 
+	void SpawnAlarmBox () {
+		GameObject chosenWall = roomBuild.walls [Random.Range (1, roomBuild.walls.Length-1)];
+		Vector3 boxPos = chosenWall.transform.position + (Vector3.up * 0.7f);
+		alarmBox = Instantiate (alarmBox, boxPos, chosenWall.transform.rotation, gameObject.transform);
+		alarmBox.name = "AlarmBox";
+		beamBlockers.Add (alarmBox.GetComponent<BoxCollider>());
 
+		alarmBox.GetComponent<MeshRenderer> ().material.color = Color.black;
+	}
 }

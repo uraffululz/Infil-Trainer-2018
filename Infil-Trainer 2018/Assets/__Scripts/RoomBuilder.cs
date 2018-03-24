@@ -65,6 +65,8 @@ public class RoomBuilder : MonoBehaviour {
 
 				floorPlane = Instantiate (floorPlane, floorPos, Quaternion.identity, floorParent.transform);
 				floorPlane.name = "Floor";
+
+				floorPlane.GetComponent<MeshRenderer> ().material.color = Color.gray;
 			}
 		}
 	}
@@ -97,9 +99,13 @@ public class RoomBuilder : MonoBehaviour {
 						doorWay.name = "Doorway";
 						roomFill.beamBlockers.Add (doorWay.GetComponent<BoxCollider>());
 
+						doorWay.GetComponent<MeshRenderer> ().material.color = Color.green;
+
 						Vector3 doorOffset = new Vector3 (0.3215f, 0.0f, 0.0f);
 						door = Instantiate (door, doorWay.transform.position + doorOffset, Quaternion.identity, doorWay.transform);
 						door.name = "Door";
+
+						door.GetComponent<MeshRenderer> ().material.color = Color.blue;
 
 						doorNum++;
 					} else {
@@ -107,6 +113,8 @@ public class RoomBuilder : MonoBehaviour {
 					}
 				}
 				wallPanel.name = "Wall";
+
+				wallPanel.GetComponent<MeshRenderer> ().material.color = Color.green;
 			}
 		}
 //TEMPORARY link to Game Over / Win Screen
@@ -123,6 +131,8 @@ public class RoomBuilder : MonoBehaviour {
 
 				ceilingTile = Instantiate (ceilingTile, ceilingPos, Quaternion.identity, ceilingParent.transform);
 				ceilingTile.name = "Ceiling";
+
+				ceilingTile.GetComponent<MeshRenderer> ().material.color = Color.white;
 			}
 		}
 	}

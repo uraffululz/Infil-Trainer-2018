@@ -13,6 +13,7 @@ TagManager:
   - Light
   - DisplayCase
   - GlassLine
+  - AlarmBox
   layers:
   - Default
   - TransparentFX

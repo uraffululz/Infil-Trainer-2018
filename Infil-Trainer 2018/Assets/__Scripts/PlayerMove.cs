@@ -153,6 +153,16 @@ public class PlayerMove : MonoBehaviour {
 					}
 				}
 			}
+			//OPEN THE ALARM BOX
+			else if (reachedFor.collider.CompareTag("AlarmBox")) {
+				print ("Press E key to open Alarm Box");
+				if (Input.GetKeyDown(KeyCode.E)) {
+					if (reachedFor.collider.gameObject.GetComponent<AlarmManager>() != null) {
+						reachedFor.collider.gameObject.GetComponent<AlarmManager> ().enabled = true;
+						print ("The Alarm Box is open");
+					}
+				}
+			}
 		}
 	}
 
