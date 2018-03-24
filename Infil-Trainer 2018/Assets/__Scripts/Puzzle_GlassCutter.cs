@@ -24,6 +24,9 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 
 	int timesFailed = 0;
 
+	enum puzzleState {cutting, solved, failed, unsolved};
+	puzzleState puzzState;
+
 
 	void Awake () {
 		puzzMan = gameObject.GetComponentInParent<PuzzleManager> ();
@@ -36,6 +39,7 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 
 
 	void OnEnable () {
+		puzzState = puzzleState.cutting;
 		mainCam.enabled = false;
 		camCom.enabled = true;
 	}
@@ -47,7 +51,20 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 	
 
 	void Update () {
-		Cutting ();
+		if (puzzState == puzzleState.cutting) {
+			Cutting ();
+		} else if (puzzState == puzzleState.solved) {
+			GlassWin ();
+		} else if (puzzState == puzzleState.failed) {
+			GlassFail ();
+		} else if (puzzState == puzzleState.unsolved) {
+			GlassUnsolved ();
+		}
+
+		//Leave the puzzle "unsolved" for now, and allow the player to return later (DO NOT DESTROY EVERYTHING)
+		if (Input.GetKeyDown(KeyCode.Q)) {
+			puzzState = puzzleState.unsolved;
+		}
 	}
 
 	void GlassSetup () {
@@ -98,6 +115,7 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 			RaycastHit cutHit;
 
 			if (Physics.Raycast (cutter, out cutHit, 10)) {
+				print (cutHit.collider.gameObject.name);
 				if (cutHit.collider.gameObject.name == "GlassLine") {
 					cutTimer -= 1.0f * Time.deltaTime;
 
@@ -118,21 +136,14 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 					
 				if (crackedSegments.Count > 0) {
 					print ("You fail");
-					DestroyLines ();
-					GlassFail ();
+					puzzState = puzzleState.failed;
 				} else if (cutSegments.Count == lineNum && crackedSegments.Count == 0) {
 					print ("You win");
-					DestroyLines ();
-					GlassWin ();
+					puzzState = puzzleState.solved;
 				}
 			} else {
 				cutTimer = 0.5f;
 			}
-		}
-
-		//Leave the puzzle "unsolved" for now, and allow the player to return later (DO NOT DESTROY EVERYTHING)
-		if (Input.GetKeyDown(KeyCode.Q)) {
-			GlassUnsolved ();
 		}
 	}
 
@@ -163,10 +174,16 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 
 
 	void GlassFail () {
-		timesFailed++;
-		if (timesFailed < 3) {
-			ResetLines ();
-		} else if (timesFailed >= 3) {
+		if (timesFailed < 2) {
+			print ("Puzzle FAILED! Press SPACE TO RETRY");
+			if (Input.GetKeyDown (KeyCode.Space)) {
+				timesFailed++;
+				DestroyLines ();
+				ResetLines ();
+				puzzState = puzzleState.cutting;
+			}
+		} else if (timesFailed >= 2) {
+			DestroyLines ();
 			Destroy (glass);
 			mainCam.enabled = true;
 			puzzMan.solveState = PuzzleManager.puzzleState.failed;

@@ -19,9 +19,6 @@ public class Lock_RotaryDial : MonoBehaviour {
 	public int dialNum1;
 	public int dialNum2;
 	public int dialNum3;
-	//bool comboNum1Reached = false;
-	//bool comboNum2Reached = false;
-	//bool comboNum3Reached = false;
 
 	int dialRotSpeed = 15;
 	public float dialAngle = 0.0f;
@@ -47,10 +44,8 @@ public class Lock_RotaryDial : MonoBehaviour {
 		mainCam.enabled = false;
 		camCom.enabled = true;
 
-		//Reset the lock to the first position
-		//comboNum1Reached = false;
-		//comboNum2Reached = false;
-		//comboNum3Reached = false;
+		dial.transform.Rotate(0.0f, 0.0f, -dialAngle);
+
 		currentState = lockState.findCombo1;
 	}
 
@@ -66,14 +61,7 @@ public class Lock_RotaryDial : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Q)) {
 			//This leaves the puzzle "unsolved" (and no longer "inProgress" for now). Later on, there will be alternate states for: 
 			currentState = lockState.unsolved;
-		} else if (Input.GetKeyDown(KeyCode.R)) {
-			//"solved", meaning the player succeeded in solving the puzzle within the allotted number of attempts 
-			currentState = lockState.unlocked;
-		} else if (Input.GetKeyDown(KeyCode.F)) {
-			//"failed", meaning the player failed to solve the puzzle within the allotted number of attempts 
-			currentState = lockState.failed;
 		}
-
 
 //TODO Set up an arrow sprite to show player which direction to rotate dial
 		if (currentState == lockState.findCombo1) {
@@ -111,10 +99,6 @@ public class Lock_RotaryDial : MonoBehaviour {
 		dialNum1 = Random.Range (10, 350);
 		dialNum2 = Random.Range (10, 350);
 		dialNum3 = Random.Range (10, 350);
-
-/*TODO Add the 3 selected numbers to an array/list?
- * 
-*/
 	}
 
 
@@ -141,11 +125,6 @@ public class Lock_RotaryDial : MonoBehaviour {
 		dial.transform.Rotate (Vector3.back, Input.GetAxis ("Horizontal") * dialRotSpeed * Time.deltaTime);
 		//Get Dial rotation angle #(between 0 and 360)
 		dialAngle = dial.transform.rotation.eulerAngles.z;
-
-/*TODO Use left-right keyboard arrow inputs to rotate lock (Start puzzle by rotating to the right)
- * If the correct number is landed on, indicate to the player that the lock should be rotated in the opposite direction
- * If the correct number is passed, or the player rotates the lock in the wrong direction, the puzzle attempt is failed
-*/
 	}
 
 
@@ -168,7 +147,8 @@ public class Lock_RotaryDial : MonoBehaviour {
 				}
 			}
 		} else if ((int)dialAngle < dialNum1 - 1 && (int)dialAngle >= dialNum1 - 3) {
-			dialFailed ();
+			puzzleAttempts++;
+			currentState = lockState.failed;
 		} else {
 			comboStayTimer = 2.0f;
 		}
@@ -196,7 +176,8 @@ public class Lock_RotaryDial : MonoBehaviour {
 				}
 			}
 		} else if ((int)dialAngle > dialNum2 + 1 && dialAngle <= dialNum2 + 3) {
-			dialFailed ();
+			puzzleAttempts++;
+			currentState = lockState.failed;
 		} else {
 			comboStayTimer = 2.0f;
 		}
@@ -222,7 +203,8 @@ public class Lock_RotaryDial : MonoBehaviour {
 				}
 			}
 		} else if ((int)dialAngle < dialNum3 - 1 && (int)dialAngle >= dialNum3 - 3) {
-			dialFailed ();
+			puzzleAttempts++;
+			currentState = lockState.failed;
 		} else {
 			comboStayTimer = 2.0f;
 		}
@@ -238,15 +220,14 @@ public class Lock_RotaryDial : MonoBehaviour {
 
 
 	void dialFailed () {
-		puzzleAttempts++;
-		print ("Dial angle: " + dialAngle + "/ Attempts Left: " + puzzleAttempts);
-/**/
 		if (puzzleAttempts < 3) {
-//TODO Set up input for RETRY. For now, it's just automatic, and that leads to failures stacking quickly
-			dial.transform.Rotate(0.0f, 0.0f, -dialAngle);
-			//dialAngle = 0.0f;
-			currentState = lockState.findCombo1;
+			dial.transform.Rotate (0.0f, 0.0f, -dialAngle);
+			print ("Press SPACE TO RETRY" + " / Attempts Left: " + (3 - puzzleAttempts));
+			if (Input.GetKeyDown (KeyCode.Space)) {
+				currentState = lockState.findCombo1;
+			}
 		} else if (puzzleAttempts >= 3) {
+			print ("Puzzle FAILED! DOOR LOCKED");
 			DestroyLockSetup ();
 			mainCam.enabled = true;
 			lockMan.solveState = LockManager.lockState.failed;
@@ -259,7 +240,6 @@ public class Lock_RotaryDial : MonoBehaviour {
 	void dialUnsolved () {
 		camCom.enabled = false;
 		mainCam.enabled = true;
-		dial.transform.Rotate(0.0f, 0.0f, -dialAngle);
 		lockMan.solveState = LockManager.lockState.unsolved;
 		this.enabled = false;
 	}
@@ -274,11 +254,13 @@ public class Lock_RotaryDial : MonoBehaviour {
 	void DetermineRotDir () {
 		if (thisDir == whichDir.right) {
 			if (Input.GetAxis ("Horizontal") < 0.0f) {
-				dialFailed ();
+				puzzleAttempts++;
+				currentState = lockState.failed;
 			}
 		} else if (thisDir == whichDir.left) {
 			if (Input.GetAxis ("Horizontal") > 0.0f) {
-				dialFailed ();
+				puzzleAttempts++;
+				currentState = lockState.failed;
 			}
 		}
 	}
