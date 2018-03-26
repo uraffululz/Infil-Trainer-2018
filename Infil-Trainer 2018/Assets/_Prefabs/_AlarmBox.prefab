@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 4166103806649352}
   - component: {fileID: 33452024982142648}
   - component: {fileID: 23757073744547570}
-  - component: {fileID: 114013838164714354}
   - component: {fileID: 65920873532970070}
+  - component: {fileID: 114013838164714354}
   - component: {fileID: 114713471810528024}
   m_Layer: 0
   m_Name: _AlarmBox
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1164369734231726}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cddbad1461a670d449003e8bc38fba9e, type: 3}
   m_Name: 
@@ -115,8 +115,15 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1164369734231726}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e34ff2bfbb8b44a4e9a31adbb36c80da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 1959848550976738, guid: 2194e78b59e80a4468d588cf5828ee58, type: 2}
+  button: {fileID: 1417425872748588, guid: 7017c18ab8998314988c043663875608, type: 2}
+  keypad: {fileID: 1404160831125338, guid: f311c870ad2978f44aa1c8eae1d53a48, type: 2}
+  digits: 00000000000000000000000000000000
+  guesses: []
+  correctGuess: 
+  Buttons: []

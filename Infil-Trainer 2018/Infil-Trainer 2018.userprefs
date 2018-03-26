@@ -1,14 +1,14 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Alarm_Keypad.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\__Scripts\PuzzleManager.cs">
     <Files>
-      <File FileName="Assets\__Scripts\RoomBuilder.cs" Line="117" Column="73" />
+      <File FileName="Assets\__Scripts\RoomBuilder.cs" Line="1" Column="1" />
       <File FileName="Assets\__Scripts\RoomFiller.cs" Line="99" Column="70" />
-      <File FileName="Assets\__Scripts\LaserParent.cs" Line="1" Column="1" />
-      <File FileName="Assets\__Scripts\PlayerMove.cs" Line="162" Column="39" />
-      <File FileName="Assets\AlarmManager.cs" Line="39" Column="22" />
-      <File FileName="Assets\Alarm_Keypad.cs" Line="38" Column="24" />
-      <File FileName="Assets\__Scripts\PuzzleManager.cs" Line="9" Column="19" />
+      <File FileName="Assets\__Scripts\canvasManager.cs" Line="7" Column="8" />
+      <File FileName="Assets\__Scripts\PuzzleManager.cs" Line="26" Column="3" />
+      <File FileName="Assets\__Scripts\AlarmManager.cs" Line="37" Column="4" />
+      <File FileName="Assets\__Scripts\Alarm_Keypad.cs" Line="206" Column="32" />
+      <File FileName="..\..\..\Infil-Trainer\Assets\Scripts\DoorScript_Keypad.cs" Line="186" Column="82" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -53,6 +53,10 @@
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\RoomBuilder.cs" line="135" column="76" />
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\RoomFiller.cs" line="99" column="1" />
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\RoomBuilder.cs" line="108" column="70" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Alarm_Keypad.cs" line="36" column="1" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Alarm_Keypad.cs" line="54" column="1" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Alarm_Keypad.cs" line="55" column="103" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\AlarmManager.cs" line="40" column="16" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

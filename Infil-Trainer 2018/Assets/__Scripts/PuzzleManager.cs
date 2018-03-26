@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PuzzleManager : MonoBehaviour {
 
-	ScoreTracker sTrack;
+	CanvasManager cMan;
 
 	PlayerMove pMove;
 
@@ -20,8 +20,9 @@ public class PuzzleManager : MonoBehaviour {
 
 
 	void Awake () {
-		sTrack = GameObject.Find ("LevelManager").GetComponent<ScoreTracker> ();
+		cMan = GameObject.Find ("LevelManager").GetComponent<CanvasManager> ();
 		pMove = GameObject.Find ("Player").GetComponent<PlayerMove> ();
+		lasPar = GameObject.Find ("LaserParent").GetComponent<LaserParent> ();
 
 		//Choose which puzzle is attached to the Display Case
 		puzzleInt = Random.Range (0, 1);
@@ -38,7 +39,6 @@ public class PuzzleManager : MonoBehaviour {
 
 		//Get the current state of the Laser Countdown Timer (to return to later),
 		//then deactivate it while the player tries to solve the puzzle
-		lasPar = GameObject.Find ("LaserParent").GetComponent<LaserParent> ();
 		isTimerActive = lasPar.timerState.ToString();
 		lasPar.timerState = LaserParent.TimerOn.timerDeactivated;
 		//print (isTimerActive);//This is just the last part, either "timerActivated" or "timerDeactivated"
@@ -67,7 +67,7 @@ public class PuzzleManager : MonoBehaviour {
 				print ("Puzzle Left Unsolved");
 				this.enabled = false;
 			} else if (solveState == puzzleState.solved) {
-				sTrack.score += 1000;
+				cMan.score += 1000;
 				Destroy (this);
 			} else if (solveState == puzzleState.failed) {
 				lasPar.timerState = LaserParent.TimerOn.timerActivated;

@@ -2,9 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreTracker : MonoBehaviour {
+public class CanvasManager : MonoBehaviour {
+
+	public GameObject canvas;
 
 	public int score = 0;
+
+
+	void Awake () {
+		canvas = Instantiate (canvas, gameObject.transform) as GameObject;
+	}
 
 
 	void Start () {
