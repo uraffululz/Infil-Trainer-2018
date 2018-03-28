@@ -88,7 +88,7 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 			line.transform.RotateAround (glass.transform.position, Vector3.forward, segAngle);
 			segAngle += 30.0f;
 		}
-		print (lineSegments.Count);
+		//print (lineSegments.Count);
 	}
 
 

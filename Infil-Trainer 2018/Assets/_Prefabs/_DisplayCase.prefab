@@ -57,7 +57,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 51e453e2f7df50143bc618c36025c537, type: 2}
+  - {fileID: 2100000, guid: 5f3a34f3ebf75ff438b0630357a3f596, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,6 +108,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   glass: {fileID: 1309879404467744, guid: 624cddb74f25652438dbb5e3c0d7ca7d, type: 2}
   line: {fileID: 1850382709320490, guid: 769eb4982dbb5ec428558cf9c6faf78c, type: 2}
+  lineSegments: []
+  cutSegments: []
+  crackedSegments: []
+  cutTimer: 0.5
+  crackTimer: -0.5
 --- !u!114 &114976647362709028
 MonoBehaviour:
   m_ObjectHideFlags: 1

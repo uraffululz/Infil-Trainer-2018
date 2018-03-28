@@ -1,14 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\__Scripts\PuzzleManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\__Scripts\Puzzle_GlassCutter.cs">
     <Files>
       <File FileName="Assets\__Scripts\RoomBuilder.cs" Line="1" Column="1" />
-      <File FileName="Assets\__Scripts\RoomFiller.cs" Line="99" Column="70" />
-      <File FileName="Assets\__Scripts\canvasManager.cs" Line="7" Column="8" />
-      <File FileName="Assets\__Scripts\PuzzleManager.cs" Line="26" Column="3" />
-      <File FileName="Assets\__Scripts\AlarmManager.cs" Line="37" Column="4" />
-      <File FileName="Assets\__Scripts\Alarm_Keypad.cs" Line="206" Column="32" />
-      <File FileName="..\..\..\Infil-Trainer\Assets\Scripts\DoorScript_Keypad.cs" Line="186" Column="82" />
+      <File FileName="Assets\__Scripts\RoomFiller.cs" Line="1" Column="1" />
+      <File FileName="Assets\__Scripts\canvasManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\__Scripts\PuzzleManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\__Scripts\AlarmManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\__Scripts\Alarm_Keypad.cs" Line="1" Column="1" />
+      <File FileName="..\..\..\Infil-Trainer\Assets\Scripts\DoorScript_Keypad.cs" Line="1" Column="1" />
+      <File FileName="Assets\__Scripts\Pickups.cs" Line="1" Column="1" />
+      <File FileName="Assets\__Scripts\Puzzle_GlassCutter.cs" Line="91" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
