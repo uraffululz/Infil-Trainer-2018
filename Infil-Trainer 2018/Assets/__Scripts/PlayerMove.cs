@@ -79,12 +79,25 @@ public class PlayerMove : MonoBehaviour {
 				transform.Rotate (Vector3.up * rotSpeed * Time.deltaTime);
 			}
 
+//TODO Clean up this clamped rotation, to get rid of the jittering at the top and bottom
+			//Look Vertical
+			//Down
 			if (Input.mousePosition.y <= camObject.GetComponent<Camera> ().pixelHeight * 0.4f) {
 				float rotSpeed = camObject.GetComponent<Camera> ().pixelHeight / Input.mousePosition.y;
 				camObject.transform.Rotate (Vector3.right * rotSpeed * Time.deltaTime);
-			} else if (Input.mousePosition.y >= camObject.GetComponent<Camera> ().pixelHeight * 0.6f) {
+				float camRotxMin = Mathf.Min (camObject.transform.localEulerAngles.x, -90.0f);
+				float camRotxMax = Mathf.Max (camObject.transform.localEulerAngles.x, 90.0f);
+				float camRot = Mathf.Clamp (camObject.transform.localEulerAngles.x, camRotxMin, camRotxMax);
+				camObject.transform.localEulerAngles = new Vector3(camRot, 0f, 0f);
+			}
+			//Up
+			else if (Input.mousePosition.y >= camObject.GetComponent<Camera> ().pixelHeight * 0.6f) {
 				float rotSpeed = camObject.GetComponent<Camera> ().pixelHeight / (600 - Input.mousePosition.y);
 				camObject.transform.Rotate (-Vector3.right * rotSpeed * Time.deltaTime);
+				float camRotxMin = Mathf.Min (camObject.transform.localEulerAngles.x, -90.0f);
+				float camRotxMax = Mathf.Max (camObject.transform.localEulerAngles.x, 90.0f);
+				float camRot = Mathf.Clamp (camObject.transform.localEulerAngles.x, camRotxMin, camRotxMax);
+				camObject.transform.localEulerAngles = new Vector3(camRot, 0f, 0f);
 			}
 		}
 	}
@@ -170,8 +183,12 @@ public class PlayerMove : MonoBehaviour {
 	void StickToSurface (Vector3 gravDir, RaycastHit reachedSurface) {
 		Physics.gravity = gravDir;
 
+		//print (reachedSurface.normal);
+
 //TODO Incorporate "The lerp" into this rotation to make the player's rotation less jarring
-		transform.rotation = Quaternion.FromToRotation (transform.up, reachedSurface.normal) * rb.rotation;
+		//while (transform.rotation.y != reachedSurface.normal.z) {
+			transform.rotation = Quaternion.FromToRotation (transform.up, reachedSurface.normal) * rb.rotation;
+		//}
 	}
 
 

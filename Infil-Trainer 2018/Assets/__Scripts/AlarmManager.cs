@@ -34,10 +34,9 @@ public class AlarmManager : MonoBehaviour {
 	void Update () {
 		if (bStat == boxStatus.inProgress) {
 			laserParent.GetComponent<LaserParent> ().timerState = LaserParent.TimerOn.timerDeactivated;
-
 		} else {
 			if (bStat == boxStatus.unsolved) {
-//TOmaybeDO Start the countdown timer?
+				laserParent.GetComponent<LaserParent> ().timerState = LaserParent.TimerOn.timerActivated;
 				this.enabled = false;
 			} else if (bStat == boxStatus.solved) {
 				laserParent.GetComponent<LaserParent> ().timerState = LaserParent.TimerOn.timerDeactivated;

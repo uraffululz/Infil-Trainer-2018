@@ -102,7 +102,6 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 		glassCam.transform.position = glass.transform.position + Vector3.back * 0.1f;
 		glassCam.transform.parent = glass.transform;
 
-		//mainCam.enabled = false;
 		camCom.enabled = false;
 
 		return camCom;

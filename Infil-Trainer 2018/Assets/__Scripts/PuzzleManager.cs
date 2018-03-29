@@ -45,9 +45,8 @@ public class PuzzleManager : MonoBehaviour {
 
 		if (puzzleChoice == whichPuzzle.glassCutter) {
 			gameObject.GetComponent<Puzzle_GlassCutter> ().enabled = true;
-
 		} else if (puzzleChoice == whichPuzzle.pressurePlate) {
-
+			//gameObject.GetComponent<Puzzle_PressurePlate> ().enabled = true;
 		}
 	}
 
@@ -80,7 +79,9 @@ public class PuzzleManager : MonoBehaviour {
 				lasPar.timerState = LaserParent.TimerOn.timerActivated;
 			}
 		}
-			
+	
+
+//After I add the other puzzle(s) and get them working, I can delete this part
 /*
 		//print ("Press Q to EXIT the puzzle");
 		if (Input.GetKeyDown(KeyCode.Q)) {

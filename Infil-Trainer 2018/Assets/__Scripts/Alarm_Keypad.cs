@@ -33,8 +33,6 @@ public class Alarm_Keypad : MonoBehaviour {
 		mainCam = Camera.main;
 		alarmMan = gameObject.GetComponent<AlarmManager> ();
 		canvas = GameObject.Find ("LevelManager").GetComponent<CanvasManager> ().canvas;
-//TOmaybeNotDO Set the Render Camera of the Canvas COMPONENT to the puzzle's own camera, which still needs to be created
-		//canvas.GetComponent<Canvas>().worldCamera = ;
 
 		KeypadSetup ();
 		SetNumbers ();
@@ -50,10 +48,6 @@ public class Alarm_Keypad : MonoBehaviour {
 		foreach (var button in Buttons) {
 			button.SetActive (true);
 		}
-
-/*TOmaybeNotDO Alternative to the TODO above (about setting the Render Camera)
- * Set the buttons to only be visible while this script is enabled. If disabled, hide them from view*/
-
 	}
 
 
@@ -151,7 +145,6 @@ public class Alarm_Keypad : MonoBehaviour {
 		//print ("Keypad sequences determined. Choosing correct code");
 
 		//Determine correct keypad code by randomly choosing a sequence from guesses[]
-		//keypadCode = null;
 		correctGuess = guesses[Random.Range(0, guesses.Count)];
 
 		//print ("Keycode chosen");

@@ -38,7 +38,6 @@ public class Pickups : MonoBehaviour {
 		moveSpeed += 20 * Time.deltaTime;
 		transform.rotation = Quaternion.Euler (0.0f, moveSpeed, 0.0f);
 
-		//Vector3 topPos = new Vector3 (transform.position.x, 0.3f, transform.position.z);
 		Vector3 newPos = startPos + Vector3.up * 0.1f * Mathf.Sin (Time.timeSinceLevelLoad);
 		transform.position = newPos;
 	}
