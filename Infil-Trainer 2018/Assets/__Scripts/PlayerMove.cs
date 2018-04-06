@@ -183,12 +183,33 @@ public class PlayerMove : MonoBehaviour {
 	void StickToSurface (Vector3 gravDir, RaycastHit reachedSurface) {
 		Physics.gravity = gravDir;
 
+		Vector3 rotFrom = transform.up;
+		Vector3 rotTo = reachedSurface.normal;
+
 		//print (reachedSurface.normal);
 
 //TODO Incorporate "The lerp" into this rotation to make the player's rotation less jarring
-		//while (transform.rotation.y != reachedSurface.normal.z) {
-			transform.rotation = Quaternion.FromToRotation (transform.up, reachedSurface.normal) * rb.rotation;
-		//}
+//Probably need a coroutine
+		//transform.rotation = Quaternion.FromToRotation (transform.up, reachedSurface.normal) * rb.rotation; 
+
+		Quaternion targetRot = Quaternion.AngleAxis (-90.0f, transform.right) * rb.rotation;
+
+//FAILED ATTEMPT GRAVEYARD
+		//Vector3 thisRot = Vector3.RotateTowards (transform.up, reachedSurface.normal, Time.deltaTime * 0.1f, 0.0f);
+		//transform.rotation = Quaternion.LookRotation (thisRot);
+
+		float t = 0.0f;
+		while (t < 1.0f) {
+			t += Time.deltaTime * 2;
+		transform.rotation = Quaternion.Lerp (transform.rotation, targetRot, t);
+
+		//transform.rotation = Quaternion.Lerp (Quaternion.LookRotation (transform.forward, transform.up), 
+			//Quaternion.LookRotation (transform.up, reachedSurface.normal), 1.0f);
+			//rb.rotation = Quaternion.Lerp (transform.rotation, Quaternion.Euler (reachedSurface.normal), t);
+
+		}
+
+
 	}
 
 
