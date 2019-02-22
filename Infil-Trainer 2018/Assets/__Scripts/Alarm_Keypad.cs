@@ -26,13 +26,15 @@ public class Alarm_Keypad : MonoBehaviour {
 	GameObject clickedButton;
 	Text clickedButtonText;
 
-	int attemptsLeft = 3;
+	int attemptsLeft = 4;
+
+//Add a timer, to create a more balanced risk-reward dynamic?
 
 
 	void Awake () {
 		mainCam = Camera.main;
 		alarmMan = gameObject.GetComponent<AlarmManager> ();
-		canvas = GameObject.Find ("LevelManager").GetComponent<CanvasManager> ().canvas;
+		canvas = GameObject.Find ("CanvasManager").GetComponent<CanvasManager> ().canvas;
 
 		KeypadSetup ();
 		SetNumbers ();
@@ -223,18 +225,30 @@ public class Alarm_Keypad : MonoBehaviour {
 		if (guessDigit1 == correctGuess.Substring(0, 1)) {
 			correctlyPlacedDigits++;
 			guessDigit1 = "<color=green>"+guessDigit1+"</color>";
+		} else {
+			guessDigit1 = "<color=red>" + guessDigit1 + "</color>";
 		}
+
 		if (guessDigit2 == correctGuess.Substring(1, 1)) {
 			correctlyPlacedDigits++;
 			guessDigit2 = "<color=green>"+guessDigit2+"</color>";
+		}
+		else {
+			guessDigit2 = "<color=red>" + guessDigit2 + "</color>";
 		}
 		if (guessDigit3 == correctGuess.Substring (2, 1)) {
 			correctlyPlacedDigits++;
 			guessDigit3 = "<color=green>"+guessDigit3+"</color>";
 		}
+		else {
+			guessDigit3 = "<color=red>" + guessDigit3 + "</color>";
+		}
 		if (guessDigit4 == correctGuess.Substring(3, 1)) {
 			correctlyPlacedDigits++;
 			guessDigit4 = "<color=green>"+guessDigit4+"</color>";
+		}
+		else {
+			guessDigit4 = "<color=red>" + guessDigit4 + "</color>";
 		}
 		clickedButtonText.text = guessDigit1 + guessDigit2 + guessDigit3 + guessDigit4;
 

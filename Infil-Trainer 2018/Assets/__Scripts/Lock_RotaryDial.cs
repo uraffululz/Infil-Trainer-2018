@@ -62,6 +62,9 @@ public class Lock_RotaryDial : MonoBehaviour {
 			//This leaves the puzzle "unsolved" (and no longer "inProgress" for now). Later on, there will be alternate states for: 
 			currentState = lockState.unsolved;
 		}
+		if (Input.GetKeyDown (KeyCode.T)) {
+			currentState = lockState.unlocked;
+		}
 
 //TODO Set up an arrow sprite to show player which direction to rotate dial
 		if (currentState == lockState.findCombo1) {

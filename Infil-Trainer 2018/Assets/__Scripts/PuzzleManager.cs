@@ -20,7 +20,7 @@ public class PuzzleManager : MonoBehaviour {
 
 
 	void Awake () {
-		cMan = GameObject.Find ("LevelManager").GetComponent<CanvasManager> ();
+		cMan = GameObject.Find ("CanvasManager").GetComponent<CanvasManager> ();
 		pMove = GameObject.Find ("Player").GetComponent<PlayerMove> ();
 		lasPar = GameObject.Find ("LaserParent").GetComponent<LaserParent> ();
 

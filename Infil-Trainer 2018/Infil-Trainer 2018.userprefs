@@ -1,11 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\__Scripts\PlayerMove.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\__Scripts\LaserParent.cs">
     <Files>
       <File FileName="Assets\__Scripts\RoomBuilder.cs" Line="1" Column="1" />
       <File FileName="Assets\__Scripts\RoomFiller.cs" Line="1" Column="1" />
-      <File FileName="Assets\__Scripts\PlayerMove.cs" Line="192" Column="28" />
-      <File FileName="Assets\__Scripts\canvasManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\__Scripts\PlayerMove.cs" Line="53" Column="38" />
+      <File FileName="Assets\__Scripts\canvasManager.cs" Line="26" Column="1" />
+      <File FileName="Assets\__Scripts\Alarm_Keypad.cs" Line="35" Column="36" />
+      <File FileName="Assets\__Scripts\Pickups.cs" Line="14" Column="34" />
+      <File FileName="Assets\__Scripts\Lock_RotaryDial.cs" Line="66" Column="38" />
+      <File FileName="Assets\__Scripts\LockManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\__Scripts\LaserParent.cs" Line="23" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -39,9 +44,9 @@
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\PuzzleManager.cs" line="85" column="1" />
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\PuzzleManager.cs" line="97" column="1" />
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Lock_RotaryDial.cs" line="62" column="1" />
-      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Lock_RotaryDial.cs" line="234" column="45" />
-      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Lock_RotaryDial.cs" line="162" column="1" />
-      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Lock_RotaryDial.cs" line="66" column="1" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Lock_RotaryDial.cs" line="237" column="45" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Lock_RotaryDial.cs" line="165" column="1" />
+      <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\Lock_RotaryDial.cs" line="69" column="1" />
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\RoomBuilder.cs" line="102" column="75" />
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\RoomBuilder.cs" line="117" column="1" />
       <Breakpoint file="C:\Users\Master\Documents\Git Repositories\Unity Projects\Infil-Trainer 2018\Infil-Trainer-2018\Infil-Trainer 2018\Assets\__Scripts\RoomBuilder.cs" line="69" column="1" />

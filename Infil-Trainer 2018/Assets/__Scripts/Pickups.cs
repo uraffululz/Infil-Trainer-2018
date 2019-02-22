@@ -11,7 +11,7 @@ public class Pickups : MonoBehaviour {
 
 
 	void Awake () {
-		cMan = GameObject.Find ("LevelManager").GetComponent<CanvasManager> ();
+		cMan = GameObject.Find ("CanvasManager").GetComponent<CanvasManager> ();
 		startPos = transform.position + Vector3.up * 0.3f;
 	}
 

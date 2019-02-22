@@ -34,69 +34,64 @@ public class PlayerMove : MonoBehaviour {
 		Ray reachForward = new Ray (transform.position, transform.forward);
 
 		if (allowMove) {
+			Rotate();
+
 			if (myStance == Stances.standing) {
 				Move (1.0f * Time.deltaTime);
-				Rotate ();
-				ChangeStance ();
-				ChangeIncline (reachForward);
 			} else if (myStance == Stances.crawling) {
 				Move (0.5f * Time.deltaTime);
-				Rotate ();
-				ChangeStance ();
-				ChangeIncline (reachForward);
 			}
+			ChangeStance();
+			ChangeIncline(reachForward);
 		}
 	}
 
 	void OnCollisionEnter (Collision dat) {
 		if (dat.collider.gameObject.name == "LevelEnd") {
-			SceneManager.LoadScene ("GameOver");
+			SceneManager.LoadScene ("TestScene");
 		}
 	}
 
 
 	void Move (float moveSpeed) {
-
-		if (Input.GetAxis("Horizontal") != 0.0) {
-			rb.MovePosition(transform.position + (transform.right * moveSpeed * Input.GetAxis("Horizontal")));
-		}
-		if (Input.GetAxis("Vertical") != 0.0f) {
-			rb.MovePosition(transform.position + (transform.forward * moveSpeed * Input.GetAxis("Vertical")));
+		if (Input.GetAxis("Horizontal") != 0.0f || Input.GetAxis("Vertical") != 0.0f) {
+			Vector3 playerPos = transform.position;
+			transform.position = playerPos + (transform.right * moveSpeed * Input.GetAxis("Horizontal") + transform.forward * moveSpeed * Input.GetAxis("Vertical"));
 		}
 	}
 
 
 	void Rotate () {
 		if (Input.mousePosition != null &&
-			Input.mousePosition.x > 0.0f && Input.mousePosition.x < (float)camObject.GetComponent<Camera> ().pixelWidth
-		    && Input.mousePosition.y > 0.0f && Input.mousePosition.y < (float)camObject.GetComponent<Camera> ().pixelHeight) {
+			Input.mousePosition.x > 0.0f && Input.mousePosition.x < camObject.GetComponent<Camera> ().pixelWidth
+		    && Input.mousePosition.y > 0.0f && Input.mousePosition.y < camObject.GetComponent<Camera> ().pixelHeight) {
 
-			if (Input.mousePosition.x <= camObject.GetComponent<Camera> ().pixelWidth * 0.4f) {
+			if (Input.mousePosition.x <= camObject.GetComponent<Camera> ().pixelWidth * 0.3f) {
 				float rotSpeed = camObject.GetComponent<Camera> ().pixelWidth / Input.mousePosition.x;
 				transform.Rotate (-Vector3.up * rotSpeed * Time.deltaTime);
-			} else if (Input.mousePosition.x >= camObject.GetComponent<Camera> ().pixelWidth * 0.6f) {
-				float rotSpeed = camObject.GetComponent<Camera> ().pixelWidth / (800 - Input.mousePosition.x);
+			} else if (Input.mousePosition.x >= camObject.GetComponent<Camera> ().pixelWidth * 0.7f) {
+				float rotSpeed = camObject.GetComponent<Camera> ().pixelWidth / (camObject.GetComponent<Camera>().pixelWidth - Input.mousePosition.x);
 				transform.Rotate (Vector3.up * rotSpeed * Time.deltaTime);
 			}
 
 //TODO Clean up this clamped rotation, to get rid of the jittering at the top and bottom
 			//Look Vertical
 			//Down
-			if (Input.mousePosition.y <= camObject.GetComponent<Camera> ().pixelHeight * 0.4f) {
+			if (Input.mousePosition.y <= camObject.GetComponent<Camera> ().pixelHeight * 0.3f) {
 				float rotSpeed = camObject.GetComponent<Camera> ().pixelHeight / Input.mousePosition.y;
 				camObject.transform.Rotate (Vector3.right * rotSpeed * Time.deltaTime);
-				float camRotxMin = Mathf.Min (camObject.transform.localEulerAngles.x, -90.0f);
-				float camRotxMax = Mathf.Max (camObject.transform.localEulerAngles.x, 90.0f);
-				float camRot = Mathf.Clamp (camObject.transform.localEulerAngles.x, camRotxMin, camRotxMax);
+				float camRotxMin = Mathf.Min(camObject.transform.localEulerAngles.x, -90.0f);
+				float camRotxMax = Mathf.Max(camObject.transform.localEulerAngles.x, 90.0f);
+				float camRot = Mathf.Clamp(camObject.transform.localEulerAngles.x, camRotxMin, camRotxMax);
 				camObject.transform.localEulerAngles = new Vector3(camRot, 0f, 0f);
 			}
 			//Up
-			else if (Input.mousePosition.y >= camObject.GetComponent<Camera> ().pixelHeight * 0.6f) {
-				float rotSpeed = camObject.GetComponent<Camera> ().pixelHeight / (600 - Input.mousePosition.y);
+			else if (Input.mousePosition.y >= camObject.GetComponent<Camera> ().pixelHeight * 0.7f) {
+				float rotSpeed = camObject.GetComponent<Camera> ().pixelHeight / (camObject.GetComponent<Camera>().pixelHeight - Input.mousePosition.y);
 				camObject.transform.Rotate (-Vector3.right * rotSpeed * Time.deltaTime);
-				float camRotxMin = Mathf.Min (camObject.transform.localEulerAngles.x, -90.0f);
-				float camRotxMax = Mathf.Max (camObject.transform.localEulerAngles.x, 90.0f);
-				float camRot = Mathf.Clamp (camObject.transform.localEulerAngles.x, camRotxMin, camRotxMax);
+				float camRotxMin = Mathf.Min(camObject.transform.localEulerAngles.x, -90.0f);
+				float camRotxMax = Mathf.Max(camObject.transform.localEulerAngles.x, 90.0f);
+				float camRot = Mathf.Clamp(camObject.transform.localEulerAngles.x, camRotxMin, camRotxMax);
 				camObject.transform.localEulerAngles = new Vector3(camRot, 0f, 0f);
 			}
 		}
