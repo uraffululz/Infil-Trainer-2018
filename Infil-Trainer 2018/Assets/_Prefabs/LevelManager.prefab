@@ -19,8 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4237353017808982}
-  - component: {fileID: 114179822361610864}
-  - component: {fileID: 114351273656580064}
+  - component: {fileID: 114120465180677338}
+  - component: {fileID: 114092489555237548}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -41,37 +41,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114179822361610864
+--- !u!114 &114092489555237548
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1520450047140730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d075a2f958a4e14693d8950dc03ec48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  floorPlane: {fileID: 1697423143935952, guid: 5049ba53f4546d9418d6649bcc6d2d79, type: 2}
-  wallPanel: {fileID: 1936334578070050, guid: 535da69d053be824ab4b209e7b77c2b2, type: 2}
-  ceilingTile: {fileID: 1532716673515040, guid: 0e2f0494b48a37e4c957182a76e1bcbf,
-    type: 2}
-  doorWay: {fileID: 1320319131887664, guid: dcf4f083d7c23c44c80611a6875b4193, type: 2}
-  door: {fileID: 1123684969018778, guid: 5e62c68803da1f94cb7d46144e9eb64f, type: 2}
-  roomWidth: 0
-  roomDepth: 0
-  roomHeight: 2
-  floors: []
-  walls: []
-  ceilings: []
-  buildProgress: 0
---- !u!114 &114351273656580064
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1520450047140730}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2ab171d24056d7408af524f9eaab7b9, type: 3}
   m_Name: 
@@ -83,3 +59,22 @@ MonoBehaviour:
     type: 2}
   alarmBox: {fileID: 1164369734231726, guid: d4dd8aa29509fd84fa4ba3ba5b2e19a5, type: 2}
   beamBlockers: []
+--- !u!114 &114120465180677338
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1520450047140730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccdb3e26ab3563346ade4b50401ff6f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentRoomNum: 0
+  roomArray:
+  - {fileID: 1865606737465896, guid: 18bc0eb76d3ec0341bc75b13bd8055de, type: 2}
+  - {fileID: 1098990584609588, guid: 8a78a6a30c862d54b8cee6ace0036736, type: 2}
+  - {fileID: 1297038365236720, guid: a8c138580a083674fa9d9fad32755a14, type: 2}
+  - {fileID: 1333471226122708, guid: 741deac99c865694d807ee2e5948c68e, type: 2}
+  - {fileID: 1028111200799668, guid: 61645e7333944174c85709b6f7426e1a, type: 2}
+  player: {fileID: 1466148329742988, guid: bfb71332c7611214f9bbb18c3e3d1865, type: 2}

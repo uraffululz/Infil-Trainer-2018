@@ -131,6 +131,7 @@ public class LaserParent : MonoBehaviour {
 		for (int i = 0; i < spawnCount; i++) {
 			int newRecPoint;
 
+			//Make sure the current Receiver doesn't spawn on the same surface as its paired Node
 			if (recInts[i] == nodeInts[i]) {
 				//print ("Node and receiver on same surface. Re-rolling..." + recInts[i]);
 				if (recInts[i] == 0) {

@@ -24,7 +24,7 @@ public class RoomFiller : MonoBehaviour {
 		pickupParent = GameObject.Find ("PickupParent");
 
 		SpawnPlayer ();
-		SpawnPickups ();
+//		SpawnPickups ();
 	}
 
 
@@ -40,7 +40,9 @@ public class RoomFiller : MonoBehaviour {
 
 
 	void SpawnPlayer () {
-		Vector3 playerPos = new Vector3 (roomBuild.roomWidth / 2, 0.0f, 0.0f);
+		//		Vector3 playerPos = new Vector3 (roomBuild.roomWidth / 2, 0.0f, 0.0f);
+		Vector3 playerPos = new Vector3(0, 0, 0.5f);
+
 		player = Instantiate (player, playerPos + Vector3.up * 0.5f, Quaternion.identity);
 		player.name = "Player";
 		fillerPositions.Add (playerPos);

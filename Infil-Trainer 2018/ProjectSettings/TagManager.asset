@@ -14,6 +14,10 @@ TagManager:
   - DisplayCase
   - GlassLine
   - AlarmBox
+  - LaserNode
+  - LaserReceiver
+  - LaserBeam
+  - InnerWall
   layers:
   - Default
   - TransparentFX
@@ -24,7 +28,7 @@ TagManager:
   - 
   - 
   - Keypad_Buttons
-  - 
+  - BeamBlockers
   - 
   - 
   - 

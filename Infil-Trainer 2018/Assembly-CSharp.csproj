@@ -63,6 +63,7 @@
     <Compile Include="Assets\__Scripts\AlarmManager.cs" />
     <Compile Include="Assets\__Scripts\CanvasManager.cs" />
     <Compile Include="Assets\__Scripts\LaserBeam.cs" />
+    <Compile Include="Assets\__Scripts\LaserManager.cs" />
     <Compile Include="Assets\__Scripts\LaserParent.cs" />
     <Compile Include="Assets\__Scripts\Lock_RotaryDial.cs" />
     <Compile Include="Assets\__Scripts\LockManager.cs" />
@@ -72,6 +73,9 @@
     <Compile Include="Assets\__Scripts\PuzzleManager.cs" />
     <Compile Include="Assets\__Scripts\RoomBuilder.cs" />
     <Compile Include="Assets\__Scripts\RoomFiller.cs" />
+    <Compile Include="Assets\__Scripts\ScriptableObjects\RoomStats.cs" />
+    <Compile Include="Assets\LevelBuilder.cs" />
+    <Compile Include="Assets\MyRoomData.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/Master/Documents/Git Repositories/Unity Projects/Infil-Trainer 2018/Infil-Trainer-2018/Infil-Trainer 2018/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

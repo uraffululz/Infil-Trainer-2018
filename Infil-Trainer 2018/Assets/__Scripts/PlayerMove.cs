@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour {
-
+	GameObject rotControl;
 	Transform camObject;
 	Rigidbody rb;
 
@@ -14,6 +14,9 @@ public class PlayerMove : MonoBehaviour {
 	Stances myStance;
 
 	string currentSurface;
+
+	bool lerping = false;
+	float rotTimeToNewSurface = 0f;
 
 
 	void Awake () {
@@ -27,6 +30,11 @@ public class PlayerMove : MonoBehaviour {
 		rb = gameObject.GetComponent<Rigidbody> ();
 
 		myStance = Stances.standing;
+
+		rotControl = new GameObject("RotationControl");
+		rotControl.transform.position = transform.position;
+		rotControl.transform.Rotate(rotControl.transform.right, -90f, Space.Self);
+		rotControl.transform.parent = transform;
 	}
 	
 
@@ -37,12 +45,17 @@ public class PlayerMove : MonoBehaviour {
 			Rotate();
 
 			if (myStance == Stances.standing) {
-				Move (1.0f * Time.deltaTime);
+				Move (2.0f * Time.deltaTime);
 			} else if (myStance == Stances.crawling) {
 				Move (0.5f * Time.deltaTime);
 			}
 			ChangeStance();
 			ChangeIncline(reachForward);
+
+			if (lerping) {
+				StickToSurface();
+
+			}
 		}
 	}
 
@@ -134,9 +147,13 @@ public class PlayerMove : MonoBehaviour {
 				print ("Press E key to change incline");
 
 				if (Input.GetKeyDown(KeyCode.E)) {
-					StickToSurface (-reachedFor.normal * 9.8f, reachedFor);
+					Physics.gravity = -reachedFor.normal * 9.8f;
+
 					myStance = Stances.crawling;
 					currentSurface = reachedFor.collider.tag;
+
+					lerping = true;
+
 					print ("Current Surface: " + currentSurface);
 				}
 			}
@@ -175,11 +192,13 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 
-	void StickToSurface (Vector3 gravDir, RaycastHit reachedSurface) {
-		Physics.gravity = gravDir;
+	void StickToSurface () {
 
-		Vector3 rotFrom = transform.up;
-		Vector3 rotTo = reachedSurface.normal;
+		//Vector3 rotFrom = transform.up;
+		//Vector3 rotTo = reachedSurface.normal;
+		//Vector3 rotTo = -Physics.gravity;
+
+		//float zLerpAngleCorrect = Vector3.Angle(rotFrom, rotTo);
 
 		//print (reachedSurface.normal);
 
@@ -187,23 +206,51 @@ public class PlayerMove : MonoBehaviour {
 //Probably need a coroutine
 		//transform.rotation = Quaternion.FromToRotation (transform.up, reachedSurface.normal) * rb.rotation; 
 
-		Quaternion targetRot = Quaternion.AngleAxis (-90.0f, transform.right) * rb.rotation;
+		//Quaternion targetRot = Quaternion.AngleAxis (-90.0f, transform.right) * rb.rotation;
 
 //FAILED ATTEMPT GRAVEYARD
 		//Vector3 thisRot = Vector3.RotateTowards (transform.up, reachedSurface.normal, Time.deltaTime * 0.1f, 0.0f);
 		//transform.rotation = Quaternion.LookRotation (thisRot);
 
-		float t = 0.0f;
-		while (t < 1.0f) {
-			t += Time.deltaTime * 2;
-		transform.rotation = Quaternion.Lerp (transform.rotation, targetRot, t);
+		
+
+		if (lerping && rotTimeToNewSurface < 1.0f) {
+			rotTimeToNewSurface += Time.deltaTime * 1.5f;
+			Vector3 rotPole = transform.position - Physics.gravity;
+
+			rotControl.transform.LookAt(rotPole, transform.forward);
+
+			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rotControl.transform.up, rotControl.transform.forward), rotTimeToNewSurface);
+
+			rotControl.transform.localRotation = Quaternion.Euler(Vector3.right * -90);
+
+			//float rotPoleAngle = Vector3.Angle(transform.forward, rotPole);
+
+			//print(rotPoleAngle);
+
+			//transform.rotation = Quaternion.Euler(Vector3.RotateTowards(transform.up, rotPole, rotTimeToNewSurface, 1));
+
+			//transform.rotation = Quaternion.Lerp(Quaternion.Euler(transform.right), Quaternion.Euler(transform.position - Physics.gravity), rotTimeToNewSurface);
+
+			//transform.Rotate(-90 * (Time.deltaTime * 2), 0, -zLerpAngleCorrect * (Time.deltaTime * 2), Space.Self);
+
+
+
+
+		//transform.rotation = Quaternion.Lerp (transform.rotation, targetRot, t);
 
 		//transform.rotation = Quaternion.Lerp (Quaternion.LookRotation (transform.forward, transform.up), 
 			//Quaternion.LookRotation (transform.up, reachedSurface.normal), 1.0f);
 			//rb.rotation = Quaternion.Lerp (transform.rotation, Quaternion.Euler (reachedSurface.normal), t);
 
 		}
+		else if (rotTimeToNewSurface >= 1.0f) {
+			rotTimeToNewSurface = 0;
+			lerping = false;
 
+			rotControl.transform.localRotation = Quaternion.Euler(Vector3.right * -90);
+
+		}
 
 	}
 
