@@ -56,6 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4852006157709144}
   - component: {fileID: 114605793802756304}
+  - component: {fileID: 114649485118609452}
   m_Layer: 0
   m_Name: Room_UShaped_3Wide
   m_TagString: Untagged
@@ -11506,8 +11507,39 @@ MonoBehaviour:
   hasPickups: 0
   hasLasers: 0
   myLevel1Children: []
+  myLaserSpawnSurfaces:
+  - {fileID: 1572282100196672}
+  - {fileID: 1306022607568566}
+  - {fileID: 1133595641247612}
+  - {fileID: 1735486705978198}
+  - {fileID: 1104574002110862}
+  - {fileID: 1724895190334884}
+  - {fileID: 1855360917229662}
+  - {fileID: 1224674820235308}
+  - {fileID: 1855800616524714}
+  - {fileID: 1319939651848078}
   myFloorTiles: []
   myWallTiles: []
   myCeilingTiles: []
   myDoorways: []
   myDoors: []
+  beamBlockers: []
+  myBuildState: 0
+--- !u!114 &114649485118609452
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1028111200799668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37b0bab9c2b66504cba94970aa3425c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fillerPositions: []
+  displayCase: {fileID: 1019503140502428, guid: 489ffc9d725e89e43911eceb11e1cf39,
+    type: 2}
+  alarmBox: {fileID: 1164369734231726, guid: d4dd8aa29509fd84fa4ba3ba5b2e19a5, type: 2}
+  pickupPrefabs:
+  - {fileID: 1843121861173164, guid: 5dd61b6d40d545049bbf2d1eddef85b0, type: 2}
+  - {fileID: 1634484507172452, guid: 1ddafeeeb73f0314ebd402a3b7ceaf2a, type: 2}

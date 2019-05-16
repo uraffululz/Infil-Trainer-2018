@@ -124,7 +124,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 1959848550976738, guid: 2194e78b59e80a4468d588cf5828ee58, type: 2}
-  button: {fileID: 1417425872748588, guid: 7017c18ab8998314988c043663875608, type: 2}
+  buttonPrefab: {fileID: 1417425872748588, guid: 7017c18ab8998314988c043663875608,
+    type: 2}
   keypad: {fileID: 1404160831125338, guid: f311c870ad2978f44aa1c8eae1d53a48, type: 2}
   digits: 00000000000000000000000000000000
   guesses: []

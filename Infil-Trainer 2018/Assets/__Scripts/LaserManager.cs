@@ -36,6 +36,7 @@ public class LaserManager : MonoBehaviour {
 		myRoom = transform.parent.gameObject;
 		roomData = myRoom.GetComponent<MyRoomData>();
 
+		//spawnCount = roomData.myWidth * roomData.myDepth / 2;
 		totalSpawnCount = spawnCount;
 
 		nodesSpawned = new List<GameObject>();
@@ -61,7 +62,9 @@ public class LaserManager : MonoBehaviour {
 	void Update () {
 		if (roomData.myBuildState == MyRoomData.myRoomBuildState.building) {
 			SpawnStartsHere(spawnCount);
-
+		}
+		else if (roomData.myBuildState == MyRoomData.myRoomBuildState.finished) {
+			
 		}
 	}
 
@@ -88,8 +91,8 @@ public class LaserManager : MonoBehaviour {
 
 	void SetSpawnParents(int newSpawnCount) {
 		for (int i = 0; i < newSpawnCount; i++) {
-			nodeSetWhichSurfaceParent.Add(Random.Range(0, roomData.myLevel1Children.Count - 2));
-			receiverSetWhichSurfaceParent.Add(Random.Range(0, roomData.myLevel1Children.Count - 2));
+			nodeSetWhichSurfaceParent.Add(Random.Range(0, roomData.myLaserSpawnSurfaces.Length));
+			receiverSetWhichSurfaceParent.Add(Random.Range(0, roomData.myLaserSpawnSurfaces.Length));
 
 			if (nodeSetWhichSurfaceParent.Count == spawnCount) {
 				SpawnNodesAndReceivers(node, newSpawnCount);
@@ -186,7 +189,7 @@ public class LaserManager : MonoBehaviour {
 
 
 	void SpawnBeams (int myNewSpawnCount) {
-		print("Total Respawns: " + totalRespawnCount + "  Total Spawns: " + totalSpawnCount);
+		//print("Total Respawns: " + totalRespawnCount + "  Total Spawns: " + totalSpawnCount);
 
 		for (int bts = spawnCount - myNewSpawnCount /*Pretty sure this is the missing number I was looking for. Don't fuck with it unless you know it's wrong*/; 
 																																	bts < spawnCount; bts++) {
@@ -208,16 +211,18 @@ public class LaserManager : MonoBehaviour {
 
 			if (nodeSetWhichSurfaceParent[bsc] == receiverSetWhichSurfaceParent[bsc]
 							|| beamsSpawned[bsc].GetComponent<BoxCollider>().bounds.Intersects(player.GetComponent<CapsuleCollider>().bounds)) {
-				print("This beam spawned inside the player! Witness me!");
+				//print("This beam spawned inside the player! Witness me!");
 
-				beamFuckedUp = true;			}
+				beamFuckedUp = true;
+			}
 			else {
 				if (roomData.beamBlockers.Count > 0) {
 					foreach (GameObject blocker in roomData.beamBlockers) {
 						if (beamsSpawned[bsc].GetComponent<BoxCollider>().bounds.Intersects(blocker.GetComponent<BoxCollider>().bounds)) {
-							print("This beam spawned inside a beamBlocker! Witness me!");
+							//print("This beam spawned inside a beamBlocker! Witness me!");
 
-							beamFuckedUp = true;						}
+							beamFuckedUp = true;
+						}
 					}
 				}
 				
@@ -270,4 +275,7 @@ public class LaserManager : MonoBehaviour {
 
 		//print("Spawns to Retry: " + spawnRetryCount);
 	}
+
+
+	
 }

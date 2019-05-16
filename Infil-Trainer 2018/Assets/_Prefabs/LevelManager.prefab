@@ -19,11 +19,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4237353017808982}
+  - component: {fileID: 114379596942220044}
   - component: {fileID: 114120465180677338}
-  - component: {fileID: 114092489555237548}
   m_Layer: 0
   m_Name: LevelManager
-  m_TagString: Untagged
+  m_TagString: LevelManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,24 +41,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114092489555237548
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1520450047140730}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2ab171d24056d7408af524f9eaab7b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1234899338424334, guid: 3e5bce21cc12c22498df511cbb5c510e, type: 2}
-  coin: {fileID: 1843121861173164, guid: 5dd61b6d40d545049bbf2d1eddef85b0, type: 2}
-  gem: {fileID: 1634484507172452, guid: 1ddafeeeb73f0314ebd402a3b7ceaf2a, type: 2}
-  displayCase: {fileID: 1019503140502428, guid: 489ffc9d725e89e43911eceb11e1cf39,
-    type: 2}
-  alarmBox: {fileID: 1164369734231726, guid: d4dd8aa29509fd84fa4ba3ba5b2e19a5, type: 2}
-  beamBlockers: []
 --- !u!114 &114120465180677338
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -75,6 +57,23 @@ MonoBehaviour:
   - {fileID: 1865606737465896, guid: 18bc0eb76d3ec0341bc75b13bd8055de, type: 2}
   - {fileID: 1098990584609588, guid: 8a78a6a30c862d54b8cee6ace0036736, type: 2}
   - {fileID: 1297038365236720, guid: a8c138580a083674fa9d9fad32755a14, type: 2}
-  - {fileID: 1333471226122708, guid: 741deac99c865694d807ee2e5948c68e, type: 2}
-  - {fileID: 1028111200799668, guid: 61645e7333944174c85709b6f7426e1a, type: 2}
-  player: {fileID: 1466148329742988, guid: bfb71332c7611214f9bbb18c3e3d1865, type: 2}
+  playerPrefab: {fileID: 1234899338424334, guid: 3e5bce21cc12c22498df511cbb5c510e,
+    type: 2}
+--- !u!114 &114379596942220044
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1520450047140730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32d8e94fe3fc3944ac372a2857eea98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasManager: {fileID: 0}
+  timerBar: {fileID: 0}
+  timeUpText: {fileID: 0}
+  sceneLight: {fileID: 0}
+  timerCurrentTime: 0
+  laserTimeoutGameOver: 0
+  colorLerpToRed: 0

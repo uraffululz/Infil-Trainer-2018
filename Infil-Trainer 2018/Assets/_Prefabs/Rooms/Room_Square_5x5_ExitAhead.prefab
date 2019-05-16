@@ -1192,6 +1192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4751068685649304}
   - component: {fileID: 114508139808756802}
+  - component: {fileID: 114592851083193536}
   m_Layer: 0
   m_Name: Room_Square_5x5_ExitAhead
   m_TagString: Untagged
@@ -6420,8 +6421,35 @@ MonoBehaviour:
   hasPickups: 0
   hasLasers: 0
   myLevel1Children: []
+  myLaserSpawnSurfaces:
+  - {fileID: 1016601700084630}
+  - {fileID: 1688501722758656}
+  - {fileID: 1763657646226826}
+  - {fileID: 1033094274474906}
+  - {fileID: 1486903929718750}
+  - {fileID: 1450720391715238}
   myFloorTiles: []
   myWallTiles: []
   myCeilingTiles: []
   myDoorways: []
   myDoors: []
+  beamBlockers: []
+  myBuildState: 0
+--- !u!114 &114592851083193536
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1865606737465896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37b0bab9c2b66504cba94970aa3425c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fillerPositions: []
+  displayCase: {fileID: 1019503140502428, guid: 489ffc9d725e89e43911eceb11e1cf39,
+    type: 2}
+  alarmBox: {fileID: 1164369734231726, guid: d4dd8aa29509fd84fa4ba3ba5b2e19a5, type: 2}
+  pickupPrefabs:
+  - {fileID: 1843121861173164, guid: 5dd61b6d40d545049bbf2d1eddef85b0, type: 2}
+  - {fileID: 1634484507172452, guid: 1ddafeeeb73f0314ebd402a3b7ceaf2a, type: 2}

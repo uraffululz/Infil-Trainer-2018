@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: e34ff2bfbb8b44a4e9a31adbb36c80da
-timeCreated: 1521904612
-licenseType: Free
 MonoImporter:
+  externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - canvas: {instanceID: 0}
+  - buttonPrefab: {fileID: 1417425872748588, guid: 7017c18ab8998314988c043663875608,
+      type: 2}
+  - keypad: {fileID: 1404160831125338, guid: f311c870ad2978f44aa1c8eae1d53a48, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

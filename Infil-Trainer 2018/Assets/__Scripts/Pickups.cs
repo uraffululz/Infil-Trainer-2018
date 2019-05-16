@@ -9,6 +9,8 @@ public class Pickups : MonoBehaviour {
 	Vector3 startPos;
 	float moveSpeed;
 
+	int myWorth = 100;
+
 
 	void Awake () {
 		cMan = GameObject.Find ("CanvasManager").GetComponent<CanvasManager> ();
@@ -29,7 +31,7 @@ public class Pickups : MonoBehaviour {
 	void OnTriggerEnter (Collider other) {
 		if (other.gameObject.tag == "Player") {
 			Destroy (gameObject);
-			cMan.score += 100;
+			cMan.AddToScore(myWorth);
 		}
 	}
 

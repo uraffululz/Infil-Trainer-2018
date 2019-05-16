@@ -4,17 +4,36 @@ using UnityEngine;
 
 public class AlarmManager : MonoBehaviour {
 
+	[SerializeField] LevelManager levMan;
+	[SerializeField] MyRoomData myParentRoomData;
 	public PlayerMove pMove;
 	public GameObject laserParent;
 
 	public enum boxStatus {dormant, inProgress, solved, failed, unsolved};
 	public boxStatus bStat;
 
+	public bool lasersAlreadyDisabled = false;
+
+	//public int alarmsLeft = 0;
+
 
 	void Awake () {
+		levMan = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		myParentRoomData = transform.parent.GetComponent<MyRoomData>();
 		pMove = GameObject.Find ("Player").GetComponent<PlayerMove> ();
-		laserParent = GameObject.Find ("LaserParent");
+		laserParent = transform.parent.Find("LaserParent").gameObject;
 
+		//foreach (var blocker in myParentRoomData.beamBlockers) {
+		//	if (blocker.GetComponent<PuzzleManager>() != null) {
+		//		alarmsLeft++;
+		//	}
+		//}
+	}
+
+
+	void Start() {
+		
+		
 	}
 
 
@@ -26,28 +45,38 @@ public class AlarmManager : MonoBehaviour {
 	}
 
 
-	void Start () {
-		
-	}
-	
-
 	void Update () {
 		if (bStat == boxStatus.inProgress) {
-			laserParent.GetComponent<LaserParent> ().timerState = LaserParent.TimerOn.timerDeactivated;
+			LevelManager.timerState = LevelManager.TimerOn.timerDeactivated;
 		} else {
 			if (bStat == boxStatus.unsolved) {
-				laserParent.GetComponent<LaserParent> ().timerState = LaserParent.TimerOn.timerActivated;
+				LevelManager.timerState = LevelManager.TimerOn.timerActivated;
 				this.enabled = false;
 			} else if (bStat == boxStatus.solved) {
-				laserParent.GetComponent<LaserParent> ().timerState = LaserParent.TimerOn.timerDeactivated;
-				Destroy (laserParent);
-				Destroy (this);
+				levMan.DeactivateCurrentlyActiveTimer();
+				if (!lasersAlreadyDisabled) {
+					Destroy(laserParent);
+					lasersAlreadyDisabled = true;
+					this.enabled = false;
+				}
+				else {
+					this.enabled = false;
+				}
+
+				//AreAllAlarmsDisabled();
 			} else if (bStat == boxStatus.failed) {
-				laserParent.GetComponent<LaserParent> ().timerState = LaserParent.TimerOn.timerActivated;
+				LevelManager.timerState = LevelManager.TimerOn.timerActivated;
 				Destroy (this);
 			}
 
 			pMove.allowMove = true;
 		}
 	}
+
+
+	//public void AreAllAlarmsDisabled() {
+	//	if (alarmsLeft == 0 && LevelManager.timerState == LevelManager.TimerOn.timerDeactivated) {
+	//		Destroy(this);
+	//	}
+	//}
 }

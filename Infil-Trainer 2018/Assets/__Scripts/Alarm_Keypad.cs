@@ -9,7 +9,7 @@ public class Alarm_Keypad : MonoBehaviour {
 	Camera mainCam;
 	AlarmManager alarmMan;
 	[SerializeField] GameObject canvas;
-	[SerializeField] GameObject button;
+	[SerializeField] GameObject buttonPrefab;
 
 	[SerializeField] GameObject keypad;
 	GameObject padCamEmpty;
@@ -22,6 +22,7 @@ public class Alarm_Keypad : MonoBehaviour {
 	[SerializeField] List<string> guesses = new List<string>();
 	[SerializeField] string correctGuess;
 
+	GameObject buttonParent;
 	public List<GameObject> Buttons;
 	GameObject clickedButton;
 	Text clickedButtonText;
@@ -36,8 +37,19 @@ public class Alarm_Keypad : MonoBehaviour {
 		alarmMan = gameObject.GetComponent<AlarmManager> ();
 		canvas = GameObject.Find ("CanvasManager").GetComponent<CanvasManager> ().canvas;
 
+		buttonParent = new GameObject("ButtonParent");
+		buttonParent.transform.parent = canvas.transform;
+		buttonParent.transform.position = canvas.transform.position;
+
 		KeypadSetup ();
 		SetNumbers ();
+		SetupButtons();
+
+	}
+
+
+	void Start() {
+		//SetupButtons();
 	}
 
 
@@ -47,16 +59,23 @@ public class Alarm_Keypad : MonoBehaviour {
 		padCam.enabled = true;
 		mainCam.enabled = false;
 
-		foreach (var button in Buttons) {
-			button.SetActive (true);
-		}
+		buttonParent.SetActive(true);
+
+		SetNumbers();
+		AssignGuessesToButtons(false);
+
+		attemptsLeft = 4;
+
+		//foreach (var button in Buttons) {
+		//	button.SetActive (true);
+		//}
 	}
 
 
-	void Start () {
-		SetupButtons ();
+	private void OnDisable() {
+
 	}
-	
+
 
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Q)) {
@@ -155,39 +174,60 @@ public class Alarm_Keypad : MonoBehaviour {
 
 	void SetupButtons () {
 		//print ("Populating Buttons array");
-		Vector3 buttPos = new Vector3 (150f, 450f, 0f);
+		Vector3 buttPos = new Vector3 (/*about -384f at 1080p resolution*/-canvas.GetComponent<RectTransform>().rect.width * .2f, 200f, 0f);
 		int buttonsInLine = 0;
 
 		foreach (var guess in guesses) {
-			button = Instantiate (button, canvas.transform);
-			Button buttonComp = button.GetComponent<Button> ();
-			RectTransform buttRect = button.GetComponent<RectTransform> ();
+			GameObject newButton = Instantiate (buttonPrefab, buttonParent.transform);
+			Button buttonComp = newButton.GetComponent<Button> ();
+			RectTransform buttRect = newButton.GetComponent<RectTransform> ();
 
-			Buttons.Add (button);
+			Buttons.Add (newButton);
 
-			buttRect.position = buttPos;
+			buttRect.position = buttonParent.transform.position + buttPos;
 			buttonsInLine++;
 
 			if (buttonsInLine >= 6) {
-				buttPos.x = 150;
-				buttPos.y -= 70f;
+				buttPos.x = -canvas.GetComponent<RectTransform>().rect.width * .2f;
+				buttPos.y -= 100f;
 				buttonsInLine = 0;
 			} else {
-				buttPos.x += 100f;
+				buttPos.x += 150f;
 			}
 			//print ("Button positions set");
 		}
 
-		foreach (var button in Buttons) {
-			button.GetComponent<Button> ().onClick.AddListener (ClickButton);
-			int assignedGuess = (Random.Range (0, guesses.Count));
-			Text buttonText = button.GetComponentInChildren<Text> ();
-			buttonText.text = guesses [assignedGuess];
-			guesses.RemoveAt (assignedGuess);
+		AssignGuessesToButtons(true);
+	
+		//print ("Button setup complete");
+
+		buttonParent.SetActive(false);
+	}
+
+
+	void AssignGuessesToButtons (bool isThisTheInitialSetup) {
+		foreach (var thisButton in Buttons) {
+			if (isThisTheInitialSetup) {
+				thisButton.GetComponent<Button>().onClick.AddListener(ClickButton);
+			}
+			int assignedGuess = (Random.Range(0, guesses.Count));
+			Text buttonText = thisButton.GetComponentInChildren<Text>();
+			buttonText.text = guesses[assignedGuess];
+			guesses.RemoveAt(assignedGuess);
 
 			//print ("Guess applied to button");
 		}
-		//print ("Button setup complete");
+	}
+
+
+	void ClearButtons() {
+		foreach (var thisButton in Buttons) {
+			//thisButton.GetComponent<Button>().onClick.AddListener(ClickButton);
+			Text buttonText = thisButton.GetComponentInChildren<Text>();
+			buttonText.text = "";
+
+			//print ("Guess applied to button");
+		}
 	}
 
 
@@ -197,13 +237,11 @@ public class Alarm_Keypad : MonoBehaviour {
 			clickedButtonText = clickedButton.GetComponent<Button> ().GetComponentInChildren<Text> ();
 			if (clickedButtonText.text == correctGuess) {
 				clickedButtonText.text = "<color=green>" + clickedButtonText.text + "</color>";
-				Debug.Log ("You guessed right. YOU WIN");
 				padStat = padStatus.solved;
 			} else {
 				Debug.Log ("You guessed wrong");
 				attemptsLeft--;
 				if (attemptsLeft <= 0) {
-					Debug.Log ("You lose");
 					padStat = padStatus.failed;
 				} else {
 					CompareDigits ();
@@ -214,6 +252,8 @@ public class Alarm_Keypad : MonoBehaviour {
 
 
 	void CompareDigits () {
+
+//TODO This could probably be made much simpler with a for/foreach loop
 		int correctlyPlacedDigits = 0;
 
 		string guessDigit1 = clickedButtonText.text.Substring (0, 1);
@@ -257,33 +297,43 @@ public class Alarm_Keypad : MonoBehaviour {
 
 
 	void Solved () {
-		foreach (var button in Buttons) {
-			Destroy (button);
-		}
-		Destroy (keypad);
+		//foreach (var button in Buttons) {
+		//	Destroy (button);
+		//}
+
+		//Destroy(buttonParent);
+		//Destroy (keypad);
+		buttonParent.SetActive(false);
 		padCam.enabled = false;
 		mainCam.enabled = true;
 		alarmMan.bStat = AlarmManager.boxStatus.solved;
-		Destroy (this);
+		Debug.Log("You guessed right. Lasers disabled");
+
+		//Destroy(this);
+		this.enabled = false;
 	}
 
 
 	void Failed () {
-		foreach (var button in Buttons) {
-			Destroy (button);
-		}
+		//foreach (var button in Buttons) {
+		//	Destroy (button);
+		//}
+		Destroy(buttonParent);
 		Destroy (keypad);
 		padCam.enabled = false;
 		mainCam.enabled = true;
 		alarmMan.bStat = AlarmManager.boxStatus.failed;
-		Destroy (this);
+		Debug.Log("You failed to guess the right keypad combo. Get out NOW!");
+
+		Destroy(this);
 	}
 
 
 	void Unsolved () {
-		foreach (var button in Buttons) {
-			button.SetActive (false);
-		}
+		//foreach (var button in Buttons) {
+		//	button.SetActive (false);
+		//}
+		buttonParent.SetActive(false);
 		padCam.enabled = false;
 		mainCam.enabled = true;
 		alarmMan.bStat = AlarmManager.boxStatus.unsolved;

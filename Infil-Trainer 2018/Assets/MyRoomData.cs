@@ -17,8 +17,9 @@ public class MyRoomData : MonoBehaviour {
 	public bool hasLasers;
 
 	public List<GameObject> myLevel1Children;
-	[SerializeField] List<GameObject> myFloorTiles;
-	[SerializeField] List<GameObject> myWallTiles;
+	public GameObject[] myLaserSpawnSurfaces;
+	public List<GameObject> myFloorTiles;
+	public List<GameObject> myWallTiles;
 	[SerializeField] List<GameObject> myCeilingTiles;
 	public List<GameObject> myDoorways;
 	[SerializeField] List<GameObject> myDoors;

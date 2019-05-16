@@ -5,7 +5,7 @@ using UnityEngine;
 public class Puzzle_GlassCutter : MonoBehaviour {
 
 	PuzzleManager puzzMan;
-	Camera mainCam;
+	[SerializeField] Camera mainCam;
 
 	[SerializeField] GameObject glass;
 	[SerializeField] GameObject line;
@@ -30,25 +30,29 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 
 	void Awake () {
 		puzzMan = gameObject.GetComponentInParent<PuzzleManager> ();
-		mainCam = GameObject.FindWithTag ("MainCamera").GetComponent<Camera> ();
+
 
 		GlassSetup ();
 		LineSetup ();
-		GlassCamera ();
 	}
 
 
 	void OnEnable () {
 		puzzState = puzzleState.cutting;
+
+		mainCam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+		GlassCamera();
 		mainCam.enabled = false;
 		camCom.enabled = true;
 	}
 
 
 	void Start () {
-		
+		//mainCam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+		GlassCamera();
+
 	}
-	
+
 
 	void Update () {
 		if (puzzState == puzzleState.cutting) {
@@ -70,11 +74,11 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 	void GlassSetup () {
 		Vector3 puzzleOffset = new Vector3 (0.0f, -100.0f, 0.0f);
 		if (GameObject.Find ("GlassPane") != null) {
-			puzzleOffset.x += 5.0f;
+			//puzzleOffset.x += 5.0f;
 			puzzleOffset.y -= 10.0f * timesFailed;
 		}
 
-		glass = Instantiate (glass, puzzleOffset, Quaternion.identity, transform);
+		glass = Instantiate (glass, transform.position + puzzleOffset, Quaternion.identity, transform);
 		glass.name = "GlassPane";
 	}
 
@@ -93,18 +97,24 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 
 
 	Camera GlassCamera () {
-		glassCam = new GameObject ();
-		glassCam.name = "GlassCam";
-		camCom = glassCam.AddComponent<Camera>();
-		camCom.CopyFrom (mainCam);
-		camCom.transform.rotation = Quaternion.FromToRotation (mainCam.transform.rotation.eulerAngles, Vector3.zero);
+		if (glassCam == null) {
+			glassCam = new GameObject();
+			glassCam.name = "GlassCam";
+			camCom = glassCam.AddComponent<Camera>();
+			camCom.CopyFrom(mainCam);
+			camCom.transform.rotation = Quaternion.FromToRotation(mainCam.transform.rotation.eulerAngles, Vector3.zero);
 
-		glassCam.transform.position = glass.transform.position + Vector3.back * 0.1f;
-		glassCam.transform.parent = glass.transform;
+			glassCam.transform.position = glass.transform.position + Vector3.back * 0.1f;
+			glassCam.transform.parent = glass.transform;
 
-		camCom.enabled = false;
+			camCom.enabled = false;
 
-		return camCom;
+			return camCom;
+		}
+		else {
+			return camCom;
+		}
+		
 	}
 
 

@@ -18,6 +18,8 @@ TagManager:
   - LaserReceiver
   - LaserBeam
   - InnerWall
+  - UICanvas
+  - LevelManager
   layers:
   - Default
   - TransparentFX

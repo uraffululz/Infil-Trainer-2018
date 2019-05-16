@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class PuzzleManager : MonoBehaviour {
 
+	LevelManager levMan;
 	CanvasManager cMan;
+	AlarmManager alarmMan;
 
 	PlayerMove pMove;
 
-	LaserParent lasPar;
+	//LaserManager lasPar;
 	string isTimerActive;
 
 	public enum puzzleState {dormant, inProgress, unsolved, solved, failed};
@@ -18,11 +20,14 @@ public class PuzzleManager : MonoBehaviour {
 	public enum whichPuzzle {glassCutter, pressurePlate};
 	public whichPuzzle puzzleChoice;
 
+	int myWorth = 1000;
+
 
 	void Awake () {
+		levMan = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
 		cMan = GameObject.Find ("CanvasManager").GetComponent<CanvasManager> ();
-		pMove = GameObject.Find ("Player").GetComponent<PlayerMove> ();
-		lasPar = GameObject.Find ("LaserParent").GetComponent<LaserParent> ();
+
+		//lasPar = transform.parent.GetComponent<LaserManager>();
 
 		//Choose which puzzle is attached to the Display Case
 		puzzleInt = Random.Range (0, 1);
@@ -34,13 +39,19 @@ public class PuzzleManager : MonoBehaviour {
 	}
 
 
+	void Start() {
+		pMove = GameObject.Find("Player").GetComponent<PlayerMove>();
+		alarmMan = transform.parent.parent.Find("AlarmBox").GetComponent<AlarmManager>();
+	}
+
+
 	void OnEnable () {
 		solveState = puzzleState.inProgress;
 
 		//Get the current state of the Laser Countdown Timer (to return to later),
 		//then deactivate it while the player tries to solve the puzzle
-		isTimerActive = lasPar.timerState.ToString();
-		lasPar.timerState = LaserParent.TimerOn.timerDeactivated;
+		isTimerActive = LevelManager.timerState.ToString();
+		LevelManager.timerState = LevelManager.TimerOn.timerDeactivated;
 		//print (isTimerActive);//This is just the last part, either "timerActivated" or "timerDeactivated"
 
 		if (puzzleChoice == whichPuzzle.glassCutter) {
@@ -50,11 +61,6 @@ public class PuzzleManager : MonoBehaviour {
 		}
 	}
 
-
-	void Start () {
-		
-	}
-	
 
 	void Update () {
 		//While the player is trying to solve the puzzle...
@@ -66,17 +72,21 @@ public class PuzzleManager : MonoBehaviour {
 				print ("Puzzle Left Unsolved");
 				this.enabled = false;
 			} else if (solveState == puzzleState.solved) {
-				cMan.score += 1000;
+				cMan.AddToScore(myWorth);
+				//alarmMan.alarmsLeft--;
+				//alarmMan.AreAllAlarmsDisabled();
 				Destroy (this);
 			} else if (solveState == puzzleState.failed) {
-				lasPar.timerState = LaserParent.TimerOn.timerActivated;
-				Destroy (this);
+				LevelManager.timerState = LevelManager.TimerOn.timerActivated;
+				//alarmMan.alarmsLeft--;
+				//alarmMan.AreAllAlarmsDisabled();
+				Destroy(this);
 			}
 
 			pMove.allowMove = true;
 
 			if (isTimerActive == "timerActivated") {
-				lasPar.timerState = LaserParent.TimerOn.timerActivated;
+				LevelManager.timerState = LevelManager.TimerOn.timerActivated;
 			}
 		}
 	

@@ -139,6 +139,8 @@ public class PlayerMove : MonoBehaviour {
 		float reachDist = 0.5f;
 		Debug.DrawRay (transform.position, transform.forward, Color.red);
 
+
+//TODO Change this if-statement fuckery into a switch statement, with each case relative to reachedFor.collider.CompareTag
 		if (Physics.Raycast(reachFor, out reachedFor, reachDist)) {
 			//CHANGE INCLINE
 			if (reachedFor.collider.CompareTag ("Floor") ||
@@ -154,7 +156,7 @@ public class PlayerMove : MonoBehaviour {
 
 					lerping = true;
 
-					print ("Current Surface: " + currentSurface);
+					//print ("Current Surface: " + currentSurface);
 				}
 			}
 			//OPEN DOORS
@@ -174,17 +176,20 @@ public class PlayerMove : MonoBehaviour {
 				if (Input.GetKeyDown(KeyCode.E)) {
 					if (reachedFor.collider.gameObject.GetComponent<PuzzleManager> () != null) {
 						reachedFor.collider.gameObject.GetComponent<PuzzleManager> ().enabled = true;
-						print ("The display case is open");
+						//print ("The display case is open");
 					}
 				}
 			}
 			//OPEN THE ALARM BOX
 			else if (reachedFor.collider.CompareTag("AlarmBox")) {
-				print ("Press E key to open Alarm Box");
-				if (Input.GetKeyDown(KeyCode.E)) {
-					if (reachedFor.collider.gameObject.GetComponent<AlarmManager>() != null) {
-						reachedFor.collider.gameObject.GetComponent<AlarmManager> ().enabled = true;
-						print ("The Alarm Box is open");
+				if (reachedFor.collider.GetComponent<AlarmManager>() != null) {
+					AlarmManager alarmMan = reachedFor.collider.GetComponent<AlarmManager>();
+					if (!alarmMan.lasersAlreadyDisabled || LevelManager.timerState == LevelManager.TimerOn.timerActivated) {
+						print("Press E key to open Alarm Box");
+						if (Input.GetKeyDown(KeyCode.E)) {
+								reachedFor.collider.gameObject.GetComponent<AlarmManager>().enabled = true;
+								//print ("The Alarm Box is open");
+						}
 					}
 				}
 			}

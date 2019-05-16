@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class LaserBeam : MonoBehaviour {
 
-	RoomBuilder roomBuild;
-	LaserManager laserMngr;
+	LevelManager levelManager;
+	MyRoomData roomData;
+	//LaserManager laserMngr;
+
+	bool laserActivated = false;
 
 
 	void Awake () {
-		roomBuild = GameObject.Find ("LevelManager").GetComponent<RoomBuilder> ();
-		laserMngr = gameObject.GetComponentInParent<LaserManager>();
+		levelManager = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
+		roomData = transform.parent.GetComponentInParent<MyRoomData>();
+		//laserMngr = transform.parent.GetComponentInParent<LaserManager>();
 	}
 
 
@@ -26,10 +30,9 @@ public class LaserBeam : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
 		if (other.gameObject.tag == "Player") {
-			//if (roomBuild.buildProgress == RoomBuilder.BuildingStates.done) {
-			//	laserMngr.timerState = LaserParent.TimerOn.timerActivated;
-				print ("Laser Countdown timer Activated");
-			//}
+			if (roomData.myBuildState == MyRoomData.myRoomBuildState.finished && laserActivated == false && LevelManager.timerState == LevelManager.TimerOn.timerDeactivated) {
+				LevelManager.timerState = LevelManager.TimerOn.timerActivated;
+			}
 		}
 	}
 }

@@ -13,14 +13,15 @@ public class LevelBuilder : MonoBehaviour {
 	Quaternion currentRoomSpawnRot;
 
 	//Player Variables
-	[SerializeField] GameObject player;
+	GameObject player;
+	[SerializeField] GameObject playerPrefab;
 
 
 	void Awake() {
 		maxRoomNum = Random.Range(3, 5);
 		//print(maxRoomNum);
 		SpawnRooms();
-		//SpawnPlayer();
+		SpawnPlayer();
 		
 	}
 
@@ -80,8 +81,28 @@ public class LevelBuilder : MonoBehaviour {
 
 
 	void SpawnPlayer() {
+		//		Vector3 playerPos = new Vector3 (roomBuild.roomWidth / 2, 0.0f, 0.0f);
 		Vector3 playerPos = new Vector3(0, 0.5f, 0.5f);
 
-		GameObject Player = Instantiate(player, playerPos, Quaternion.identity);
+		player = Instantiate(playerPrefab, playerPos, Quaternion.identity);
+		player.name = "Player";
+		//fillerPositions.Add(playerPos);
+		//beamBlockers.Add(player.GetComponent<CapsuleCollider>());
+
+		player.GetComponent<MeshRenderer>().material.color = Color.blue;
+
+		//Setup Main Camera
+//TODO Make sure the camera's view adjusts to any changes in aspect ratio or scaling
+		GameObject camEmpty = new GameObject();
+		camEmpty.name = "CamEmpty";
+		Vector3 camOffset = new Vector3(0.0f, 0.3f, 0.0f);
+		camEmpty.transform.position = player.transform.position + camOffset;
+		camEmpty.transform.parent = player.transform;
+		Camera playCam = camEmpty.AddComponent<Camera>();
+		playCam.tag = "MainCamera";
+		playCam.clearFlags = CameraClearFlags.SolidColor;
+		playCam.backgroundColor = Color.black;
+		playCam.nearClipPlane = 0.001f;
+
 	}
 }

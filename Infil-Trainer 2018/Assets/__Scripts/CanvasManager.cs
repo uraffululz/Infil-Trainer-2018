@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CanvasManager : MonoBehaviour {
 
 	public GameObject canvas;
+	[SerializeField] Text scoreText;
 
-	public int score = 0;
+	[SerializeField] int score = 0;
 
 
 	void Awake () {
-		canvas = Instantiate (canvas, gameObject.transform) as GameObject;
+		canvas = transform.GetChild(0).gameObject;
 	}
 
 
@@ -21,5 +23,11 @@ public class CanvasManager : MonoBehaviour {
 
 	void Update () {
 		
+	}
+
+
+	public void AddToScore (int scoreIncrease){
+		score += scoreIncrease;
+		scoreText.text = ("Score: " + score);
 	}
 }

@@ -107,6 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4715482360610248}
   - component: {fileID: 114282345708813516}
+  - component: {fileID: 114022744761253078}
   m_Layer: 0
   m_Name: Room_Hallway_3x7
   m_TagString: Untagged
@@ -5696,6 +5697,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2.1, z: 2}
   m_Center: {x: 0, y: 1.0000002, z: 0}
+--- !u!114 &114022744761253078
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1098990584609588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37b0bab9c2b66504cba94970aa3425c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fillerPositions: []
+  displayCase: {fileID: 1019503140502428, guid: 489ffc9d725e89e43911eceb11e1cf39,
+    type: 2}
+  alarmBox: {fileID: 1164369734231726, guid: d4dd8aa29509fd84fa4ba3ba5b2e19a5, type: 2}
+  pickupPrefabs:
+  - {fileID: 1843121861173164, guid: 5dd61b6d40d545049bbf2d1eddef85b0, type: 2}
+  - {fileID: 1634484507172452, guid: 1ddafeeeb73f0314ebd402a3b7ceaf2a, type: 2}
 --- !u!114 &114282345708813516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5716,6 +5735,13 @@ MonoBehaviour:
   hasPickups: 0
   hasLasers: 0
   myLevel1Children: []
+  myLaserSpawnSurfaces:
+  - {fileID: 1601347541369682}
+  - {fileID: 1485222016217998}
+  - {fileID: 1557404726019536}
+  - {fileID: 1005319677537130}
+  - {fileID: 1935168549142322}
+  - {fileID: 1381968774992244}
   myFloorTiles: []
   myWallTiles: []
   myCeilingTiles: []
