@@ -14,5 +14,4 @@ public class RoomStats : ScriptableObject {
 	public bool allowPickups;
 
 	public bool allowLasers;
-
 }

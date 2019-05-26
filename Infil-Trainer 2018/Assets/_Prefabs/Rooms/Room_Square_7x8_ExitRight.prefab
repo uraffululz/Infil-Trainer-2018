@@ -12774,6 +12774,12 @@ MonoBehaviour:
   hasWallTreasure: 0
   hasPickups: 0
   hasLasers: 0
+  laserParent: {fileID: 1801989295165072, guid: cc01f43ce11fa5d4ba0a68e7d391f8ce,
+    type: 2}
+  laserNode: {fileID: 1173726870093432, guid: 7175d1f21376c714c8a5efe6706e95fb, type: 2}
+  laserReceiver: {fileID: 1696385497606274, guid: 4efa749774d466a4e92974f6d5645d24,
+    type: 2}
+  laserBeam: {fileID: 1288137231748604, guid: 75dee6232d957214ba4c734fd854c786, type: 2}
   myLevel1Children: []
   myLaserSpawnSurfaces:
   - {fileID: 1496283509768336}

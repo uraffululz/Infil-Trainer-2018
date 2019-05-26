@@ -16,11 +16,11 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 	public List<GameObject> cutSegments = new List<GameObject> () {};
 	public List<GameObject> crackedSegments = new List<GameObject> () {};
 
-	GameObject glassCam;
-	Camera camCom;
+	GameObject glassCamEmpty;
+	[SerializeField] Camera glassCam;
 
-	public float cutTimer = 0.5f;
-	public float crackTimer = -0.5f;
+	[SerializeField] float cutTimer = 0.5f;
+	[SerializeField] float crackTimer = -0.5f;
 
 	int timesFailed = 0;
 
@@ -30,27 +30,21 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 
 	void Awake () {
 		puzzMan = gameObject.GetComponentInParent<PuzzleManager> ();
+		mainCam = Camera.main;
 
-
-		GlassSetup ();
-		LineSetup ();
+		GlassSetup();
+		LineSetup();
+		GlassCameraSetup();
 	}
 
 
 	void OnEnable () {
 		puzzState = puzzleState.cutting;
 
-		mainCam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
-		GlassCamera();
-		mainCam.enabled = false;
-		camCom.enabled = true;
-	}
-
-
-	void Start () {
-		//mainCam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
-		GlassCamera();
-
+		//if (mainCam != null && glassCam != null) {
+			mainCam.enabled = false;
+			glassCam.enabled = true;
+		//}
 	}
 
 
@@ -71,6 +65,7 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 		}
 	}
 
+
 	void GlassSetup () {
 		Vector3 puzzleOffset = new Vector3 (0.0f, -100.0f, 0.0f);
 		if (GameObject.Find ("GlassPane") != null) {
@@ -78,49 +73,41 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 			puzzleOffset.y -= 10.0f * timesFailed;
 		}
 
-		glass = Instantiate (glass, transform.position + puzzleOffset, Quaternion.identity, transform);
+		glass = Instantiate (GetComponent<PuzzleManager>().glassPane, transform.position + puzzleOffset, Quaternion.identity, transform);
 		glass.name = "GlassPane";
 	}
 
 
 	void LineSetup () {
 		for (int i = 0; i < lineNum; i++) {
-			line = Instantiate (line, glass.transform.position + (Vector3.up * 0.045f), Quaternion.identity, glass.transform);
+			line = Instantiate (GetComponent<PuzzleManager>().glassLine, glass.transform.position + (Vector3.up * 0.045f), Quaternion.identity, glass.transform);
 			line.GetComponent<MeshRenderer> ().material.color = Color.gray;
 			line.name = "GlassLine";
 			lineSegments.Add (line);
 			line.transform.RotateAround (glass.transform.position, Vector3.forward, segAngle);
-			segAngle += 30.0f;
+			segAngle += 30.0f /*360-degrees/lineNum*/;
 		}
-		//print (lineSegments.Count);
 	}
 
 
-	Camera GlassCamera () {
-		if (glassCam == null) {
-			glassCam = new GameObject();
-			glassCam.name = "GlassCam";
-			camCom = glassCam.AddComponent<Camera>();
-			camCom.CopyFrom(mainCam);
-			camCom.transform.rotation = Quaternion.FromToRotation(mainCam.transform.rotation.eulerAngles, Vector3.zero);
+	void GlassCameraSetup () {
+			glassCamEmpty = new GameObject();
+			glassCamEmpty.name = "GlassCam";
+			glassCam = glassCamEmpty.AddComponent<Camera>();
+			glassCam.CopyFrom(mainCam);
+			glassCam.farClipPlane = .11f;
+			glassCam.transform.rotation = Quaternion.FromToRotation(mainCam.transform.rotation.eulerAngles, Vector3.zero);
 
-			glassCam.transform.position = glass.transform.position + Vector3.back * 0.1f;
-			glassCam.transform.parent = glass.transform;
+			glassCamEmpty.transform.position = glass.transform.position + Vector3.back * 0.1f;
+			glassCamEmpty.transform.parent = glass.transform;
 
-			camCom.enabled = false;
-
-			return camCom;
-		}
-		else {
-			return camCom;
-		}
-		
+			glassCam.enabled = false;
 	}
 
 
 	void Cutting () {
-		if (glassCam.GetComponent<Camera> () != null && Input.mousePosition != null) {
-			Ray cutter = glassCam.GetComponent<Camera> ().ScreenPointToRay (Input.mousePosition);
+		if (glassCamEmpty.GetComponent<Camera> () != null && Input.mousePosition != null) {
+			Ray cutter = glassCamEmpty.GetComponent<Camera> ().ScreenPointToRay (Input.mousePosition);
 			RaycastHit cutHit;
 
 			if (Physics.Raycast (cutter, out cutHit, 10)) {
@@ -202,7 +189,7 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 
 
 	void GlassUnsolved () {
-		camCom.enabled = false;
+		glassCam.enabled = false;
 		mainCam.enabled = true;
 		puzzMan.solveState = PuzzleManager.puzzleState.unsolved;
 		this.enabled = false;
@@ -216,7 +203,7 @@ public class Puzzle_GlassCutter : MonoBehaviour {
 		}
 
 		mainCam.enabled = false;
-		camCom.enabled = true;
+		glassCam.enabled = true;
 
 		cutTimer = 0.5f;
 	}

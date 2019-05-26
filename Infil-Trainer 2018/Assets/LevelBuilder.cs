@@ -6,36 +6,28 @@ public class LevelBuilder : MonoBehaviour {
 
 	//Room Building Variables
 	int maxRoomNum;
-	public int currentRoomNum = 0;
 	GameObject currentRoomObject;
 	[SerializeField] GameObject[] roomArray;
 	Vector3 currentRoomSpawnPoint;
 	Quaternion currentRoomSpawnRot;
 
 	//Player Variables
-	GameObject player;
+	[Header("Player Variables")]
 	[SerializeField] GameObject playerPrefab;
+	GameObject player;
+	
 
 
 	void Awake() {
 		maxRoomNum = Random.Range(3, 5);
-		//print(maxRoomNum);
 		SpawnRooms();
-		SpawnPlayer();
-		
-	}
-
-	void Start () {
-		
-	}
-
-
-	void Update () {
-		
 	}
 
 
 	void SpawnRooms () {
+//TOPOSSIBLYDO Pull the spawned rooms from 3 (or more) different lists, depending on their placement,
+//i.e. StartRooms, MidRooms, EndRooms
+//That way, I can set each up with the correct entry/exit doors, make sure the player doesn't start in a hallway/stairway(maybe), etc.
 		for (int rS = 0 /* or currentRoomNum*/; rS <= maxRoomNum; rS++) {
 			//When placing the first room
 			if (rS == 0) {
@@ -59,50 +51,29 @@ public class LevelBuilder : MonoBehaviour {
 				Transform prevRoom = currentRoomObject.transform.Find("ExitWallParent");
 				currentRoomSpawnPoint = prevRoom.transform.position + prevRoom.transform.forward * 0.06f;
 				currentRoomSpawnRot = prevRoom.transform.rotation;
-
 			}
 
+			//Spawn the new room with the designated position/rotation
 			GameObject newRoom = Instantiate(roomArray[Random.Range(0, roomArray.Length)], currentRoomSpawnPoint, currentRoomSpawnRot, this.transform);
-			SpawnLaserParent(newRoom);
-
-
+			
+			//Use the newly-spawned room as a reference to place the next
 			currentRoomObject = newRoom;
-			//currentRoomNum++;
+
+			if (rS == maxRoomNum) {
+				CreateWinBox();
+			}
 		}
 	}
 
 
-	void SpawnLaserParent(GameObject myRoom) {
-		GameObject laserParent = new GameObject();
-		laserParent.name = "LaserParent";
-		laserParent.transform.parent = myRoom.transform;
-		laserParent.AddComponent<LaserManager>();
-	}
+	void CreateWinBox() {
+		//Place the level exit (win-box) beyond the final room's exit
+		Transform prevRoom = currentRoomObject.transform.Find("ExitWallParent");
 
+		GameObject winBox = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		winBox.transform.position = prevRoom.position /*+ (prevRoom.forward * 1f)*/;
 
-	void SpawnPlayer() {
-		//		Vector3 playerPos = new Vector3 (roomBuild.roomWidth / 2, 0.0f, 0.0f);
-		Vector3 playerPos = new Vector3(0, 0.5f, 0.5f);
-
-		player = Instantiate(playerPrefab, playerPos, Quaternion.identity);
-		player.name = "Player";
-		//fillerPositions.Add(playerPos);
-		//beamBlockers.Add(player.GetComponent<CapsuleCollider>());
-
-		player.GetComponent<MeshRenderer>().material.color = Color.blue;
-
-		//Setup Main Camera
-//TODO Make sure the camera's view adjusts to any changes in aspect ratio or scaling
-		GameObject camEmpty = new GameObject();
-		camEmpty.name = "CamEmpty";
-		Vector3 camOffset = new Vector3(0.0f, 0.3f, 0.0f);
-		camEmpty.transform.position = player.transform.position + camOffset;
-		camEmpty.transform.parent = player.transform;
-		Camera playCam = camEmpty.AddComponent<Camera>();
-		playCam.tag = "MainCamera";
-		playCam.clearFlags = CameraClearFlags.SolidColor;
-		playCam.backgroundColor = Color.black;
-		playCam.nearClipPlane = 0.001f;
-
+		winBox.GetComponent<BoxCollider>().isTrigger = true;
+		winBox.AddComponent<WinBox>();
 	}
 }

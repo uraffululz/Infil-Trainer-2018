@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,9 @@ public class MyRoomData : MonoBehaviour {
 	public bool hasPickups;
 
 	public bool hasLasers;
+	public GameObject laserNode;
+	public GameObject laserReceiver;
+	public GameObject laserBeam;
 
 	public List<GameObject> myLevel1Children;
 	public GameObject[] myLaserSpawnSurfaces;
@@ -29,9 +33,22 @@ public class MyRoomData : MonoBehaviour {
 	public enum myRoomBuildState {building, finished};
 	public myRoomBuildState myBuildState;
 
+
+
 	void Awake() {
 		myBuildState = myRoomBuildState.building;
 
+		RetrieveStatsFromScriptableObject();
+		PopulateMyRoomLists();
+
+		//If the room is allowed to have lasers, then spawn their governing LaserParent
+		if (hasLasers) {
+			SpawnLaserParent();
+		}
+	}
+
+
+	void RetrieveStatsFromScriptableObject() {
 		myWidth = myStats.roomWidth;
 		myDepth = myStats.roomDepth;
 		myHeight = myStats.roomHeight;
@@ -41,7 +58,10 @@ public class MyRoomData : MonoBehaviour {
 		hasPickups = myStats.allowPickups;
 
 		hasLasers = myStats.allowLasers;
+	}
 
+
+	void PopulateMyRoomLists() {
 		int numberOfChildren = gameObject.transform.childCount;
 
 		for (int c = 0; c < numberOfChildren; c++) {
@@ -62,7 +82,7 @@ public class MyRoomData : MonoBehaviour {
 				else if (groupParent.transform.GetChild(i).CompareTag("Doorway")) {
 					myDoorways.Add(groupParent.transform.GetChild(i).gameObject);
 				}
-//ACTUALLY, this will need to check the next level down, if the door is a child of the doorway
+				//ACTUALLY, this will need to check the next level down, if the door is a child of the doorway
 				else if (groupParent.transform.GetChild(i).CompareTag("Door")) {
 					myDoors.Add(groupParent.transform.GetChild(i).gameObject);
 				}
@@ -72,16 +92,17 @@ public class MyRoomData : MonoBehaviour {
 				beamBlockers.Add(groupParent);
 			}
 		}
-
+		
 		foreach (GameObject doorway in myDoorways) {
 			beamBlockers.Add(doorway);
 		}
-
 	}
 
 
-	void Start() {
-		//beamBlockers.Add(GameObject.FindGameObjectWithTag("Player"));
-
+	void SpawnLaserParent() {
+		GameObject laserParent = new GameObject();
+		laserParent.name = "LaserParent";
+		laserParent.transform.parent = transform;
+		laserParent.AddComponent<LaserManager>();
 	}
 }

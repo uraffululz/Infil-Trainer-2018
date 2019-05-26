@@ -1,12 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour {
+
+	LevelManager levMan;
 	GameObject rotControl;
 	Transform camObject;
 	Rigidbody rb;
+
+	[SerializeField] Text actionText;
+
+	[SerializeField] bool reachedNothing = true;
 
 	public bool allowMove = true;
 
@@ -19,15 +26,13 @@ public class PlayerMove : MonoBehaviour {
 	float rotTimeToNewSurface = 0f;
 
 
-	void Awake () {
-		
-	}
-
 
 	void Start () {
-//TODO Alternatively, I could just make this camera a component of the player GameObject, if I can keep its vertical offset
 		camObject = transform.GetChild (0);
 		rb = gameObject.GetComponent<Rigidbody> ();
+		levMan = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+
+		//actionText = GameObject.Find("ActionText").GetComponent<Text>();
 
 		myStance = Stances.standing;
 
@@ -39,25 +44,31 @@ public class PlayerMove : MonoBehaviour {
 	
 
 	void Update () {
-		Ray reachForward = new Ray (transform.position, transform.forward);
-
 		if (allowMove) {
-			Rotate();
-
 			if (myStance == Stances.standing) {
 				Move (2.0f * Time.deltaTime);
 			} else if (myStance == Stances.crawling) {
 				Move (0.5f * Time.deltaTime);
 			}
+
+			Rotate();
 			ChangeStance();
-			ChangeIncline(reachForward);
+			ReachingRaycast();
 
 			if (lerping) {
 				StickToSurface();
+			}
 
+			if (reachedNothing == false) {
+				actionText.gameObject.SetActive(true);
+			}
+			else {
+				actionText.gameObject.SetActive(false);
+				actionText.text = "";
 			}
 		}
 	}
+
 
 	void OnCollisionEnter (Collision dat) {
 		if (dat.collider.gameObject.name == "LevelEnd") {
@@ -75,14 +86,13 @@ public class PlayerMove : MonoBehaviour {
 
 
 	void Rotate () {
-		if (Input.mousePosition != null &&
-			Input.mousePosition.x > 0.0f && Input.mousePosition.x < camObject.GetComponent<Camera> ().pixelWidth
-		    && Input.mousePosition.y > 0.0f && Input.mousePosition.y < camObject.GetComponent<Camera> ().pixelHeight) {
+		if (Input.mousePosition != null && Input.mousePosition.x > 0.0f && Input.mousePosition.x < camObject.GetComponent<Camera> ().pixelWidth
+			&& Input.mousePosition.y > 0.0f && Input.mousePosition.y < camObject.GetComponent<Camera> ().pixelHeight) {
 
-			if (Input.mousePosition.x <= camObject.GetComponent<Camera> ().pixelWidth * 0.3f) {
+			if (Input.mousePosition.x <= camObject.GetComponent<Camera> ().pixelWidth * 0.4f) {
 				float rotSpeed = camObject.GetComponent<Camera> ().pixelWidth / Input.mousePosition.x;
 				transform.Rotate (-Vector3.up * rotSpeed * Time.deltaTime);
-			} else if (Input.mousePosition.x >= camObject.GetComponent<Camera> ().pixelWidth * 0.7f) {
+			} else if (Input.mousePosition.x >= camObject.GetComponent<Camera> ().pixelWidth * 0.6f) {
 				float rotSpeed = camObject.GetComponent<Camera> ().pixelWidth / (camObject.GetComponent<Camera>().pixelWidth - Input.mousePosition.x);
 				transform.Rotate (Vector3.up * rotSpeed * Time.deltaTime);
 			}
@@ -90,23 +100,20 @@ public class PlayerMove : MonoBehaviour {
 //TODO Clean up this clamped rotation, to get rid of the jittering at the top and bottom
 			//Look Vertical
 			//Down
-			if (Input.mousePosition.y <= camObject.GetComponent<Camera> ().pixelHeight * 0.3f) {
+			if (Input.mousePosition.y <= camObject.GetComponent<Camera> ().pixelHeight * 0.4f) {
 				float rotSpeed = camObject.GetComponent<Camera> ().pixelHeight / Input.mousePosition.y;
 				camObject.transform.Rotate (Vector3.right * rotSpeed * Time.deltaTime);
-				float camRotxMin = Mathf.Min(camObject.transform.localEulerAngles.x, -90.0f);
-				float camRotxMax = Mathf.Max(camObject.transform.localEulerAngles.x, 90.0f);
-				float camRot = Mathf.Clamp(camObject.transform.localEulerAngles.x, camRotxMin, camRotxMax);
-				camObject.transform.localEulerAngles = new Vector3(camRot, 0f, 0f);
 			}
 			//Up
-			else if (Input.mousePosition.y >= camObject.GetComponent<Camera> ().pixelHeight * 0.7f) {
+			else if (Input.mousePosition.y >= camObject.GetComponent<Camera> ().pixelHeight * 0.6f) {
 				float rotSpeed = camObject.GetComponent<Camera> ().pixelHeight / (camObject.GetComponent<Camera>().pixelHeight - Input.mousePosition.y);
 				camObject.transform.Rotate (-Vector3.right * rotSpeed * Time.deltaTime);
-				float camRotxMin = Mathf.Min(camObject.transform.localEulerAngles.x, -90.0f);
-				float camRotxMax = Mathf.Max(camObject.transform.localEulerAngles.x, 90.0f);
-				float camRot = Mathf.Clamp(camObject.transform.localEulerAngles.x, camRotxMin, camRotxMax);
-				camObject.transform.localEulerAngles = new Vector3(camRot, 0f, 0f);
 			}
+
+			float camRotxMin = Mathf.Min(camObject.transform.localEulerAngles.x, -90.0f);
+			float camRotxMax = Mathf.Max(camObject.transform.localEulerAngles.x, 90.0f);
+			float camRot = Mathf.Clamp(camObject.transform.localEulerAngles.x, camRotxMin, camRotxMax);
+			camObject.transform.localEulerAngles = new Vector3(camRot, 0f, 0f);
 		}
 	}
 
@@ -133,20 +140,29 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 
-	void ChangeIncline (Ray reachFor) {
-		RaycastHit reachedFor;
+	void ReachingRaycast() {
+		Ray reachForward = new Ray(transform.position, transform.forward);
 
+		Debug.DrawRay(transform.position, transform.forward, Color.red);
 		float reachDist = 0.5f;
-		Debug.DrawRay (transform.position, transform.forward, Color.red);
+
+		ChangeIncline(reachForward, reachDist);
+		ActivateObject(reachForward, reachDist);
+	}
 
 
-//TODO Change this if-statement fuckery into a switch statement, with each case relative to reachedFor.collider.CompareTag
-		if (Physics.Raycast(reachFor, out reachedFor, reachDist)) {
+	void ChangeIncline (Ray reachFor, float reachDistance) {
+		RaycastHit reachedFor;
+		
+		if (Physics.Raycast(reachFor, out reachedFor, reachDistance)) {
+			reachedNothing = false;
+
 			//CHANGE INCLINE
-			if (reachedFor.collider.CompareTag ("Floor") ||
-				reachedFor.collider.CompareTag ("Wall") ||
-				reachedFor.collider.CompareTag ("Ceiling")) {
-				print ("Press E key to change incline");
+			if (reachedFor.collider.CompareTag("Floor") ||
+				reachedFor.collider.CompareTag("Wall") ||
+				reachedFor.collider.CompareTag("Ceiling")) {
+				actionText.text = "Press E to change incline";
+				//print("Press E key to change incline");
 
 				if (Input.GetKeyDown(KeyCode.E)) {
 					Physics.gravity = -reachedFor.normal * 9.8f;
@@ -155,70 +171,69 @@ public class PlayerMove : MonoBehaviour {
 					currentSurface = reachedFor.collider.tag;
 
 					lerping = true;
-
-					//print ("Current Surface: " + currentSurface);
 				}
 			}
-			//OPEN DOORS
-			else if (reachedFor.collider.CompareTag ("Door")) {
-				print ("Press E key to open door");
+		}
+		else {
+			reachedNothing = true;
+		}
+	}
 
-				if (Input.GetKeyDown(KeyCode.E)) {
-					if (reachedFor.collider.gameObject.GetComponent<LockManager> () != null) {
-						reachedFor.collider.gameObject.GetComponent<LockManager> ().enabled = true;
-					}
-				}
-			}
-			//OPEN DISPLAY CASES
-			else if (reachedFor.collider.CompareTag ("DisplayCase")) {
-				print ("Press E key to open display case");
 
-				if (Input.GetKeyDown(KeyCode.E)) {
-					if (reachedFor.collider.gameObject.GetComponent<PuzzleManager> () != null) {
-						reachedFor.collider.gameObject.GetComponent<PuzzleManager> ().enabled = true;
-						//print ("The display case is open");
-					}
-				}
-			}
-			//OPEN THE ALARM BOX
-			else if (reachedFor.collider.CompareTag("AlarmBox")) {
-				if (reachedFor.collider.GetComponent<AlarmManager>() != null) {
-					AlarmManager alarmMan = reachedFor.collider.GetComponent<AlarmManager>();
-					if (!alarmMan.lasersAlreadyDisabled || LevelManager.timerState == LevelManager.TimerOn.timerActivated) {
-						print("Press E key to open Alarm Box");
-						if (Input.GetKeyDown(KeyCode.E)) {
-								reachedFor.collider.gameObject.GetComponent<AlarmManager>().enabled = true;
-								//print ("The Alarm Box is open");
+	void ActivateObject(Ray reachRay, float reachDistance) {
+		RaycastHit reachedFor;
+
+		if (Physics.Raycast(reachRay, out reachedFor, reachDistance)) {
+			reachedNothing = false;
+
+			switch (reachedFor.collider.tag) {
+				case "Door":
+					actionText.text = "Press E to open door";
+					//print("Press E key to open door");
+
+					if (Input.GetKeyDown(KeyCode.E)) {
+						if (reachedFor.collider.gameObject.GetComponent<LockManager>() != null) {
+							reachedFor.collider.gameObject.GetComponent<LockManager>().enabled = true;
 						}
 					}
-				}
+					break;
+				case "DisplayCase":
+					actionText.text = "Press E to open display case";
+
+					//print("Press E key to open display case");
+
+					if (Input.GetKeyDown(KeyCode.E)) {
+						if (reachedFor.collider.gameObject.GetComponent<PuzzleManager>() != null) {
+							reachedFor.collider.gameObject.GetComponent<PuzzleManager>().enabled = true;
+						}
+					}
+					break;
+				case "AlarmBox":
+					if (reachedFor.collider.GetComponent<AlarmManager>() != null) {
+						if (!reachedFor.collider.GetComponent<AlarmManager>().lasersAlreadyDisabled || LevelManager.timerState == LevelManager.TimerOn.timerActivated) {
+							actionText.text = "Press E to open alarm box";
+
+							//print("Press E key to open Alarm Box");
+
+							if (Input.GetKeyDown(KeyCode.E)) {
+								reachedFor.collider.gameObject.GetComponent<AlarmManager>().enabled = true;
+							}
+						}
+					}
+					break;
+				default:
+
+					break;
 			}
+		}
+		else {
+			reachedNothing = true;
 		}
 	}
 
 
 	void StickToSurface () {
-
-		//Vector3 rotFrom = transform.up;
-		//Vector3 rotTo = reachedSurface.normal;
-		//Vector3 rotTo = -Physics.gravity;
-
-		//float zLerpAngleCorrect = Vector3.Angle(rotFrom, rotTo);
-
-		//print (reachedSurface.normal);
-
-//TODO Incorporate "The lerp" into this rotation to make the player's rotation less jarring
-//Probably need a coroutine
-		//transform.rotation = Quaternion.FromToRotation (transform.up, reachedSurface.normal) * rb.rotation; 
-
-		//Quaternion targetRot = Quaternion.AngleAxis (-90.0f, transform.right) * rb.rotation;
-
-//FAILED ATTEMPT GRAVEYARD
-		//Vector3 thisRot = Vector3.RotateTowards (transform.up, reachedSurface.normal, Time.deltaTime * 0.1f, 0.0f);
-		//transform.rotation = Quaternion.LookRotation (thisRot);
-
-		
-
+		//THE LERP
 		if (lerping && rotTimeToNewSurface < 1.0f) {
 			rotTimeToNewSurface += Time.deltaTime * 1.5f;
 			Vector3 rotPole = transform.position - Physics.gravity;
@@ -228,33 +243,12 @@ public class PlayerMove : MonoBehaviour {
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rotControl.transform.up, rotControl.transform.forward), rotTimeToNewSurface);
 
 			rotControl.transform.localRotation = Quaternion.Euler(Vector3.right * -90);
-
-			//float rotPoleAngle = Vector3.Angle(transform.forward, rotPole);
-
-			//print(rotPoleAngle);
-
-			//transform.rotation = Quaternion.Euler(Vector3.RotateTowards(transform.up, rotPole, rotTimeToNewSurface, 1));
-
-			//transform.rotation = Quaternion.Lerp(Quaternion.Euler(transform.right), Quaternion.Euler(transform.position - Physics.gravity), rotTimeToNewSurface);
-
-			//transform.Rotate(-90 * (Time.deltaTime * 2), 0, -zLerpAngleCorrect * (Time.deltaTime * 2), Space.Self);
-
-
-
-
-		//transform.rotation = Quaternion.Lerp (transform.rotation, targetRot, t);
-
-		//transform.rotation = Quaternion.Lerp (Quaternion.LookRotation (transform.forward, transform.up), 
-			//Quaternion.LookRotation (transform.up, reachedSurface.normal), 1.0f);
-			//rb.rotation = Quaternion.Lerp (transform.rotation, Quaternion.Euler (reachedSurface.normal), t);
-
 		}
 		else if (rotTimeToNewSurface >= 1.0f) {
 			rotTimeToNewSurface = 0;
 			lerping = false;
 
 			rotControl.transform.localRotation = Quaternion.Euler(Vector3.right * -90);
-
 		}
 
 	}

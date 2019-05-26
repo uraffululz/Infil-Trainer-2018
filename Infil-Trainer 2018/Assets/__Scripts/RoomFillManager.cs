@@ -4,45 +4,46 @@ using UnityEngine;
 
 public class RoomFillManager : MonoBehaviour {
 
+	//GameObject References
+	GameObject player;
+
 	//My Room Variables
 	MyRoomData roomdata;
 
-	GameObject player;
-
-	[SerializeField] List<Vector3> fillerPositions = new List<Vector3>();
-
+	//Filler Parent References (Spawned Later \/)
 	GameObject caseParent;
 	GameObject pickupParent;
 
+	//Spawn Placement Variables
+	[SerializeField] List<Vector3> fillerPositions = new List<Vector3>();
+
+	//Prefab References To Spawn
 	[SerializeField] GameObject displayCase;
 	[SerializeField] GameObject alarmBox;
-
-	[SerializeField] List<GameObject> pickupPrefabs;
+	[SerializeField] List<GameObject> pickupPrefabs; //The List of smaller pickup prefabs (coins, gems, etc.), to be spawned randomly
 
 	int caseCount = 2;
 	int pickupCount = 2;
 
 
+
 	void Awake() {
+		//Initialize references
 		roomdata = gameObject.GetComponent<MyRoomData>();
 
+		//Spawn parents to contain the various prefabs to be spawned, to keep the hierarchy clean
 		SpawnFillerParents();
-
 	}
 
 
 	void Start () {
+		//Initialize references
 		player = GameObject.FindWithTag("Player");
 
+		//Spawn various prefabs
 		SpawnDisplayCases();
 		SpawnPickups();
 		SpawnAlarmBox();
-
-	}
-
-
-	void Update () {
-		
 	}
 
 
@@ -56,22 +57,19 @@ public class RoomFillManager : MonoBehaviour {
 
 
 	void SpawnDisplayCases() {
-//TODO Add each spawned case to roomData.beamBlockers
-
 		for (int c = 0; c < caseCount; c++) {
 			bool spawnFuckedUp = false;
+
 			Vector3 casePos = roomdata.myFloorTiles[Random.Range(0, roomdata.myFloorTiles.Count)].transform.position;
-			
 			GameObject newCase = Instantiate(displayCase, casePos, Quaternion.identity, caseParent.transform);
 
-			if (fillerPositions.Contains(casePos)) { //Maybe change to a while loop. ugh.
+			if (fillerPositions.Contains(casePos)) {
 				spawnFuckedUp = true;
 			}
-			else {
-				foreach (GameObject blocker in roomdata.beamBlockers) {
-					if (blocker.GetComponent<BoxCollider>().bounds.Intersects(newCase.GetComponent<BoxCollider>().bounds)) {
-						spawnFuckedUp = true;
-					}
+
+			foreach (GameObject blocker in roomdata.beamBlockers) {
+				if (blocker.GetComponent<BoxCollider>().bounds.Intersects(newCase.GetComponent<BoxCollider>().bounds)) {
+					spawnFuckedUp = true;
 				}
 			}
 
@@ -91,19 +89,18 @@ public class RoomFillManager : MonoBehaviour {
 	void SpawnAlarmBox () {
 		for (int abc = 0; abc < 1; abc++) {
 			bool spawnFuckedUp = false;
+
 			GameObject myWall = roomdata.myWallTiles[Random.Range(0, roomdata.myWallTiles.Count)];
 			Vector3 casePos = myWall.transform.position + (Vector3.up * 0.7f);
-
 			GameObject myAlarmBox = Instantiate(alarmBox, casePos, myWall.transform.rotation, gameObject.transform);
 
-			if (fillerPositions.Contains(casePos)) { //Maybe change to a while loop. ugh.
+			if (fillerPositions.Contains(casePos)) {
 				spawnFuckedUp = true;
 			}
-			else {
-				foreach (GameObject blocker in roomdata.beamBlockers) {
-					if (blocker.GetComponent<BoxCollider>().bounds.Intersects(myAlarmBox.GetComponent<BoxCollider>().bounds)) {
-						spawnFuckedUp = true;
-					}
+		
+			foreach (GameObject blocker in roomdata.beamBlockers) {
+				if (blocker.GetComponent<BoxCollider>().bounds.Intersects(myAlarmBox.GetComponent<BoxCollider>().bounds)) {
+					spawnFuckedUp = true;
 				}
 			}
 
@@ -123,24 +120,24 @@ public class RoomFillManager : MonoBehaviour {
 
 	void SpawnPickups() {
 		for (int p = 0; p < pickupCount; p++) {
-			bool pickupSpawnFuckedUp = false;
+			bool spawnFuckedUp = false;
+
 			Vector3 pickupPos = roomdata.myFloorTiles[Random.Range(0, roomdata.myFloorTiles.Count)].transform.position;
 
 			GameObject newPickup = Instantiate(pickupPrefabs[Random.Range(0, pickupPrefabs.Count)], pickupPos, Quaternion.identity, pickupParent.transform);
 
 			if (fillerPositions.Contains(pickupPos)
-							|| newPickup.GetComponent<Collider>().bounds.Intersects(player.GetComponent<CapsuleCollider>().bounds)) { //Maybe change to a while loop. ugh.
-				pickupSpawnFuckedUp = true;
+							|| newPickup.GetComponent<Collider>().bounds.Intersects(player.GetComponent<CapsuleCollider>().bounds)) {
+				spawnFuckedUp = true;
 			}
-			else {
-				foreach (GameObject blocker in roomdata.beamBlockers) {
-					if (blocker.GetComponent<BoxCollider>().bounds.Intersects(newPickup.GetComponent<Collider>().bounds)) {
-						pickupSpawnFuckedUp = true;
-					}
+
+			foreach (GameObject blocker in roomdata.beamBlockers) {
+				if (blocker.GetComponent<BoxCollider>().bounds.Intersects(newPickup.GetComponent<Collider>().bounds)) {
+					spawnFuckedUp = true;
 				}
 			}
 
-			if (pickupSpawnFuckedUp) {
+			if (spawnFuckedUp) {
 				Destroy(newPickup);
 				p--;
 			}

@@ -75,8 +75,10 @@
     <Compile Include="Assets\__Scripts\RoomFiller.cs" />
     <Compile Include="Assets\__Scripts\RoomFillManager.cs" />
     <Compile Include="Assets\__Scripts\ScriptableObjects\RoomStats.cs" />
+    <Compile Include="Assets\__Scripts\WinBox.cs" />
     <Compile Include="Assets\LevelBuilder.cs" />
     <Compile Include="Assets\LevelManager.cs" />
+    <Compile Include="Assets\MainMenuManager.cs" />
     <Compile Include="Assets\MyRoomData.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/Master/Documents/Git Repositories/Unity Projects/Infil-Trainer 2018/Infil-Trainer-2018/Infil-Trainer 2018/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

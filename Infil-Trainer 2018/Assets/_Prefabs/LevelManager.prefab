@@ -52,7 +52,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccdb3e26ab3563346ade4b50401ff6f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentRoomNum: 0
   roomArray:
   - {fileID: 1865606737465896, guid: 18bc0eb76d3ec0341bc75b13bd8055de, type: 2}
   - {fileID: 1098990584609588, guid: 8a78a6a30c862d54b8cee6ace0036736, type: 2}
@@ -70,10 +69,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d32d8e94fe3fc3944ac372a2857eea98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasManager: {fileID: 0}
-  timerBar: {fileID: 0}
-  timeUpText: {fileID: 0}
   sceneLight: {fileID: 0}
+  canvasManager: {fileID: 0}
+  UIPlayer: {fileID: 0}
+  timerBar: {fileID: 0}
+  UILose: {fileID: 0}
+  UIWin: {fileID: 0}
   timerCurrentTime: 0
-  laserTimeoutGameOver: 0
   colorLerpToRed: 0
+  laserTimeoutGameOver: 0

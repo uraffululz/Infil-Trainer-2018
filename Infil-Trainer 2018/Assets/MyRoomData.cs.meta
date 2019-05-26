@@ -3,7 +3,14 @@ guid: b03bbdb285be0334088d55eef6dee0a3
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - myStats: {instanceID: 0}
+  - laserNode: {fileID: 1173726870093432, guid: 7175d1f21376c714c8a5efe6706e95fb,
+      type: 2}
+  - laserReceiver: {fileID: 1696385497606274, guid: 4efa749774d466a4e92974f6d5645d24,
+      type: 2}
+  - laserBeam: {fileID: 1288137231748604, guid: 75dee6232d957214ba4c734fd854c786,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

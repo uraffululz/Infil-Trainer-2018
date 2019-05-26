@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class Alarm_Keypad : MonoBehaviour {
 
-	Camera mainCam;
+	[SerializeField] Camera mainCam;
 	AlarmManager alarmMan;
 	[SerializeField] GameObject canvas;
 	[SerializeField] GameObject buttonPrefab;
@@ -29,7 +29,7 @@ public class Alarm_Keypad : MonoBehaviour {
 
 	int attemptsLeft = 4;
 
-//Add a timer, to create a more balanced risk-reward dynamic?
+//TOMAYBEDO Keep the level's alarm timer counting down, to maintain tension and create a more balanced risk-reward dynamic?
 
 
 	void Awake () {
@@ -44,12 +44,6 @@ public class Alarm_Keypad : MonoBehaviour {
 		KeypadSetup ();
 		SetNumbers ();
 		SetupButtons();
-
-	}
-
-
-	void Start() {
-		//SetupButtons();
 	}
 
 
@@ -65,15 +59,6 @@ public class Alarm_Keypad : MonoBehaviour {
 		AssignGuessesToButtons(false);
 
 		attemptsLeft = 4;
-
-		//foreach (var button in Buttons) {
-		//	button.SetActive (true);
-		//}
-	}
-
-
-	private void OnDisable() {
-
 	}
 
 
@@ -88,10 +73,9 @@ public class Alarm_Keypad : MonoBehaviour {
 //"failed", meaning the player failed to solve the puzzle within the allotted number of attempts 
 			padStat = padStatus.failed;
 		}
-
-
+		
 		if (padStat == padStatus.choosing) {
-			//ClickButton ();
+
 		} else if (padStat == padStatus.solved) {
 			Solved ();
 		} else if (padStat == padStatus.failed) {
@@ -111,6 +95,7 @@ public class Alarm_Keypad : MonoBehaviour {
 
 		padCam = padCamEmpty.AddComponent<Camera> ();
 		padCam.CopyFrom (mainCam);
+		padCam.farClipPlane = 1f;
 		padCam.enabled = false;
 
 		padCamEmpty.transform.position = padPos + Vector3.back;
@@ -132,7 +117,6 @@ public class Alarm_Keypad : MonoBehaviour {
 		while (digits[3] == digits[0] || digits[3] == digits[1] || digits[3] == digits[2]) {
 			digits[3] = Random.Range (0, 10);
 		}
-		//print ("Keypad digits determined. Compiling digit sequences");
 
 		//Compile sequences using digits
 		guesses.Add(string.Concat(digits[0], digits[1], digits[2], digits[3]));
@@ -163,17 +147,13 @@ public class Alarm_Keypad : MonoBehaviour {
 		guesses.Add(string.Concat(digits[3], digits[2], digits[0], digits[1]));
 		guesses.Add(string.Concat(digits[3], digits[2], digits[1], digits[0]));
 
-		//print ("Keypad sequences determined. Choosing correct code");
-
 		//Determine correct keypad code by randomly choosing a sequence from guesses[]
 		correctGuess = guesses[Random.Range(0, guesses.Count)];
 
-		//print ("Keycode chosen");
 	}
 
 
 	void SetupButtons () {
-		//print ("Populating Buttons array");
 		Vector3 buttPos = new Vector3 (/*about -384f at 1080p resolution*/-canvas.GetComponent<RectTransform>().rect.width * .2f, 200f, 0f);
 		int buttonsInLine = 0;
 
@@ -194,12 +174,9 @@ public class Alarm_Keypad : MonoBehaviour {
 			} else {
 				buttPos.x += 150f;
 			}
-			//print ("Button positions set");
 		}
 
 		AssignGuessesToButtons(true);
-	
-		//print ("Button setup complete");
 
 		buttonParent.SetActive(false);
 	}
@@ -214,19 +191,6 @@ public class Alarm_Keypad : MonoBehaviour {
 			Text buttonText = thisButton.GetComponentInChildren<Text>();
 			buttonText.text = guesses[assignedGuess];
 			guesses.RemoveAt(assignedGuess);
-
-			//print ("Guess applied to button");
-		}
-	}
-
-
-	void ClearButtons() {
-		foreach (var thisButton in Buttons) {
-			//thisButton.GetComponent<Button>().onClick.AddListener(ClickButton);
-			Text buttonText = thisButton.GetComponentInChildren<Text>();
-			buttonText.text = "";
-
-			//print ("Guess applied to button");
 		}
 	}
 
@@ -252,8 +216,6 @@ public class Alarm_Keypad : MonoBehaviour {
 
 
 	void CompareDigits () {
-
-//TODO This could probably be made much simpler with a for/foreach loop
 		int correctlyPlacedDigits = 0;
 
 		string guessDigit1 = clickedButtonText.text.Substring (0, 1);
@@ -291,33 +253,21 @@ public class Alarm_Keypad : MonoBehaviour {
 			guessDigit4 = "<color=red>" + guessDigit4 + "</color>";
 		}
 		clickedButtonText.text = guessDigit1 + guessDigit2 + guessDigit3 + guessDigit4;
-
-
 	}
 
 
 	void Solved () {
-		//foreach (var button in Buttons) {
-		//	Destroy (button);
-		//}
-
-		//Destroy(buttonParent);
-		//Destroy (keypad);
 		buttonParent.SetActive(false);
 		padCam.enabled = false;
 		mainCam.enabled = true;
 		alarmMan.bStat = AlarmManager.boxStatus.solved;
-		Debug.Log("You guessed right. Lasers disabled");
+		Debug.Log("You guessed right");
 
-		//Destroy(this);
 		this.enabled = false;
 	}
 
 
 	void Failed () {
-		//foreach (var button in Buttons) {
-		//	Destroy (button);
-		//}
 		Destroy(buttonParent);
 		Destroy (keypad);
 		padCam.enabled = false;
@@ -330,9 +280,6 @@ public class Alarm_Keypad : MonoBehaviour {
 
 
 	void Unsolved () {
-		//foreach (var button in Buttons) {
-		//	button.SetActive (false);
-		//}
 		buttonParent.SetActive(false);
 		padCam.enabled = false;
 		mainCam.enabled = true;

@@ -3372,7 +3372,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1703746154187520}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 1, z: 1.5}
+  m_LocalPosition: {x: 3, y: 1, z: 1.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4852006157709144}
@@ -4021,7 +4021,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1028111200799668}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 3.8489943, y: -4.432273, z: -0.8899982}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4863456859516528}
@@ -11485,7 +11485,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.9, y: 2.1, z: 2.9}
+  m_Size: {x: 2.9, y: 2.1, z: 3.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114605793802756304
 MonoBehaviour:
@@ -11506,6 +11506,12 @@ MonoBehaviour:
   hasWallTreasure: 0
   hasPickups: 0
   hasLasers: 0
+  laserParent: {fileID: 1801989295165072, guid: cc01f43ce11fa5d4ba0a68e7d391f8ce,
+    type: 2}
+  laserNode: {fileID: 1173726870093432, guid: 7175d1f21376c714c8a5efe6706e95fb, type: 2}
+  laserReceiver: {fileID: 1696385497606274, guid: 4efa749774d466a4e92974f6d5645d24,
+    type: 2}
+  laserBeam: {fileID: 1288137231748604, guid: 75dee6232d957214ba4c734fd854c786, type: 2}
   myLevel1Children: []
   myLaserSpawnSurfaces:
   - {fileID: 1572282100196672}

@@ -21,7 +21,7 @@ public class LockManager : MonoBehaviour {
 
 	void Awake () {
 		cMan = GameObject.Find ("LevelManager").GetComponent<CanvasManager> ();
-		pMove = GameObject.Find ("Player").GetComponent<PlayerMove> ();
+		pMove = GameObject.FindWithTag("Player").GetComponent<PlayerMove> ();
 		lasPar = GameObject.Find ("LaserParent").GetComponent<LaserParent> ();
 
 		//Choose which puzzle is attached to the Display Case
