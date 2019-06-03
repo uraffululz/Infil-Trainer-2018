@@ -5,19 +5,29 @@ using UnityEngine.UI;
 
 public class CanvasManager : MonoBehaviour {
 
+	GameObject levMan;
+
 	public GameObject canvas;
 	[SerializeField] Text scoreText;
 	[SerializeField] Text stopWatchText;
-	float stopWatchTime;
+
+	public static float stopWatchTime = 0f;
+	string stopWatchDisplay;
 	float minutes;
 	float seconds;
 	float milliseconds;
-	public bool isTimerActive = true;
+	public static bool isTimerActive = true;
 
-	[SerializeField] int score = 0;
+	string parStopWatchDisplay;
+	public static float parMinutes;
+	float parSeconds = 00;
+	float parMilliseconds = 00;
+
+	public int score = 0;
 
 
 	void Awake () {
+		levMan = GameObject.Find("LevelManager");
 		canvas = transform.Find("Canvas").gameObject;
 	}
 
@@ -25,6 +35,9 @@ public class CanvasManager : MonoBehaviour {
 	void Start () {
 		stopWatchTime = 0;
 		stopWatchText.text = "00:00:00";
+
+		parMinutes = levMan.GetComponent<LevelManager>().levelParTime * 2;
+		parStopWatchDisplay = ("<color=red>" + parMinutes.ToString("00") + ":" + parSeconds.ToString("00") + ":" + parMilliseconds.ToString("00") + "</color>");
 	}
 	
 
@@ -33,7 +46,7 @@ public class CanvasManager : MonoBehaviour {
 			IncrementStopWatch();
 		}
 	}
-
+	
 
 	void IncrementStopWatch() {
 		stopWatchTime += Time.deltaTime;
@@ -41,7 +54,9 @@ public class CanvasManager : MonoBehaviour {
 		seconds = (int)(stopWatchTime % 60);
 		milliseconds = (int)((stopWatchTime * 60) % 60);
 
-		stopWatchText.text = (minutes.ToString("00") + ":" + seconds.ToString("00") + ":" + milliseconds.ToString("00"));
+		stopWatchDisplay = (minutes.ToString("00") + ":" + seconds.ToString("00") + ":" + milliseconds.ToString("00"));
+
+		stopWatchText.text = stopWatchDisplay + "<color=black><size=40> || </size></color>" + parStopWatchDisplay;
 	}
 
 

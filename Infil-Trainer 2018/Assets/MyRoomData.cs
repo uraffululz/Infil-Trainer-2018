@@ -16,6 +16,7 @@ public class MyRoomData : MonoBehaviour {
 	public bool hasPickups;
 
 	public bool hasLasers;
+	public int howManyLasers;
 	public GameObject laserNode;
 	public GameObject laserReceiver;
 	public GameObject laserBeam;
@@ -58,6 +59,7 @@ public class MyRoomData : MonoBehaviour {
 		hasPickups = myStats.allowPickups;
 
 		hasLasers = myStats.allowLasers;
+		howManyLasers = myStats.squareFootage/2;
 	}
 
 

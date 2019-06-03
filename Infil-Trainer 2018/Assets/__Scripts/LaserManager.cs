@@ -22,7 +22,7 @@ public class LaserManager : MonoBehaviour {
 	GameObject beamParent;
 
 	//Spawn Count References
-	int spawnCount = 10;
+	int spawnCount;
 	int spawnRetryCount = 0;
 
 	//Spawn Room Surface Location References
@@ -43,7 +43,7 @@ public class LaserManager : MonoBehaviour {
 
 		//Set the number of lasers to be spawned in my room
 		//Needs to be updated to the new refactoring standards
-		//spawnCount = roomData.myWidth * roomData.myDepth / 2;
+		spawnCount = roomData.howManyLasers /*10*/;
 
 		//Spawn parents to contain the various prefabs to be spawned, to keep the hierarchy clean
 		SpawnComponentParents();
@@ -173,7 +173,8 @@ public class LaserManager : MonoBehaviour {
 
 			if (nodeSetWhichSurfaceParent[bsc] == receiverSetWhichSurfaceParent[bsc]
 /*TODO I don't know if I still need this "OR" statement \/, since the player is spawned standing within the first doorway's BoxCollider*/
-			|| beamsSpawned[bsc].GetComponent<BoxCollider>().bounds.Intersects(player.GetComponent<CapsuleCollider>().bounds)) {
+			|| beamsSpawned[bsc].GetComponent<BoxCollider>().bounds.Intersects(player.GetComponent<CapsuleCollider>().bounds)
+			|| /*if the beam is too short (such as the ones that grow short, in the corners of the room)*/beamsSpawned[bsc].transform.localScale.z < 3f) {
 				beamFuckedUp = true;
 			}
 

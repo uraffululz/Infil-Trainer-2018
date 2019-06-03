@@ -27,13 +27,31 @@ public class LevelManager : MonoBehaviour {
 	[SerializeField] bool laserTimeoutGameOver = false;
 	public enum TimerOn {timerDeactivated, timerActivated};
 	public static TimerOn timerState;
+
+	//End-Of-Level Achievement Variables
+	Text moneyEarnedText;
+	Text achievementsEarnedText;
+	Text achievementMultiplierText;
+	int AchievementMultiplier = 1;
+	public static bool allLasersDisabled = false;
+	bool allTreasuresCollected = false;
+	public static bool noAlarmsActivated = true;
+
+	public float levelParTime;
+	public static bool levelTimeBelowPar = true;
 	
 
 
 	void Awake() {
 		player = GameObject.FindWithTag("Player");
 
+		//Initialize UI Elements
+		moneyEarnedText = UIWin.transform.Find("MoneyEarnedText").GetComponent<Text>();
+		achievementsEarnedText = UIWin.transform.Find("AchievementsEarnedText").GetComponent<Text>();
+		achievementMultiplierText = UIWin.transform.Find("AchievementMultiplierText").GetComponent<Text>();
+
 		timerCurrentTime = timerMaxxTime;
+		levelParTime = LevelBuilder.maxRoomNum;
 	}
 
 
@@ -106,13 +124,61 @@ public class LevelManager : MonoBehaviour {
 
 
 	public void Win() {
+		CompileEndOfLevelAchievements();
+
 		//Update UI
-		canvasManager.GetComponent<CanvasManager>().isTimerActive = false;
+		CanvasManager.isTimerActive = false;
 		UIPlayer.SetActive(false);
 		UIWin.SetActive(true);
 
+		moneyEarnedText.text = ("$" + canvasManager.GetComponent<CanvasManager>().score * AchievementMultiplier);
+
 		//Disable player character movement
 		player.GetComponent<PlayerMove>().allowMove = false;
+	}
+
+
+	void CompileEndOfLevelAchievements() {
+		//WinBox winBoxScript = GameObject.Find("WinBox").GetComponent<WinBox>();
+
+		//Determine if all of the level's lasers have been disabled
+		if (allLasersDisabled) {
+			//Activate "All Lasers Disabled" achievement
+			AchievementMultiplier++;
+			achievementsEarnedText.text += ("All Lasers Disabled" + System.Environment.NewLine);
+		}
+
+		//Determine if any alarms were triggered by the player
+		if (noAlarmsActivated) {
+			//Activate "No Alarms Activated" achievement
+			AchievementMultiplier++;
+			achievementsEarnedText.text += ("No Alarms Activated" + System.Environment.NewLine);
+		}
+
+		//Determine if the player completed the level below "par" time
+		if (levelTimeBelowPar) {
+			//Activate "Level Time Below Par" achievement
+			AchievementMultiplier++;
+			achievementsEarnedText.text += ("Level Time Below Par" + System.Environment.NewLine);
+		}
+
+		//Determine if the player picked up all treasures/pickups in the level
+		if (gameObject.GetComponent<LevelBuilder>().levelTreasures.Count <= 0) {
+			//Activate "All Treasures Collected" achievement
+			allTreasuresCollected = true;
+			AchievementMultiplier++;
+			achievementsEarnedText.text += ("All Treasures Collected" + System.Environment.NewLine);
+		}
+
+//TODO Add "No Retries Used On Puzzles Or Locks" Achievement
+
+		//Determine if the player ACHIEVED ALL ACHIEVEMENTS
+		if (allLasersDisabled && noAlarmsActivated && levelTimeBelowPar && allTreasuresCollected) {
+			AchievementMultiplier = 10;
+			achievementsEarnedText.text += ("ALL ACHIEVEMENTS ACHIEVED");
+		}
+
+		achievementMultiplierText.text = ("Achievement Multiplier: " + AchievementMultiplier);
 	}
 
 

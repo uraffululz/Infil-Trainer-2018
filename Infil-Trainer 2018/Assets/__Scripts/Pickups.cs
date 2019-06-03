@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Pickups : MonoBehaviour {
 
+	GameObject levMan;
 	CanvasManager cMan;
 
 	Vector3 startPos;
@@ -13,6 +14,7 @@ public class Pickups : MonoBehaviour {
 
 
 	void Awake () {
+		levMan = GameObject.Find("LevelManager");
 		cMan = GameObject.Find ("CanvasManager").GetComponent<CanvasManager> ();
 		startPos = transform.position + Vector3.up * 0.3f;
 	}
@@ -30,8 +32,9 @@ public class Pickups : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
 		if (other.gameObject.tag == "Player") {
-			Destroy (gameObject);
+			levMan.GetComponent<LevelBuilder>().levelTreasures.Remove(gameObject);
 			cMan.AddToScore(myWorth);
+			Destroy(gameObject);
 		}
 	}
 

@@ -14,6 +14,7 @@ MonoBehaviour:
   roomWidth: 7
   roomDepth: 8
   roomHeight: 2
+  squareFootage: 56
   allowFloorTreasure: 1
   allowWallTreasure: 1
   allowPickups: 1

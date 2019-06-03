@@ -56,8 +56,10 @@ MonoBehaviour:
   - {fileID: 1865606737465896, guid: 18bc0eb76d3ec0341bc75b13bd8055de, type: 2}
   - {fileID: 1098990584609588, guid: 8a78a6a30c862d54b8cee6ace0036736, type: 2}
   - {fileID: 1297038365236720, guid: a8c138580a083674fa9d9fad32755a14, type: 2}
+  doorPrefab: {fileID: 1558402710800030, guid: 1d763de98e1e53e4e8a43ea08490942a, type: 2}
   playerPrefab: {fileID: 1234899338424334, guid: 3e5bce21cc12c22498df511cbb5c510e,
     type: 2}
+  levelTreasures: []
 --- !u!114 &114379596942220044
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -78,3 +80,4 @@ MonoBehaviour:
   timerCurrentTime: 0
   colorLerpToRed: 0
   laserTimeoutGameOver: 0
+  levelParTime: 0

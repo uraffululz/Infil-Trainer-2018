@@ -5,7 +5,7 @@ using UnityEngine;
 public class LaserBeam : MonoBehaviour {
 
 	//Scene Object and Component References
-	LevelManager levelManager;
+	LevelManager levMan;
 	MyRoomData roomData;
 
 	//Beam Variables
@@ -14,7 +14,7 @@ public class LaserBeam : MonoBehaviour {
 
 	void Awake () {
 		//Initialize references
-		levelManager = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
+		levMan = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
 		roomData = transform.parent.GetComponentInParent<MyRoomData>();
 	}
 
@@ -34,6 +34,10 @@ public class LaserBeam : MonoBehaviour {
 		if (other.gameObject.tag == "Player") {
 			if (roomData.myBuildState == MyRoomData.myRoomBuildState.finished && laserActivated == false && LevelManager.timerState == LevelManager.TimerOn.timerDeactivated) {
 				LevelManager.timerState = LevelManager.TimerOn.timerActivated;
+
+				if (LevelManager.noAlarmsActivated) {
+					LevelManager.noAlarmsActivated = false;
+				}
 			}
 		}
 	}

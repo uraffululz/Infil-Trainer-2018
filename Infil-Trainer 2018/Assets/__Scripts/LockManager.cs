@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class LockManager : MonoBehaviour {
 
+	LevelManager levMan;
 	CanvasManager cMan;
 
 	PlayerMove pMove;
 
-	LaserParent lasPar;
+	LaserManager lasMan;
 	string isTimerActive;
 
 	public enum lockState {dormant, inProgress, unsolved, solved, failed};
@@ -18,14 +19,20 @@ public class LockManager : MonoBehaviour {
 	public enum whichLock {rotaryDial, tumblerLock};
 	public whichLock lockChoice;
 
+	//Rotary Dial Lock References
+	public GameObject rotaryPlate;
+	public GameObject rotaryDial;
+
+
 
 	void Awake () {
-		cMan = GameObject.Find ("LevelManager").GetComponent<CanvasManager> ();
+		levMan = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		cMan = GameObject.Find("CanvasManager").GetComponent<CanvasManager> ();
 		pMove = GameObject.FindWithTag("Player").GetComponent<PlayerMove> ();
-		lasPar = GameObject.Find ("LaserParent").GetComponent<LaserParent> ();
+		lasMan = GameObject.Find ("LaserParent").GetComponent<LaserManager> ();
 
 		//Choose which puzzle is attached to the Display Case
-		lockInt = Random.Range (0, 1);
+		lockInt = Random.Range (0, 1); //Add a higher range as I add more lock puzzles
 		if (lockInt == 0) {
 			lockChoice = whichLock.rotaryDial;
 		}
@@ -37,20 +44,16 @@ public class LockManager : MonoBehaviour {
 
 		//Get the current state of the Laser Countdown Timer (to return to later),
 		//then deactivate it while the player tries to solve the puzzle
-		isTimerActive = lasPar.timerState.ToString();
-		lasPar.timerState = LaserParent.TimerOn.timerDeactivated;
+		isTimerActive = LevelManager.timerState.ToString();
+		LevelManager.timerState = LevelManager.TimerOn.timerDeactivated;
 
 		if (lockChoice == whichLock.rotaryDial) {
-			gameObject.GetComponent<Lock_RotaryDial> ().enabled = true;
+			gameObject.AddComponent<Lock_RotaryDial>();
+			//gameObject.GetComponent<Lock_RotaryDial> ().enabled = true;
 
 		} else if (lockChoice == whichLock.tumblerLock) {
 
 		}
-	}
-
-
-	void Start () {
-		
 	}
 	
 
@@ -69,14 +72,14 @@ public class LockManager : MonoBehaviour {
 					Quaternion.FromToRotation (transform.forward, transform.right * 90.0f);
 				Destroy (this);
 			} else if (solveState == lockState.failed) {
-				lasPar.timerState = LaserParent.TimerOn.timerActivated;
+				LevelManager.timerState = LevelManager.TimerOn.timerActivated;
 				Destroy (this);
 			}
 
 			pMove.allowMove = true;
 
 			if (isTimerActive == "timerActivated") {
-				lasPar.timerState = LaserParent.TimerOn.timerActivated;
+				LevelManager.timerState = LevelManager.TimerOn.timerActivated;
 			}
 		}
 	}

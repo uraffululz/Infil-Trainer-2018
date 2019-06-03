@@ -55,6 +55,10 @@ public class AlarmManager : MonoBehaviour {
 			}
 			else if (bStat == boxStatus.failed) {
 				LevelManager.timerState = LevelManager.TimerOn.timerActivated;
+				if (LevelManager.noAlarmsActivated) {
+					LevelManager.noAlarmsActivated = false;
+				}
+
 				Destroy (this);
 			}
 

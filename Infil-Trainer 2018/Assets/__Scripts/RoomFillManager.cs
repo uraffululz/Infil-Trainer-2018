@@ -5,6 +5,7 @@ using UnityEngine;
 public class RoomFillManager : MonoBehaviour {
 
 	//GameObject References
+	GameObject levMan;
 	GameObject player;
 
 	//My Room Variables
@@ -22,6 +23,8 @@ public class RoomFillManager : MonoBehaviour {
 	[SerializeField] GameObject alarmBox;
 	[SerializeField] List<GameObject> pickupPrefabs; //The List of smaller pickup prefabs (coins, gems, etc.), to be spawned randomly
 
+	[SerializeField] List<GameObject> alarmBoxes; //The list of Alarm Boxes in the level
+
 	int caseCount = 2;
 	int pickupCount = 2;
 
@@ -29,6 +32,7 @@ public class RoomFillManager : MonoBehaviour {
 
 	void Awake() {
 		//Initialize references
+		levMan = transform.parent.gameObject;
 		roomdata = gameObject.GetComponent<MyRoomData>();
 
 		//Spawn parents to contain the various prefabs to be spawned, to keep the hierarchy clean
@@ -78,7 +82,11 @@ public class RoomFillManager : MonoBehaviour {
 				c--;
 			}
 			else {
+				//If the current Display Case is successfully spawned
 				roomdata.beamBlockers.Add(newCase);
+
+				GameObject myCaseTreasure = newCase.GetComponent<DisplayCaseTreasure>().selectedTreasure;
+				levMan.GetComponent<LevelBuilder>().levelTreasures.Add(myCaseTreasure);
 			}
 
 			fillerPositions.Add(casePos);
@@ -110,6 +118,7 @@ public class RoomFillManager : MonoBehaviour {
 			}
 			else {
 				roomdata.beamBlockers.Add(myAlarmBox);
+				alarmBoxes.Add(myAlarmBox);
 				myAlarmBox.name = "AlarmBox";
 			}
 
@@ -142,7 +151,9 @@ public class RoomFillManager : MonoBehaviour {
 				p--;
 			}
 			else {
+				//If the Pickup is successfully spawned
 				//roomdata.beamBlockers.Add(newPickup);
+				levMan.GetComponent<LevelBuilder>().levelTreasures.Add(newPickup);
 				newPickup.transform.position += (Vector3.up * 0.5f);
 			}
 

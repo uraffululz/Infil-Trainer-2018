@@ -76,6 +76,7 @@
     <Compile Include="Assets\__Scripts\RoomFillManager.cs" />
     <Compile Include="Assets\__Scripts\ScriptableObjects\RoomStats.cs" />
     <Compile Include="Assets\__Scripts\WinBox.cs" />
+    <Compile Include="Assets\DisplayCaseTreasure.cs" />
     <Compile Include="Assets\LevelBuilder.cs" />
     <Compile Include="Assets\LevelManager.cs" />
     <Compile Include="Assets\MainMenuManager.cs" />

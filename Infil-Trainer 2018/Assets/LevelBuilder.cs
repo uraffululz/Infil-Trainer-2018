@@ -5,21 +5,25 @@ using UnityEngine;
 public class LevelBuilder : MonoBehaviour {
 
 	//Room Building Variables
-	int maxRoomNum;
+	public static int maxRoomNum;
 	GameObject currentRoomObject;
 	[SerializeField] GameObject[] roomArray;
 	Vector3 currentRoomSpawnPoint;
 	Quaternion currentRoomSpawnRot;
 
+	[SerializeField] GameObject doorPrefab;
+
 	//Player Variables
 	[Header("Player Variables")]
 	[SerializeField] GameObject playerPrefab;
 	GameObject player;
+
+	public List<GameObject> levelTreasures;
 	
 
 
 	void Awake() {
-		maxRoomNum = Random.Range(3, 5);
+		maxRoomNum = 2 /*Random.Range(3, 5)*/;
 		SpawnRooms();
 	}
 
@@ -28,14 +32,14 @@ public class LevelBuilder : MonoBehaviour {
 //TOPOSSIBLYDO Pull the spawned rooms from 3 (or more) different lists, depending on their placement,
 //i.e. StartRooms, MidRooms, EndRooms
 //That way, I can set each up with the correct entry/exit doors, make sure the player doesn't start in a hallway/stairway(maybe), etc.
-		for (int rS = 0 /* or currentRoomNum*/; rS <= maxRoomNum; rS++) {
+		for (int rS = 0 /* or currentRoomNum*/; rS < maxRoomNum; rS++) {
 			//When placing the first room
 			if (rS == 0) {
 				currentRoomSpawnPoint = Vector3.zero;
 				currentRoomSpawnRot = Quaternion.identity;
 			}
 			//When placing the final room
-			else if (rS == maxRoomNum) {
+			else if (rS == maxRoomNum - 1) {
 				//Find the position and rotation of the most recently-spawned room's exit wall/door
 				Transform prevRoom = currentRoomObject.transform.Find("ExitWallParent");
 				currentRoomSpawnPoint = prevRoom.transform.position + prevRoom.transform.forward * 0.06f;
@@ -58,11 +62,18 @@ public class LevelBuilder : MonoBehaviour {
 			
 			//Use the newly-spawned room as a reference to place the next
 			currentRoomObject = newRoom;
+			SpawnMyDoor(newRoom);
 
-			if (rS == maxRoomNum) {
+			//When placing the final room
+			if (rS == maxRoomNum - 1) {
 				CreateWinBox();
 			}
 		}
+	}
+
+
+	void SpawnMyDoor(GameObject thisRoom) {
+		GameObject thisDoor = Instantiate(doorPrefab, thisRoom.transform.position, thisRoom.transform.localRotation, thisRoom.transform);
 	}
 
 
@@ -71,7 +82,8 @@ public class LevelBuilder : MonoBehaviour {
 		Transform prevRoom = currentRoomObject.transform.Find("ExitWallParent");
 
 		GameObject winBox = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		winBox.transform.position = prevRoom.position /*+ (prevRoom.forward * 1f)*/;
+		winBox.transform.position = prevRoom.position + (prevRoom.forward * 0.5f);
+		winBox.name = "WinBox";
 
 		winBox.GetComponent<BoxCollider>().isTrigger = true;
 		winBox.AddComponent<WinBox>();

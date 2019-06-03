@@ -23,6 +23,7 @@ public class PuzzleManager : MonoBehaviour {
 	public GameObject glassPane;
 	public GameObject glassLine;
 
+	GameObject myTreasure;
 	int myWorth = 1000;
 
 
@@ -45,6 +46,8 @@ public class PuzzleManager : MonoBehaviour {
 	void Start() {
 		pMove = GameObject.FindWithTag("Player").GetComponent<PlayerMove>();
 		alarmMan = transform.parent.parent.Find("AlarmBox").GetComponent<AlarmManager>();
+
+		myTreasure = GetComponent<DisplayCaseTreasure>().selectedTreasure;
 	}
 
 
@@ -79,7 +82,11 @@ public class PuzzleManager : MonoBehaviour {
 				print ("Puzzle Left Unsolved");
 				this.enabled = false;
 			} else if (solveState == puzzleState.solved) {
+				//Remove this display case's treasure from the list of acquired treasures/pickups
+				levMan.GetComponent<LevelBuilder>().levelTreasures.Remove(myTreasure);
+				Destroy(myTreasure);
 				cMan.AddToScore(myWorth);
+
 				Destroy (this);
 			} else if (solveState == puzzleState.failed) {
 				LevelManager.timerState = LevelManager.TimerOn.timerActivated;

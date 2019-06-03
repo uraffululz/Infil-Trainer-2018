@@ -6,15 +6,18 @@ public class Lock_RotaryDial : MonoBehaviour {
 
 	LockManager lockMan;
 	Camera mainCam;
+	GameObject rotCam;
+	Camera camCom;
 
-	[SerializeField] GameObject plate;
-	[SerializeField] GameObject dial;
+	[SerializeField] GameObject platePrefab;
+	[SerializeField] GameObject myPlate;
+	[SerializeField] GameObject dialPrefab;
+	[SerializeField] GameObject myDial;
+
+	static int locksSpawned;
 
 	enum whichDir {right, left};
 	whichDir thisDir;
-
-	GameObject rotCam;
-	Camera camCom;
 
 	public int dialNum1;
 	public int dialNum2;
@@ -34,9 +37,12 @@ public class Lock_RotaryDial : MonoBehaviour {
 		lockMan = gameObject.GetComponentInParent<LockManager> ();
 		mainCam = GameObject.FindWithTag ("MainCamera").GetComponent<Camera> ();
 
+		platePrefab = gameObject.GetComponent<LockManager>().rotaryPlate;
+		dialPrefab = gameObject.GetComponent<LockManager>().rotaryDial;
+
 		RotarySetup ();
 		NumberSetup ();
-		RotaryCamera ();
+		RotaryCameraSetup ();
 	}
 
 
@@ -44,14 +50,9 @@ public class Lock_RotaryDial : MonoBehaviour {
 		mainCam.enabled = false;
 		camCom.enabled = true;
 
-		dial.transform.Rotate(0.0f, 0.0f, -dialAngle);
+		myDial.transform.Rotate(0.0f, 0.0f, -dialAngle);
 
 		currentState = lockState.findCombo1;
-	}
-
-
-	void Start () {
-		
 	}
 	
 
@@ -84,17 +85,17 @@ public class Lock_RotaryDial : MonoBehaviour {
 
 
 	void RotarySetup () {
-		Vector3 lockOffset = new Vector3 (0.0f, -200.0f, 0.0f);
-		if (GameObject.Find ("BackPlate") != null) {
-			lockOffset.x += 5.0f;
-			lockOffset.y -= 10.0f * puzzleAttempts;
-		}
+		//Vector3 lockOffset = new Vector3 (0.0f, -200.0f, 0.0f);
+		//if (GameObject.Find ("BackPlate") != null) {
+		//	lockOffset.x += 5.0f;
+		//	lockOffset.y -= 10.0f * locksSpawned;
+		//}
 
-		plate = Instantiate (plate, lockOffset, Quaternion.identity, transform);
-		plate.name = "BackPlate";
+		myPlate = Instantiate (platePrefab, (transform.position + Vector3.up * -20), Quaternion.identity, transform);
+		myPlate.name = "BackPlate";
 
-		dial = Instantiate (dial, lockOffset + Vector3.right * 0.2f, Quaternion.identity, plate.transform);
-		dial.name = "RotaryDial";
+		myDial = Instantiate (dialPrefab, (transform.position + Vector3.up * -20) + Vector3.right * 0.2f, Quaternion.identity, myPlate.transform);
+		myDial.name = "RotaryDial";
 	}
 
 
@@ -105,29 +106,26 @@ public class Lock_RotaryDial : MonoBehaviour {
 	}
 
 
-	Camera RotaryCamera () {
+	void RotaryCameraSetup () {
 		rotCam = new GameObject ();
 		rotCam.name = "RotaryCam";
 		camCom = rotCam.AddComponent<Camera>();
 		camCom.CopyFrom (mainCam);
+		camCom.farClipPlane = 1.1f;
 		camCom.transform.rotation = Quaternion.FromToRotation (mainCam.transform.rotation.eulerAngles, Vector3.zero);
 
-		rotCam.transform.position = plate.transform.position + Vector3.back * 1.0f;
-		rotCam.transform.parent = plate.transform;
+		rotCam.transform.position = myPlate.transform.position + Vector3.back * 1.0f;
+		rotCam.transform.parent = myPlate.transform;
 
-		//mainCam.enabled = false;
 		camCom.enabled = false;
-
-		//camCom = glassCam.GetComponent<Camera> ();
-		return camCom;
 	}
 
 
 	void RotateDial () {
 		//Use input to rotate Dial
-		dial.transform.Rotate (Vector3.back, Input.GetAxis ("Horizontal") * dialRotSpeed * Time.deltaTime);
+		myDial.transform.Rotate (Vector3.back, Input.GetAxis ("Horizontal") * dialRotSpeed * Time.deltaTime);
 		//Get Dial rotation angle #(between 0 and 360)
-		dialAngle = dial.transform.rotation.eulerAngles.z;
+		dialAngle = myDial.transform.rotation.eulerAngles.z;
 	}
 
 
@@ -224,7 +222,7 @@ public class Lock_RotaryDial : MonoBehaviour {
 
 	void dialFailed () {
 		if (puzzleAttempts < 3) {
-			dial.transform.Rotate (0.0f, 0.0f, -dialAngle);
+			myDial.transform.Rotate (0.0f, 0.0f, -dialAngle);
 			print ("Press SPACE TO RETRY" + " / Attempts Left: " + (3 - puzzleAttempts));
 			if (Input.GetKeyDown (KeyCode.Space)) {
 				currentState = lockState.findCombo1;
@@ -249,8 +247,8 @@ public class Lock_RotaryDial : MonoBehaviour {
 
 
 	void DestroyLockSetup () {
-		Destroy (plate);
-		Destroy (dial);
+		Destroy (myPlate);
+		Destroy (myDial);
 	}
 
 

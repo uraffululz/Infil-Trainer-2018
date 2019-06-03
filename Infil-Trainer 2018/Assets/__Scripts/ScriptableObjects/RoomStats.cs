@@ -8,6 +8,7 @@ public class RoomStats : ScriptableObject {
 	public int roomWidth;
 	public int roomDepth;
 	public int roomHeight;
+	public int squareFootage;
 
 	public bool allowFloorTreasure;
 	public bool allowWallTreasure;
